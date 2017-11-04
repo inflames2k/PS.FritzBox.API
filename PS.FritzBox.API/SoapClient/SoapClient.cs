@@ -22,7 +22,7 @@ namespace PS.FritzBox.API
         /// <returns>the result of the call</returns>
         public async Task<XDocument> Invoke(string url, SoapRequestParameters parameters)
         {
-            string envelope = await this.CreateEnvelope(parameters);
+            string envelope = this.CreateEnvelope(parameters);
             return await this.Execute(envelope, url, parameters);           
         }
 
@@ -31,7 +31,7 @@ namespace PS.FritzBox.API
         /// </summary>
         /// <param name="parameters">the request parameters</param>
         /// <returns></returns>
-        private async Task<string> CreateEnvelope(SoapRequestParameters parameters)
+        private string CreateEnvelope(SoapRequestParameters parameters)
         {
             string envelope = @"<?xml version='1.0' encoding='UTF-8'?> 
                                 <soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
@@ -83,8 +83,7 @@ namespace PS.FritzBox.API
                     throw new Exception(response.ReasonPhrase);
                 }
 
-                Task<Stream> streamTask = response.Content.ReadAsStreamAsync();
-                Stream stream = streamTask.Result;
+                Stream stream = await response.Content.ReadAsStreamAsync();
                 var sr = new StreamReader(stream);
                 var soapResponse = XDocument.Load(sr);
 
