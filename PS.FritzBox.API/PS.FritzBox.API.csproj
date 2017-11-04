@@ -7,6 +7,11 @@
     <Product>PS Fritz!Box API</Product>
     <Description>API for accessing the TR-064 interface of AVM Fritz!Box devices.</Description>
     <Copyright>Patrick Schubert</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://github.com/inflames2k/PS.FritzBox.API/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/inflames2k/PS.FritzBox.API</PackageProjectUrl>
+    <RepositoryType>Git</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
