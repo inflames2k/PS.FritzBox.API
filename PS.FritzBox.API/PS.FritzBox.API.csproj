@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <Authors>Patrick Schubert</Authors>
+    <Company />
+    <Product>PS Fritz!Box API</Product>
+    <Description>API for accessing the TR-064 interface of AVM Fritz!Box devices.</Description>
+    <Copyright>Patrick Schubert</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard1.6\PS.FritzBox.API.xml</DocumentationFile>
+  </PropertyGroup>
+
+</Project>
