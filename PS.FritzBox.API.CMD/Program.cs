@@ -12,8 +12,8 @@ namespace PS.FritzBox.API.CMD
         {
             WANCommonInterfaceConfigClient client = new WANCommonInterfaceConfigClient("https://fritz.box", 10000);
             client.UserName = "inflames2k";
-            client.Password = "ps1988@rie";
-
+            client.Password = "********";
+            
             OnlineMonitorInfo monitor = client.GetOnlineMonitor(0).Result;
 
             Console.WriteLine($"Max Downstream: {monitor.MaxDownStream}");
