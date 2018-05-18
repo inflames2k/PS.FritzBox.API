@@ -12,6 +12,7 @@
     <PackageLicenseUrl>https://github.com/inflames2k/PS.FritzBox.API/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/inflames2k/PS.FritzBox.API</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
