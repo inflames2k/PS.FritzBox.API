@@ -78,7 +78,7 @@ namespace PS.FritzBox.API
             return soapResult;
         }
 
-        internal async void ParseSoapFault(XDocument document)
+        internal void ParseSoapFault(XDocument document)
         {
             if(document.Descendants("Fault").Count() > 0)
             {
