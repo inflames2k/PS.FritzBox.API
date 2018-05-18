@@ -38,14 +38,14 @@ namespace PS.FritzBox.API
             // connection status values
             info.ConnectionStatus.ConnectionStatus = document.Descendants("NewConnectionStatus").First().Value;
             info.ConnectionStatus.LastConnectionError = document.Descendants("NewLastConnectionError").First().Value;
-            info.ConnectionStatus.Uptime = Convert.ToUInt32(document.Descendants("NewUpTime").First().Value);
+            info.ConnectionStatus.Uptime = Convert.ToUInt32(document.Descendants("NewUptime").First().Value);
             // connecton type values
             info.ConnectionType.ConnectionType = document.Descendants("NewConnectionType").First().Value;
             info.ConnectionType.PossibleConnectionTypes = document.Descendants("NewPossibleConnectionTypes").First().Value;
 
             // link layer max bitrate values
             info.LinkLayerMaxBitRates.DownstreamMaxBitRate = Convert.ToUInt32(document.Descendants("NewDownstreamMaxBitRate").First().Value);
-            info.LinkLayerMaxBitRates.UpstreamMaxBitRate = Convert.ToUInt32(document.Descendants("UpstreamMaxBitRate").First().Value);
+            info.LinkLayerMaxBitRates.UpstreamMaxBitRate = Convert.ToUInt32(document.Descendants("NewUpstreamMaxBitRate").First().Value);
 
             // nat rsip 
             info.NATRSIPStatus.RSIPAvailable = Convert.ToBoolean(document.Descendants("NewRSIPAvailable").First().Value);
@@ -142,8 +142,8 @@ namespace PS.FritzBox.API
             NATRSIPStatus status = new NATRSIPStatus();
             XDocument document = await this.Invoke("GetNATRSIPStatus", null);
 
-            status.NATEnabled = Convert.ToBoolean(document.Descendants("NewNATEnabled").First().Value);
-            status.RSIPAvailable = Convert.ToBoolean(document.Descendants("NewRSIPAvailable").First().Value);
+            status.NATEnabled = document.Descendants("NewNATEnabled").First().Value == "0";
+            status.RSIPAvailable = document.Descendants("NewRSIPAvailable").First().Value == "0";
 
             return status;
         }
@@ -204,7 +204,7 @@ namespace PS.FritzBox.API
             XDocument document = await this.Invoke("GetLinkLayerMaxBitRates", null);
 
             bitRates.DownstreamMaxBitRate = Convert.ToUInt32(document.Descendants("NewDownstreamMaxBitRate").First().Value);
-            bitRates.UpstreamMaxBitRate = Convert.ToUInt32(document.Descendants("UpstreamMaxBitRate").First().Value);
+            bitRates.UpstreamMaxBitRate = Convert.ToUInt32(document.Descendants("NewUpstreamMaxBitRate").First().Value);
             return bitRates;
         }
     }
