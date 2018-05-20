@@ -38,8 +38,14 @@ namespace PS.FritzBox.API
         /// </summary>
         public int Timeout { get; internal set; }
 
+        /// <summary>
+        /// Gets or sets the fritz!box user name
+        /// </summary>
         public string UserName { get; set; }
 
+        /// <summary>
+        /// gets or sets the fritz!box password
+        /// </summary>
         public string Password { get; set; }
 
         /// <summary>
