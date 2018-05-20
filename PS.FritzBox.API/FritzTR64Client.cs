@@ -57,7 +57,7 @@ namespace PS.FritzBox.API
         /// </summary>
         /// <param name="Action"></param>
         /// <returns></returns>
-        internal async Task<XDocument> Invoke(string action, params SoapRequestParameter[] parameter)
+        internal async Task<XDocument> InvokeAsync(string action, params SoapRequestParameter[] parameter)
         {
             SoapClient client = new SoapClient();
             SoapRequestParameters parameters = new SoapRequestParameters();
@@ -71,7 +71,7 @@ namespace PS.FritzBox.API
             if (parameter != null)
                 parameters.Parameters.AddRange(parameter);
 
-            XDocument soapResult = await client.Invoke(this.Url, parameters);
+            XDocument soapResult = await client.InvokeAsync(this.Url, parameters);
 
             this.ParseSoapFault(soapResult);
 

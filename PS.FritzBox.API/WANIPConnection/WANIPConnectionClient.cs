@@ -30,9 +30,15 @@ namespace PS.FritzBox.API
         /// Method to get the connection info
         /// </summary>
         /// <returns></returns>
-        public async Task<WANIPConnectionInfo> GetInfo()
+        public WANIPConnectionInfo GetInfo() => this.GetInfoAsync().Result;
+
+        /// <summary>
+        /// async Method to get the connection info
+        /// </summary>
+        /// <returns></returns>
+        public async Task<WANIPConnectionInfo> GetInfoAsync()
         {
-            XDocument document = await this.Invoke("GetInfo", null);
+            XDocument document = await this.InvokeAsync("GetInfo", null);
             WANIPConnectionInfo info = new WANIPConnectionInfo();
 
             // connection status values
@@ -63,9 +69,15 @@ namespace PS.FritzBox.API
         /// Method to get the connection type info
         /// </summary>
         /// <returns>the connection type info</returns>
-        public async Task<ConnectionTypeInfo> GetConnectionTypeInfo()
+        public ConnectionTypeInfo GetConnectionTypeInfo() => this.GetConnectionTypeInfoAsync().Result;        
+
+        /// <summary>
+        /// Method to get the connection type info
+        /// </summary>
+        /// <returns>the connection type info</returns>
+        public async Task<ConnectionTypeInfo> GetConnectionTypeInfoAsync()
         {
-            XDocument document = await this.Invoke("GetConnectionTypeInfo", null);
+            XDocument document = await this.InvokeAsync("GetConnectionTypeInfo", null);
             ConnectionTypeInfo info = new ConnectionTypeInfo();
             info.ConnectionType = document.Descendants("NewConnectionType").First().Value;
             info.PossibleConnectionTypes = document.Descendants("NewPossibleConnectionTypes").First().Value;
@@ -75,20 +87,32 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Method to set the connection type
         /// </summary>
+        /// <param name="connectionType">the connection type</param>
+        public void SetConnectionType(string connectionType) => this.SetConnectionTypeAsync(connectionType);        
+
+        /// <summary>
+        /// Method to set the connection type
+        /// </summary>
         /// <param name="connectionType"></param>
-        public async void SetConnectionType(string connectionType)
+        public async void SetConnectionTypeAsync(string connectionType)
         {
             var parameter = new SoapRequestParameter("NewConnectionType", connectionType);
-            await this.Invoke("SetConnectionType", parameter);
+            await this.InvokeAsync("SetConnectionType", parameter);
         }
 
         /// <summary>
         /// Method to get the connection state info
         /// </summary>
+        /// <returns></returns>
+        public ConnectionStatusInfo GetStatusInfo() => this.GetStatusInfoAsync().Result;
+        
+        /// <summary>
+        /// Method to get the connection state info
+        /// </summary>
         /// <returns>the state info</returns>
-        public async Task<ConnectionStatusInfo> GetStatusInfo()
+        public async Task<ConnectionStatusInfo> GetStatusInfoAsync()
         {
-            XDocument document = await this.Invoke("GetStatusInfo", null);
+            XDocument document = await this.InvokeAsync("GetStatusInfo", null);
             ConnectionStatusInfo info = new ConnectionStatusInfo();
             info.ConnectionStatus = document.Descendants("NewConnectionStatus").First().Value;
             info.LastConnectionError = document.Descendants("NewLastConnectionError").First().Value;
@@ -101,14 +125,20 @@ namespace PS.FritzBox.API
         /// Method to get the nat rsip status
         /// </summary>
         /// <returns>the nat rsip status</returns>
-        public async Task<NATRSIPStatus> GetNATRSIPStatus()
+        public NATRSIPStatus GetNATRSIPStatus() => this.GetNATRSIPStatusAsync().Result;
+
+        /// <summary>
+        /// Method to get the nat rsip status
+        /// </summary>
+        /// <returns>the nat rsip status</returns>
+        public async Task<NATRSIPStatus> GetNATRSIPStatusAsync()
         {
-            XDocument document = await this.Invoke("GetNATRSIPStatus", null);
+            XDocument document = await this.InvokeAsync("GetNATRSIPStatus", null);
             NATRSIPStatus info = new NATRSIPStatus();
 
-            info.RSIPAvailable = Convert.ToBoolean(document.Descendants("NewRSIPAvailable").First().Value);
-            info.NATEnabled = Convert.ToBoolean(document.Descendants("NewNATEnabled").First().Value);
-            
+            info.NATEnabled = document.Descendants("NewNATEnabled").First().Value == "1";
+            info.RSIPAvailable = document.Descendants("NewRSIPAvailable").First().Value == "1";
+
             return info;
         }
 
@@ -116,55 +146,89 @@ namespace PS.FritzBox.API
         /// Method to set the connection trigger
         /// </summary>
         /// <param name="trigger">the new connection trigger</param>
-        public async void SetConnectionTrigger(string trigger)
+        public void SetConnectionTrigger(string trigger) => this.SetConnectionTriggerAsync(trigger);
+
+        /// <summary>
+        /// Method to set the connection trigger
+        /// </summary>
+        /// <param name="trigger">the new connection trigger</param>
+        public async void SetConnectionTriggerAsync(string trigger)
         {
             var parameter = new SoapRequestParameter("NewConnectionTrigger", trigger);
-            await this.Invoke("SetConnectionTrigger", parameter);
+            await this.InvokeAsync("SetConnectionTrigger", parameter);
         }
 
         /// <summary>
         /// Method to force termination
         /// </summary>
-        public async void ForceTermination()
+        public void ForceTermination() => this.ForceTerminationAsync();
+
+        /// <summary>
+        /// Method to force termination
+        /// </summary>
+        public async void ForceTerminationAsync()
         {
-            await this.Invoke("ForceTermination", null);
+            await this.InvokeAsync("ForceTermination", null);
         }
 
         /// <summary>
         /// Method to request a connection
         /// </summary>
-        public async void RequestConnection()
+        public void RequestConnection() => this.RequestConnectionAsync();
+
+        /// <summary>
+        /// Method to request a connection
+        /// </summary>
+        public async void RequestConnectionAsync()
         {
-            await this.Invoke("RequestConnection", null);
+            await this.InvokeAsync("RequestConnection", null);
         }
 
         /// <summary>
         /// Method to get the dns servers
         /// </summary>
         /// <returns>the dns servers</returns>
-        public async Task<string> GetDNSServers()
+        public string GetDNSServers() => this.GetDNSServersAsync().Result;
+
+        /// <summary>
+        /// Method to get the dns servers
+        /// </summary>
+        /// <returns>the dns servers</returns>
+        public async Task<string> GetDNSServersAsync()
         {
-            XDocument document = await this.Invoke("X_GetDNSServers", null);
+            XDocument document = await this.InvokeAsync("X_GetDNSServers", null);
             return document.Descendants("NewDNSServers").First().Value;
         }
+
+        /// <summary>
+        /// Method ot set the dns servers
+        /// </summary>
+        /// <param name="dnsServers">the dns servers</param>
+        public void SetDNSServers(string dnsServers) => this.SetDNSServersAsync(dnsServers);
 
         /// <summary>
         /// Method to set the dns servers
         /// </summary>
         /// <param name="dnsServers">the dns servers</param>
-        public async void SetDNSServers(string dnsServers)
+        public async void SetDNSServersAsync(string dnsServers)
         {
             var parameter = new SoapRequestParameter("NewDNSServers", dnsServers);
-            XDocument document = await this.Invoke("X_SetDNSServers", parameter);
+            XDocument document = await this.InvokeAsync("X_SetDNSServers", parameter);
         }
 
         /// <summary>
         /// Method to get the number of port mappings
         /// </summary>
         /// <returns></returns>
-        public async Task<UInt16> GetPortMappingNumberOfEntries()
+        public UInt16 GetPortMappingNumberOfEntries() => this.GetPortMappingNumberOfEntriesAsync().Result;
+
+        /// <summary>
+        /// Method to get the number of port mappings
+        /// </summary>
+        /// <returns></returns>
+        public async Task<UInt16> GetPortMappingNumberOfEntriesAsync()
         {
-            XDocument document = await this.Invoke("GetPortMappingNumberOfEntries", null);
+            XDocument document = await this.InvokeAsync("GetPortMappingNumberOfEntries", null);
             return Convert.ToUInt16(document.Descendants("NewPortMappingNumberOfEntries").First().Value);
         }
 
@@ -172,9 +236,15 @@ namespace PS.FritzBox.API
         /// Method to get the external ip address
         /// </summary>
         /// <returns>the external ip address</returns>
-        public async Task<string> GetExternalIPAddress()
+        public string GetExternalIPAddress() => this.GetExternalIPAddressAsync().Result;
+
+        /// <summary>
+        /// Method to get the external ip address
+        /// </summary>
+        /// <returns>the external ip address</returns>
+        public async Task<string> GetExternalIPAddressAsync()
         {
-            XDocument document = await this.Invoke("GetExternalIPAddress", null);
+            XDocument document = await this.InvokeAsync("GetExternalIPAddress", null);
             return document.Descendants("NewExternalIPAddress").First().Value;
         }
 
@@ -182,20 +252,32 @@ namespace PS.FritzBox.API
         /// Method to set the route protocol
         /// </summary>
         /// <param name="routeProtocol">the new route protocol</param>
-        public async void SetRouteProtocolRx(string routeProtocol)
+        public void SetRouteProtocolRx(string routeProtocol) => this.SetRouteProtocolRxAsync(routeProtocol);
+
+        /// <summary>
+        /// Method to set the route protocol
+        /// </summary>
+        /// <param name="routeProtocol">the new route protocol</param>
+        public async void SetRouteProtocolRxAsync(string routeProtocol)
         {
             SoapRequestParameter parameter = new SoapRequestParameter("NewRouteProtocolRX", routeProtocol);
-            await this.Invoke("SetRouteProtocolRx", parameter);
+            await this.InvokeAsync("SetRouteProtocolRx", parameter);
         }
 
         /// <summary>
         /// Method to set the idle disconnect time
         /// </summary>
+        /// <param name="idleDisconnectTime">the idle disconnect time</param>
+        public void SetIdleDisconnectTime(UInt32 idleDisconnectTime) => this.SetIdleDisconnectTimeAsync(idleDisconnectTime);
+
+        /// <summary>
+        /// Method to set the idle disconnect time
+        /// </summary>
         /// <param name="idleDisconnectTime">the disconnect time</param>
-        public async void SetIdleDisconnectTime(UInt32 idleDisconnectTime)
+        public async void SetIdleDisconnectTimeAsync(UInt32 idleDisconnectTime)
         {
             SoapRequestParameter parameter = new SoapRequestParameter("NewIdleDisconnectTime", idleDisconnectTime);
-            await this.Invoke("SetIdleDisconnectTime", parameter);
+            await this.InvokeAsync("SetIdleDisconnectTime", parameter);
         }
 
         // GetGenericPortMappingEntry

@@ -20,10 +20,10 @@ namespace PS.FritzBox.API
         /// </summary>
         /// <param name="parameters">the request parameters</param>
         /// <returns>the result of the call</returns>
-        public async Task<XDocument> Invoke(string url, SoapRequestParameters parameters)
+        public async Task<XDocument> InvokeAsync(string url, SoapRequestParameters parameters)
         {
             string envelope = this.CreateEnvelope(parameters);
-            return await this.Execute(envelope, url, parameters);           
+            return await this.ExecuteAsync(envelope, url, parameters);           
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace PS.FritzBox.API
         /// <param name="url">the soap url</param>
         /// <param name="parameters">the parameters</param>
         /// <returns></returns>
-        private async Task<XDocument> Execute(string xmlSOAP, string url, SoapRequestParameters parameters)
+        private async Task<XDocument> ExecuteAsync(string xmlSOAP, string url, SoapRequestParameters parameters)
         {
             HttpClientHandler handler = new HttpClientHandler();            
             handler.ServerCertificateCustomValidationCallback = delegate { return true; };

@@ -35,10 +35,16 @@ namespace PS.FritzBox.API
         /// Method to get the device info
         /// </summary>
         /// <returns>the device info</returns>
-        public async Task<DeviceInfo> GetDeviceInfo()
+        public DeviceInfo GetDeviceInfo() => this.GetDeviceInfoAsync().Result;        
+
+        /// <summary>
+        /// async Method to get the device info
+        /// </summary>
+        /// <returns>the device info</returns>
+        public async Task<DeviceInfo> GetDeviceInfoAsync()
         {
             // call the device info here and fill it with data
-            XDocument document = await this.Invoke("GetInfo", null);
+            XDocument document = await this.InvokeAsync("GetInfo", null);
 
             DeviceInfo info = new DeviceInfo();
             info.ManufacturerName = document.Descendants("NewManufacturerName").First().Value;
@@ -57,22 +63,34 @@ namespace PS.FritzBox.API
         }
 
         /// <summary>
-        /// Method to get the device log 
+        /// Method to get the device log
         /// </summary>
         /// <returns>the device log</returns>
-        public async Task<IEnumerable<string>> GetDeviceLog()
+        public IEnumerable<string> GetDeviceLog() => this.GetDeviceLogAsync().Result;
+        
+        /// <summary>
+        /// async Method to get the device log 
+        /// </summary>
+        /// <returns>the device log</returns>
+        public async Task<IEnumerable<string>> GetDeviceLogAsync()
         {
-            XDocument document = await this.Invoke("GetDeviceLog", null);            
+            XDocument document = await this.InvokeAsync("GetDeviceLog", null);            
             return document.Descendants("NewDeviceLog").First().Value.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).AsEnumerable();
         }
 
         /// <summary>
-        /// Method to get the security port of the device
+        /// Method to get the security port
         /// </summary>
         /// <returns>the security port</returns>
-        public async Task<UInt16> GetSecurityPort()
+        public UInt16 GetSecurityPort() => this.GetSecurityPortAsync().Result;
+        
+        /// <summary>
+        /// async Method to get the security port of the device
+        /// </summary>
+        /// <returns>the security port</returns>
+        public async Task<UInt16> GetSecurityPortAsync()
         {
-            XDocument document = await this.Invoke("GetSecurityPort", null);
+            XDocument document = await this.InvokeAsync("GetSecurityPort", null);
             return Convert.ToUInt16(document.Descendants("NewSecurityPort").First().Value);
         }
     }
