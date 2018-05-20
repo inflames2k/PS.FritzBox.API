@@ -42,13 +42,12 @@ namespace PS.FritzBox.API
             WANIPConnectionInfo info = new WANIPConnectionInfo();
 
             // connection status values
-            info.ConnectionStatus.ConnectionStatus = document.Descendants("NewConnectionStatus").First().Value;
+            info.ConnectionStatus.ConnectionStatus = (ConnectionStatus)Enum.Parse(typeof(ConnectionStatus), document.Descendants("NewConnectionStatus").First().Value);
             info.ConnectionStatus.LastConnectionError = document.Descendants("NewLastConnectionError").First().Value;
             info.ConnectionStatus.Uptime = Convert.ToUInt32(document.Descendants("NewUptime").First().Value);
             // connecton type values
-            info.ConnectionType.ConnectionType = document.Descendants("NewConnectionType").First().Value;
-            info.ConnectionType.PossibleConnectionTypes = document.Descendants("NewPossibleConnectionTypes").First().Value;
-            
+            info.ConnectionType.ConnectionType = (ConnectionType)Enum.Parse(typeof(ConnectionType), document.Descendants("NewConnectionType").First().Value);
+            info.ConnectionType.PossibleConnectionTypes = (PossibleConnectionTypes)Enum.Parse(typeof(PossibleConnectionTypes), document.Descendants("NewPossibleConnectionTypes").First().Value);
             // nat rsip 
             info.NATRSIPStatus.RSIPAvailable = Convert.ToBoolean(document.Descendants("NewRSIPAvailable").First().Value);
             info.NATRSIPStatus.NATEnabled = Convert.ToBoolean(document.Descendants("NewNATEnabled").First().Value);
@@ -79,8 +78,8 @@ namespace PS.FritzBox.API
         {
             XDocument document = await this.InvokeAsync("GetConnectionTypeInfo", null);
             ConnectionTypeInfo info = new ConnectionTypeInfo();
-            info.ConnectionType = document.Descendants("NewConnectionType").First().Value;
-            info.PossibleConnectionTypes = document.Descendants("NewPossibleConnectionTypes").First().Value;
+            info.ConnectionType = (ConnectionType)Enum.Parse(typeof(ConnectionType), document.Descendants("NewConnectionType").First().Value);
+            info.PossibleConnectionTypes = (PossibleConnectionTypes)Enum.Parse(typeof(PossibleConnectionTypes), document.Descendants("NewPossibleConnectionTypes").First().Value);
             return info;
         }
 
@@ -114,7 +113,7 @@ namespace PS.FritzBox.API
         {
             XDocument document = await this.InvokeAsync("GetStatusInfo", null);
             ConnectionStatusInfo info = new ConnectionStatusInfo();
-            info.ConnectionStatus = document.Descendants("NewConnectionStatus").First().Value;
+            info.ConnectionStatus = (ConnectionStatus)Enum.Parse(typeof(ConnectionStatus), document.Descendants("NewConnectionStatus").First().Value);
             info.LastConnectionError = document.Descendants("NewLastConnectionError").First().Value;
             info.Uptime = Convert.ToUInt32(document.Descendants("NewUptime").First().Value);
 

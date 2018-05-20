@@ -9,11 +9,11 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Gets the connection type
         /// </summary>
-        public string ConnectionType { get; internal set; }
+        public ConnectionType ConnectionType { get; internal set; }
 
         /// <summary>
         /// Gets the possible connection types
         /// </summary>
-        public string PossibleConnectionTypes { get; internal set; }
+        public PossibleConnectionTypes PossibleConnectionTypes { get; internal set; }
     }
 }

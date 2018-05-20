@@ -7,9 +7,9 @@ namespace PS.FritzBox.API
     public class ConnectionStatusInfo
     {
         /// <summary>
-        /// Gets the connection status
+        /// Gets or sets the connection status
         /// </summary>
-        public string ConnectionStatus { get; internal set; }
+        public ConnectionStatus ConnectionStatus { get; internal set; }
 
         /// <summary>
         /// Gets the last connection error
