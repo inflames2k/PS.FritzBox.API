@@ -53,12 +53,14 @@ namespace PS.FritzBox.API
         /// <returns>the url to the config file</returns>
         public async Task<string> GetConfigFile(string password)
         {
+            // get the config file data from device
             XDocument document = await this.Invoke("X_AVM-DE_GetConfigFile", new SoapRequestParameter("NewX_AVM-DE_Password", password));
+            // parse the url out of the result
             string configFile = document.Descendants("NewX_AVM-DE_ConfigFileUrl").First().Value;
 
+            // create uri and replace the host in config file url
             Uri uri = default(Uri);
             Uri.TryCreate(this.Url, UriKind.Absolute, out uri);
-
             return configFile.Replace("127.0.0.1", uri.Host);
         }
 
@@ -69,10 +71,10 @@ namespace PS.FritzBox.API
         /// <param name="path">the path to save the file to</param>
         public async void DownloadConfigFile(string password, string path)
         {
+            // get the config file url from device
             string configFile = await this.GetConfigFile(password);
-            // replace url
+            // get the config file and write it to file system
             byte[] fileContent = await this.DownloadFile(configFile);
-
             File.WriteAllBytes(path, fileContent);
         }
 
