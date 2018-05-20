@@ -97,13 +97,13 @@ namespace PS.FritzBox.API
         /// Method to set the connection type
         /// </summary>
         /// <param name="connectionType"></param>
-        public void SetConnectionType(string connectionType) => this.SetConnectionTypeAsync(connectionType);
+        public void SetConnectionType(string connectionType) => this.SetConnectionTypeAsync(connectionType).Wait();
 
         /// <summary>
         /// Method to set the connection type
         /// </summary>
         /// <param name="connectionType">the new connection type</param>
-        public async void SetConnectionTypeAsync(string connectionType)
+        public async Task SetConnectionTypeAsync(string connectionType)
         {
             var parameter = new SoapRequestParameter("NewConnectionType", connectionType);
             XDocument document = await this.InvokeAsync("SetConnectionType", parameter);
@@ -151,13 +151,13 @@ namespace PS.FritzBox.API
         /// Method to set the user name
         /// </summary>
         /// <param name="userName">the new username</param>
-        public void SetUserName(string userName) => this.SetUserNameAsync(userName);
+        public void SetUserName(string userName) => this.SetUserNameAsync(userName).Wait();
 
         /// <summary>
         /// Method to set the user name
         /// </summary>
         /// <param name="userName">the new username</param>
-        public async void SetUserNameAsync(string userName)
+        public async Task SetUserNameAsync(string userName)
         {
             var parameter = new SoapRequestParameter("NewUserName", userName);
             XDocument document = await this.InvokeAsync("SetUserName", parameter);
@@ -167,13 +167,13 @@ namespace PS.FritzBox.API
         /// Method to set the password
         /// </summary>
         /// <param name="password">the new password</param>
-        public void SetPassword(string password) => this.SetPasswordAsync(password);
+        public void SetPassword(string password) => this.SetPasswordAsync(password).Wait();
 
         /// <summary>
         /// Method to set the password
         /// </summary>
         /// <param name="password">the new password</param>
-        public async void SetPasswordAsync(string password)
+        public async Task SetPasswordAsync(string password)
         {
             var parameter = new SoapRequestParameter("NewPassword", password);
             XDocument document = await this.InvokeAsync("SetPassword", parameter);
@@ -203,12 +203,12 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Method to force the termination of the connection
         /// </summary>
-        public void ForceTermination() => this.ForceTerminationAsync();
+        public void ForceTermination() => this.ForceTerminationAsync().Wait();
 
         /// <summary>
         /// Method to force the termination of the ppp connection
         /// </summary>
-        public async void ForceTerminationAsync()
+        public async Task ForceTerminationAsync()
         {
             XDocument document = await this.InvokeAsync("ForceTermination", null);
         }
@@ -216,12 +216,12 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Method to request a ppp connection
         /// </summary>
-        public void RequestConnection() => this.RequestConnectionAsync();
+        public void RequestConnection() => this.RequestConnectionAsync().Wait();
 
         /// <summary>
         /// Method to request a ppp connection
         /// </summary>
-        public async void RequestConnectionAsync()
+        public async Task RequestConnectionAsync()
         {
             XDocument document = await this.InvokeAsync("RequestConnection", null);
         }
@@ -262,13 +262,13 @@ namespace PS.FritzBox.API
         /// Method to set the dns servers
         /// </summary>
         /// <param name="dnsServers">the dns servers</param>
-        public void SetDNSServers(string dnsServers) => this.SetDNSServersAsync(dnsServers);
+        public void SetDNSServers(string dnsServers) => this.SetDNSServersAsync(dnsServers).Wait();
 
         /// <summary>
         /// Method to set the dns servers
         /// </summary>
         /// <param name="dnsServers">the dns servers</param>
-        public async void SetDNSServersAsync(string dnsServers)
+        public async Task SetDNSServersAsync(string dnsServers)
         {
             var parameter = new SoapRequestParameter("NewDNSServers", dnsServers);
             XDocument document = await this.InvokeAsync("X_SetDNSServers", parameter);

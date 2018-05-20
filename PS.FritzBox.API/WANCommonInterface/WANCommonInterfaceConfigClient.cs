@@ -125,14 +125,14 @@ namespace PS.FritzBox.API
         /// </summary>
         /// <remarks>Internal invokes X_AVM-DE_SetWANAccessType on device</remarks>
         /// <param name="accessType">the new wan access type</param>
-        public void SetWANAccessType(string accessType) => this.SetWANAccessTypeAsync(accessType);
+        public void SetWANAccessType(string accessType) => this.SetWANAccessTypeAsync(accessType).Wait();
 
         /// <summary>
         /// async Method to set the wan access type
         /// </summary>
         /// <remarks>Internal invokes X_AVM-DE_SetWANAccessType on device</remarks>
         /// <param name="accessType">the new wan access type</param>
-        public async void SetWANAccessTypeAsync(string accessType)
+        public async Task SetWANAccessTypeAsync(string accessType)
         {
             XDocument document = await this.InvokeAsync("X_AVM-DE_SetWANAccessType", new SoapRequestParameter("NewAccessType", accessType));
         }

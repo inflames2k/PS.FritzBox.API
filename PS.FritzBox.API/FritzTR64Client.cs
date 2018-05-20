@@ -78,6 +78,10 @@ namespace PS.FritzBox.API
             return soapResult;
         }
 
+        /// <summary>
+        /// Method to parse the soap fault
+        /// </summary>
+        /// <param name="document">the result of the soap request</param>
         internal void ParseSoapFault(XDocument document)
         {
             if(document.Descendants("Fault").Count() > 0)

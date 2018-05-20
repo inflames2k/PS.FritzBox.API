@@ -28,13 +28,13 @@ namespace PS.FritzBox.API
         /// Methot to set the interface enabled
         /// </summary>
         /// <param name="enable"></param>
-        public void SetEnable(bool enable) => this.SetEnableAsync(enable);
+        public void SetEnable(bool enable) => this.SetEnableAsync(enable).Wait();
 
         /// <summary>
         /// async Method to set the interface enabled
         /// </summary>
         /// <param name="enable"></param>
-        public async void SetEnableAsync(bool enable)
+        public async Task SetEnableAsync(bool enable)
         {
             XDocument document = await this.InvokeAsync("SetEnable", new SoapRequestParameter("NewEnable", enable ? "1" : "0"));
         }

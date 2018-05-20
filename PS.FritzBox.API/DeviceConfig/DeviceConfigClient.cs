@@ -33,12 +33,12 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Method to infoke a factory reset
         /// </summary>
-        public void FactoryReset() => this.FactoryResetAsync();
+        public void FactoryReset() => this.FactoryResetAsync().Wait();
         
         /// <summary>
         /// async method to invoke a factory reset
         /// </summary>
-        public async void FactoryResetAsync()
+        public async Task FactoryResetAsync()
         {
             XDocument document = await this.InvokeAsync("FactoryReset", null);
         }
@@ -46,12 +46,12 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Method to infoke a reboot
         /// </summary>
-        public void Reboot() => this.RebootAsync();
+        public void Reboot() => this.RebootAsync().Wait();
         
         /// <summary>
         /// async method to invoke a reboot
         /// </summary>
-        public async void RebootAsync()
+        public async Task RebootAsync()
         {
             XDocument document = await this.InvokeAsync("Reboot", null);
         }
@@ -86,14 +86,14 @@ namespace PS.FritzBox.API
         /// </summary>
         /// <param name="password">the password for the config file</param>
         /// <param name="path">the path to save the file to</param>
-        public void DownloadConfigFile(string password, string path) => this.DownloadConfigFileAsync(password, path);
+        public void DownloadConfigFile(string password, string path) => this.DownloadConfigFileAsync(password, path).Wait();
 
         /// <summary>
         /// async method to download the config file and save it to given path
         /// </summary>
         /// <param name="password">the password for the config file</param>
         /// <param name="path">the path to save the file to</param>
-        public async void DownloadConfigFileAsync(string password, string path)
+        public async Task DownloadConfigFileAsync(string password, string path)
         {
             // get the config file url from device
             string configFile = await this.GetConfigFileAsync(password);
@@ -107,14 +107,14 @@ namespace PS.FritzBox.API
         /// </summary>
         /// <param name="password">the password to decrypt the config file</param>
         /// <param name="url">the url to the config file</param>
-        public void SetConfigFile(string password, string url) => this.SetConfigFileAsync(password, url);
+        public void SetConfigFile(string password, string url) => this.SetConfigFileAsync(password, url).Wait();
         
         /// <summary>
         /// async method to set the config file
         /// </summary>
         /// <param name="password">the password to decrypt the config file</param>
         /// <param name="url">the url to the config file</param>
-        public async void SetConfigFileAsync(string password, string url)
+        public async Task SetConfigFileAsync(string password, string url)
         {
             XDocument document = await this.InvokeAsync("X_AVM-DE_SetConfigFile", new SoapRequestParameter("NewX_AVM-DE_Password", password), new SoapRequestParameter("NewX_AVM-DE_ConfigFileUrl", url));
         }

@@ -88,13 +88,13 @@ namespace PS.FritzBox.API
         /// Method to set the connection type
         /// </summary>
         /// <param name="connectionType">the connection type</param>
-        public void SetConnectionType(string connectionType) => this.SetConnectionTypeAsync(connectionType);        
+        public void SetConnectionType(string connectionType) => this.SetConnectionTypeAsync(connectionType).Wait();        
 
         /// <summary>
         /// Method to set the connection type
         /// </summary>
         /// <param name="connectionType"></param>
-        public async void SetConnectionTypeAsync(string connectionType)
+        public async Task SetConnectionTypeAsync(string connectionType)
         {
             var parameter = new SoapRequestParameter("NewConnectionType", connectionType);
             await this.InvokeAsync("SetConnectionType", parameter);
@@ -146,13 +146,13 @@ namespace PS.FritzBox.API
         /// Method to set the connection trigger
         /// </summary>
         /// <param name="trigger">the new connection trigger</param>
-        public void SetConnectionTrigger(string trigger) => this.SetConnectionTriggerAsync(trigger);
+        public void SetConnectionTrigger(string trigger) => this.SetConnectionTriggerAsync(trigger).Wait();
 
         /// <summary>
         /// Method to set the connection trigger
         /// </summary>
         /// <param name="trigger">the new connection trigger</param>
-        public async void SetConnectionTriggerAsync(string trigger)
+        public async Task SetConnectionTriggerAsync(string trigger)
         {
             var parameter = new SoapRequestParameter("NewConnectionTrigger", trigger);
             await this.InvokeAsync("SetConnectionTrigger", parameter);
@@ -161,12 +161,12 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Method to force termination
         /// </summary>
-        public void ForceTermination() => this.ForceTerminationAsync();
+        public void ForceTermination() => this.ForceTerminationAsync().Wait();
 
         /// <summary>
         /// Method to force termination
         /// </summary>
-        public async void ForceTerminationAsync()
+        public async Task ForceTerminationAsync()
         {
             await this.InvokeAsync("ForceTermination", null);
         }
@@ -174,12 +174,12 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Method to request a connection
         /// </summary>
-        public void RequestConnection() => this.RequestConnectionAsync();
+        public void RequestConnection() => this.RequestConnectionAsync().Wait();
 
         /// <summary>
         /// Method to request a connection
         /// </summary>
-        public async void RequestConnectionAsync()
+        public async Task RequestConnectionAsync()
         {
             await this.InvokeAsync("RequestConnection", null);
         }
@@ -204,13 +204,13 @@ namespace PS.FritzBox.API
         /// Method ot set the dns servers
         /// </summary>
         /// <param name="dnsServers">the dns servers</param>
-        public void SetDNSServers(string dnsServers) => this.SetDNSServersAsync(dnsServers);
+        public void SetDNSServers(string dnsServers) => this.SetDNSServersAsync(dnsServers).Wait();
 
         /// <summary>
         /// Method to set the dns servers
         /// </summary>
         /// <param name="dnsServers">the dns servers</param>
-        public async void SetDNSServersAsync(string dnsServers)
+        public async Task SetDNSServersAsync(string dnsServers)
         {
             var parameter = new SoapRequestParameter("NewDNSServers", dnsServers);
             XDocument document = await this.InvokeAsync("X_SetDNSServers", parameter);
@@ -252,13 +252,13 @@ namespace PS.FritzBox.API
         /// Method to set the route protocol
         /// </summary>
         /// <param name="routeProtocol">the new route protocol</param>
-        public void SetRouteProtocolRx(string routeProtocol) => this.SetRouteProtocolRxAsync(routeProtocol);
+        public void SetRouteProtocolRx(string routeProtocol) => this.SetRouteProtocolRxAsync(routeProtocol).Wait();
 
         /// <summary>
         /// Method to set the route protocol
         /// </summary>
         /// <param name="routeProtocol">the new route protocol</param>
-        public async void SetRouteProtocolRxAsync(string routeProtocol)
+        public async Task SetRouteProtocolRxAsync(string routeProtocol)
         {
             SoapRequestParameter parameter = new SoapRequestParameter("NewRouteProtocolRX", routeProtocol);
             await this.InvokeAsync("SetRouteProtocolRx", parameter);
@@ -268,13 +268,13 @@ namespace PS.FritzBox.API
         /// Method to set the idle disconnect time
         /// </summary>
         /// <param name="idleDisconnectTime">the idle disconnect time</param>
-        public void SetIdleDisconnectTime(UInt32 idleDisconnectTime) => this.SetIdleDisconnectTimeAsync(idleDisconnectTime);
+        public void SetIdleDisconnectTime(UInt32 idleDisconnectTime) => this.SetIdleDisconnectTimeAsync(idleDisconnectTime).Wait();
 
         /// <summary>
         /// Method to set the idle disconnect time
         /// </summary>
         /// <param name="idleDisconnectTime">the disconnect time</param>
-        public async void SetIdleDisconnectTimeAsync(UInt32 idleDisconnectTime)
+        public async Task SetIdleDisconnectTimeAsync(UInt32 idleDisconnectTime)
         {
             SoapRequestParameter parameter = new SoapRequestParameter("NewIdleDisconnectTime", idleDisconnectTime);
             await this.InvokeAsync("SetIdleDisconnectTime", parameter);
