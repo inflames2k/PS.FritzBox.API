@@ -24,7 +24,7 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Gets the request namespace
         /// </summary>
-        protected override string RequestNameSpace => "urn:dslforum-org:service:WANIPConnection:1";
+        protected override string RequestNameSpace => "urn:schemas-upnp-org:service:WANIPConnection:1";
 
         /// <summary>
         /// Method to get the connection info
