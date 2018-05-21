@@ -54,8 +54,8 @@ namespace PS.FritzBox.API
             info.LinkLayerMaxBitRates.UpstreamMaxBitRate = Convert.ToUInt32(document.Descendants("NewUpstreamMaxBitRate").First().Value);
 
             // nat rsip 
-            info.NATRSIPStatus.RSIPAvailable = Convert.ToBoolean(document.Descendants("NewRSIPAvailable").First().Value);
-            info.NATRSIPStatus.NATEnabled = Convert.ToBoolean(document.Descendants("NewNATEnabled").First().Value);
+            info.NATRSIPStatus.RSIPAvailable = document.Descendants("NewRSIPAvailable").First().Value == "1";
+            info.NATRSIPStatus.NATEnabled = document.Descendants("NewNATEnabled").First().Value == "1";
 
             info.ExternalIPAddress = document.Descendants("NewExternalIPAddress").First().Value;
             info.IdleDisconnectTime = Convert.ToUInt32(document.Descendants("NewIdleDisconnectTime").First().Value);
