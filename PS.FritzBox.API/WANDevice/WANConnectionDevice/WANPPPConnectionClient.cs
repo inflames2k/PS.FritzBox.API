@@ -8,7 +8,7 @@ using PS.FritzBox.API.SOAP;
 namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
 {
     /// <summary>
-    /// class for getting informations about the wan ppp connection
+    /// client for wan ppp connection service
     /// </summary>
     public class WANPPPConnectionClient : FritzTR64Client
     {

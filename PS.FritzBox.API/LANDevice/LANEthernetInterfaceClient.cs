@@ -7,6 +7,9 @@ using System.Xml.Linq;
 
 namespace PS.FritzBox.API.LANDevice
 {
+    /// <summary>
+    /// client for lan ethernet interface service
+    /// </summary>
     public class LANEthernetInterfaceClient : FritzTR64Client
     {
         #region Construction / Destruction

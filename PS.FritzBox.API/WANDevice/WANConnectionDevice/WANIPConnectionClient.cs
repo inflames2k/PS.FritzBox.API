@@ -8,7 +8,7 @@ using System.Xml.Linq;
 namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
 {
     /// <summary>
-    /// client for wan ip connection interface
+    /// client for wan ip connection service
     /// </summary>
     public class WANIPConnectionClient : FritzTR64Client
     {

@@ -8,7 +8,7 @@ using System.Xml.Linq;
 namespace PS.FritzBox.API
 {
     /// <summary>
-    /// class for requesting device Informations of the fritz.box (Events, TR-069 Provisioning Code, Security Port for TR-064)
+    /// client for device info service
     /// </summary>
     public class DeviceInfoClient : FritzTR64Client
     {

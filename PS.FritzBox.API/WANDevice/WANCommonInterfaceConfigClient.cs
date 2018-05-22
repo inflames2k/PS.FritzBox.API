@@ -8,6 +8,9 @@ using System.Xml.Linq;
 
 namespace PS.FritzBox.API.WANDevice
 {
+    /// <summary>
+    /// client for wan common interface config service
+    /// </summary>
     public class WANCommonInterfaceConfigClient : FritzTR64Client
     {
         #region Construction / Destruction

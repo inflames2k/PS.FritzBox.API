@@ -10,8 +10,7 @@ using System.Xml.Linq;
 namespace PS.FritzBox.API
 {
     /// <summary>
-    /// class for getting device configuration and configuring the fritz.box
-    /// (backup and restore settings, factory reset, reboot)
+    /// client for device config service
     /// </summary>
     public class DeviceConfigClient : FritzTR64Client
     {
