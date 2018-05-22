@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PS.FritzBox.API.Base;
+using PS.FritzBox.API.SOAP;
+using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -15,10 +15,23 @@ namespace PS.FritzBox.API
     /// </summary>
     public class DeviceConfigClient : FritzTR64Client
     {
+        #region COnstruction / Destruction
         public DeviceConfigClient(string url, int timeout) : base(url, timeout)
         {
-
         }
+
+        public DeviceConfigClient(string url, int timeout, string username) : base(url, timeout, username)
+        {
+        }
+
+        public DeviceConfigClient(string url, int timeout, string username, string password) : base(url, timeout, username, password)
+        {
+        }
+
+        public DeviceConfigClient(ConnectionSettings connectionSettings) : base(connectionSettings)
+        {
+        }
+        #endregion
 
         /// <summary>
         /// Gets the control url
@@ -77,7 +90,7 @@ namespace PS.FritzBox.API
 
             // create uri and replace the host in config file url
             Uri uri = default(Uri);
-            Uri.TryCreate(this.Url, UriKind.Absolute, out uri);
+            Uri.TryCreate(this.ConnectionSettings.BaseUrl, UriKind.Absolute, out uri);
             return configFile.Replace("127.0.0.1", uri.Host);
         }
 

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using PS.FritzBox.API.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -12,6 +12,7 @@ namespace PS.FritzBox.API
     /// </summary>
     public class DeviceInfoClient : FritzTR64Client
     {
+        #region Construction / Destruction
         /// <summary>
         /// constructor for the device info service
         /// </summary>
@@ -20,6 +21,20 @@ namespace PS.FritzBox.API
         public DeviceInfoClient(string url, int timeout) : base(url, timeout)
         {
         }
+
+        public DeviceInfoClient(string url, int timeout, string username) : base(url, timeout, username)
+        {
+        }
+
+        public DeviceInfoClient(string url, int timeout, string username, string password) : base(url, timeout, username, password)
+        {
+        }
+
+        public DeviceInfoClient(ConnectionSettings connectionSettings) : base(connectionSettings)
+        {
+        }
+
+        #endregion
 
         /// <summary>
         /// Gets the control url

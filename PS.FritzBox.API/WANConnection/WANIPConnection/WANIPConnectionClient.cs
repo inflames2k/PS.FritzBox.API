@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PS.FritzBox.API.Base;
+using PS.FritzBox.API.SOAP;
+using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -12,9 +12,25 @@ namespace PS.FritzBox.API
     /// </summary>
     public class WANIPConnectionClient : FritzTR64Client
     {
+        #region Construction / Destruction
+
         public WANIPConnectionClient(string url, int timeout) : base(url, timeout)
         {
         }
+
+        public WANIPConnectionClient(string url, int timeout, string username) : base(url, timeout, username)
+        {
+        }
+
+        public WANIPConnectionClient(string url, int timeout, string username, string password) : base(url, timeout, username, password)
+        {
+        }
+
+        public WANIPConnectionClient(ConnectionSettings connectionSettings) : base(connectionSettings)
+        {
+        }
+
+        #endregion
 
         /// <summary>
         /// Gets the control url
@@ -43,7 +59,7 @@ namespace PS.FritzBox.API
 
             // connection status values
             info.ConnectionStatus.ConnectionStatus = (ConnectionStatus)Enum.Parse(typeof(ConnectionStatus), document.Descendants("NewConnectionStatus").First().Value);
-            info.ConnectionStatus.LastConnectionError = document.Descendants("NewLastConnectionError").First().Value;
+            info.ConnectionStatus.LastConnectionError = (ConnectionError)Enum.Parse(typeof(ConnectionError), document.Descendants("NewLastConnectionError").First().Value);
             info.ConnectionStatus.Uptime = Convert.ToUInt32(document.Descendants("NewUptime").First().Value);
             // connecton type values
             info.ConnectionType.ConnectionType = (ConnectionType)Enum.Parse(typeof(ConnectionType), document.Descendants("NewConnectionType").First().Value);
@@ -114,7 +130,7 @@ namespace PS.FritzBox.API
             XDocument document = await this.InvokeAsync("GetStatusInfo", null);
             ConnectionStatusInfo info = new ConnectionStatusInfo();
             info.ConnectionStatus = (ConnectionStatus)Enum.Parse(typeof(ConnectionStatus), document.Descendants("NewConnectionStatus").First().Value);
-            info.LastConnectionError = document.Descendants("NewLastConnectionError").First().Value;
+            info.LastConnectionError = (ConnectionError)Enum.Parse(typeof(ConnectionError), document.Descendants("NewLastConnectionError").First().Value);
             info.Uptime = Convert.ToUInt32(document.Descendants("NewUptime").First().Value);
 
             return info;

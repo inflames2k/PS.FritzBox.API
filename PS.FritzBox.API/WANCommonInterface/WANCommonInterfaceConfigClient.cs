@@ -1,7 +1,8 @@
-﻿using System;
+﻿using PS.FritzBox.API.Base;
+using PS.FritzBox.API.SOAP;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -9,10 +10,25 @@ namespace PS.FritzBox.API
 {
     public class WANCommonInterfaceConfigClient : FritzTR64Client
     {
+        #region Construction / Destruction
+
         public WANCommonInterfaceConfigClient(string url, int timeout) : base(url, timeout)
         {
         }
 
+        public WANCommonInterfaceConfigClient(string url, int timeout, string username) : base(url, timeout, username)
+        {
+        }
+
+        public WANCommonInterfaceConfigClient(string url, int timeout, string username, string password) : base(url, timeout, username, password)
+        {
+        }
+
+        public WANCommonInterfaceConfigClient(ConnectionSettings connectionSettings) : base(connectionSettings)
+        {
+        }
+
+        #endregion
         /// <summary>
         /// Gets the control url
         /// </summary>

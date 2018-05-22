@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace PS.FritzBox.API
+namespace PS.FritzBox.API.SOAP
 {
     /// <summary>
     /// class for accessing soap actions
@@ -64,6 +62,7 @@ namespace PS.FritzBox.API
 
             using (System.Net.Http.HttpClient client = new HttpClient(handler))
             {
+               // client.Timeout = TimeSpan.FromMilliseconds(parameters.Timeout);
                 var request = new HttpRequestMessage()
                 {
                     RequestUri = new Uri(url),

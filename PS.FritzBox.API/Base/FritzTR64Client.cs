@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using PS.FritzBox.API.SOAP;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace PS.FritzBox.API
+namespace PS.FritzBox.API.Base
 {
     /// <summary>
     /// base class for fritzbox tr64 services
@@ -22,31 +19,48 @@ namespace PS.FritzBox.API
         /// <param name="timeout">the timeout in milliseconds</param>
         public FritzTR64Client(string url, int timeout)
         {
-            this.Url = String.Concat(url, this.ControlUrl);
-            this.Timeout = timeout;
+            this.ConnectionSettings.BaseUrl = url;
+            this.ConnectionSettings.Timeout = timeout;
+        }
+
+        /// <summary>
+        /// constructor for the tr064 service
+        /// </summary>
+        /// <param name="url">the base url</param>
+        /// <param name="timeout">the timeout in milliseconds</param>
+        /// <param name="username">the connection user name</param>
+        public FritzTR64Client(string url, int timeout, string username) : this(url, timeout)
+        {
+            this.ConnectionSettings.UserName = username;
+        }
+
+        /// <summary>
+        /// constructor for the tr064 service
+        /// </summary>
+        /// <param name="url">the base url</param>
+        /// <param name="timeout">the timeout in milliseconds</param>
+        /// <param name="username">the connection user name</param>
+        /// <param name="password">the connection password</param>
+        public FritzTR64Client(string url, int timeout, string username, string password) : this(url, timeout, username)
+        {
+            this.ConnectionSettings.Password = password;
+        }
+
+        /// <summary>
+        /// Constructor for tr064 service
+        /// </summary>
+        /// <param name="connectionSettings">the connection settings</param>
+        public FritzTR64Client(ConnectionSettings connectionSettings)
+        {
+            this.ConnectionSettings = connectionSettings;
         }
 
         #endregion
 
         /// <summary>
-        /// Gets or sets the service url
+        /// Gets or sets the connection settings
         /// </summary>
-        public string Url { get; internal set; }
-
-        /// <summary>
-        /// gets or sets the request timeout
-        /// </summary>
-        public int Timeout { get; internal set; }
-
-        /// <summary>
-        /// Gets or sets the fritz!box user name
-        /// </summary>
-        public string UserName { get; set; }
-
-        /// <summary>
-        /// gets or sets the fritz!box password
-        /// </summary>
-        public string Password { get; set; }
+        public ConnectionSettings ConnectionSettings { get; set; } = new ConnectionSettings();
 
         /// <summary>
         /// gets or sets the control url
@@ -66,10 +80,12 @@ namespace PS.FritzBox.API
         internal async Task<XDocument> InvokeAsync(string action, params SoapRequestParameter[] parameter)
         {
             SoapClient client = new SoapClient();
+
             SoapRequestParameters parameters = new SoapRequestParameters();
 
-            parameters.UserName = this.UserName;
-            parameters.Password = this.Password;
+            parameters.UserName = this.ConnectionSettings.UserName;
+            parameters.Password = this.ConnectionSettings.Password;
+            parameters.Timeout = this.ConnectionSettings.Timeout;
 
             parameters.RequestNameSpace = this.RequestNameSpace;
             parameters.SoapAction = $"{this.RequestNameSpace}#{action}";
@@ -77,7 +93,7 @@ namespace PS.FritzBox.API
             if (parameter != null)
                 parameters.Parameters.AddRange(parameter);
 
-            XDocument soapResult = await client.InvokeAsync(this.Url, parameters);
+            XDocument soapResult = await client.InvokeAsync($"{this.ConnectionSettings.BaseUrl}{this.ControlUrl}", parameters);
 
             this.ParseSoapFault(soapResult);
 

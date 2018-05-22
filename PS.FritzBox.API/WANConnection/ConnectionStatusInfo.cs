@@ -14,7 +14,7 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Gets the last connection error
         /// </summary>
-        public string LastConnectionError { get; internal set; }
+        public ConnectionError LastConnectionError { get; internal set; }
 
         /// <summary>
         /// Gets the uptime

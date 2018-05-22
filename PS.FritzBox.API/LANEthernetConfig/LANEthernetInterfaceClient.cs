@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PS.FritzBox.API.Base;
+using PS.FritzBox.API.SOAP;
+using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -9,10 +9,25 @@ namespace PS.FritzBox.API
 {
     public class LANEthernetInterfaceClient : FritzTR64Client
     {
+        #region Construction / Destruction
+
         public LANEthernetInterfaceClient(string url, int timeout) : base(url, timeout)
         {
-
         }
+
+        public LANEthernetInterfaceClient(string url, int timeout, string username) : base(url, timeout, username)
+        {
+        }
+
+        public LANEthernetInterfaceClient(string url, int timeout, string username, string password) : base(url, timeout, username, password)
+        {
+        }
+
+        public LANEthernetInterfaceClient(ConnectionSettings connectionSettings) : base(connectionSettings)
+        {
+        }
+
+        #endregion
 
         /// <summary>
         /// Gets the control url
