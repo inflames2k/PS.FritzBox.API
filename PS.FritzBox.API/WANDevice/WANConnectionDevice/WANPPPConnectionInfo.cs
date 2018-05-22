@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PS.FritzBox.API
+namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
 {
     public class WANPPPConnectionInfo
     {

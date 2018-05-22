@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace PS.FritzBox.API
+namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
 {
     /// <summary>
     /// client for wan ip connection interface

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PS.FritzBox.API
+namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
 {
     /// <summary>
     /// flags enumeration for possible connection types

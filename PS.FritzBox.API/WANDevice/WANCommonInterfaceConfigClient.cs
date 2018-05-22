@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace PS.FritzBox.API
+namespace PS.FritzBox.API.WANDevice
 {
     public class WANCommonInterfaceConfigClient : FritzTR64Client
     {

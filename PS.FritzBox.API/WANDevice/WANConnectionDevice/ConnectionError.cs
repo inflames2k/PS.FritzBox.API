@@ -1,4 +1,4 @@
-﻿namespace PS.FritzBox.API
+﻿namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
 {
     /// <summary>
     /// enum for connection error

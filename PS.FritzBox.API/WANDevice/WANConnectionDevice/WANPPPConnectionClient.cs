@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using PS.FritzBox.API.Base;
 using PS.FritzBox.API.SOAP;
 
-namespace PS.FritzBox.API
+namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
 {
     /// <summary>
     /// class for getting informations about the wan ppp connection

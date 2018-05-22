@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PS.FritzBox.API
+namespace PS.FritzBox.API.WANDevice
 {
     public class OnlineMonitorInfo
     {
