@@ -127,5 +127,63 @@ namespace PS.FritzBox.API
             }
             return null;
         }
+
+        /// <summary>
+        /// Method to get the persistent data
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> GetPersistentDataAsync()
+        {
+            XDocument document = await this.InvokeAsync("GetPersistentData", null);
+            return document.Descendants("NewPersistentData").First().Value;
+        }
+
+        /// <summary>
+        /// Method to set persistent data
+        /// </summary>
+        /// <param name="data">the data</param>
+        public async Task SetPersistentDataAsync(string data)
+        {
+            await this.InvokeAsync("SetPersistentData", new SoapRequestParameter("NewPersistentData", data));
+        }
+
+        /// <summary>
+        /// Method to generate a new UUID
+        /// </summary>
+        /// <returns>the UUID</returns>
+        public async Task<string> GenerateUUIDAsync()
+        {
+            XDocument document = await this.InvokeAsync("X_GenerateUUID", null);
+            return document.Descendants("NewUUID").First().Value;
+        }
+
+        /// <summary>
+        /// Methos to start a configuration session
+        /// </summary>
+        public async Task StartConfigurationAsync(string sessionID)
+        {
+            await this.InvokeAsync("ConfigurationStarted", new SoapRequestParameter("NewSessionID", sessionID));
+        }
+
+        /// <summary>
+        /// Method to finish configuration 
+        /// </summary>
+        /// <returns>the new state</returns>
+        public async Task<string> FinishConfigurationAsync()
+        {
+            XDocument document = await this.InvokeAsync("ConfigurationFinished", null);
+            return document.Descendants("NewStatus").First().Value;
+        }
+
+        /// <summary>
+        /// Method to generate an url sid
+        /// its recuired for accessing phone book, call list, fax list...
+        /// </summary>
+        /// <returns>the new Url sid</returns>
+        public async Task<string> GenerateUrlSIDAsync()
+        {
+            XDocument document = await this.InvokeAsync("X_AVM-DE_CreateUrlSID", null);
+            return document.Descendants("NewX_AVM-DE_UrlSID").First().Value;
+        }
     }
 }
