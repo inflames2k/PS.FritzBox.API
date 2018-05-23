@@ -39,7 +39,7 @@ namespace PS.FritzBox.API.LANDevice
 
         /// <summary>
         /// Gets the request namespace
-        /// </summary>
+        /// </summary> 
         protected override string RequestNameSpace => "urn:dslforum-org:service:LANEthernetInterfaceConfig:1";
 
         /// <summary>
