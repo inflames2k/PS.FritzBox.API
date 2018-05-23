@@ -37,14 +37,7 @@ namespace PS.FritzBox.API.Samples
         {
             try
             {
-                LANConfigSecurityClient client = new LANConfigSecurityClient("https://fritz.box", 10000, "inflames2k", "ps1988@rie");
-                var info = await client.GetCurrentUserAsync();
-                string rights = string.Empty;
-                foreach(var right in info.Rights)
-                {
-                    rights += $"{right.Path}: {right.Access}{Environment.NewLine}";
-                }
-                MessageBox.Show($"Rights: {info.Rights.Count}{Environment.NewLine}{rights}");
+                
             }
             catch(Exception ex)
             {
