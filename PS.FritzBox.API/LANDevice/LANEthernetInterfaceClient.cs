@@ -43,12 +43,6 @@ namespace PS.FritzBox.API.LANDevice
         protected override string RequestNameSpace => "urn:dslforum-org:service:LANEthernetInterfaceConfig:1";
 
         /// <summary>
-        /// Methot to set the interface enabled
-        /// </summary>
-        /// <param name="enable"></param>
-        public void SetEnable(bool enable) => this.SetEnableAsync(enable).Wait();
-
-        /// <summary>
         /// async Method to set the interface enabled
         /// </summary>
         /// <param name="enable"></param>
@@ -57,12 +51,6 @@ namespace PS.FritzBox.API.LANDevice
             XDocument document = await this.InvokeAsync("SetEnable", new SoapRequestParameter("NewEnable", enable ? "1" : "0"));
         }
 
-        /// <summary>
-        /// Method to get the lan ethernet interface informations
-        /// </summary>
-        /// <returns></returns>
-        public LANEthernetInterfaceInfo GetInfo() => this.GetInfoAsync().Result;
-        
         /// <summary>
         /// async Method to get the lan ethernet interface informations
         /// </summary>
@@ -80,12 +68,6 @@ namespace PS.FritzBox.API.LANDevice
 
             return info;
         }
-
-        /// <summary>
-        /// Method to get the lan interface statistics
-        /// </summary>
-        /// <returns>the lan interface statistics</returns>
-        public LANStatistics GetStatistics() => this.GetStatisticsAsync().Result;
         
         /// <summary>
         /// async Method to get lan interface statistics

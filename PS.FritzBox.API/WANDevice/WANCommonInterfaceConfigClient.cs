@@ -43,13 +43,6 @@ namespace PS.FritzBox.API.WANDevice
         protected override string RequestNameSpace => "urn:dslforum-org:service:WANCommonInterfaceConfig:1";
 
         /// <summary>
-        /// Method to get the common link properties
-        /// </summary>
-        /// <remarks>Internal invokes GetCommonLinkProperties on device</remarks>
-        /// <returns>the common link properties</returns>
-        public CommonLinkProperties GetCommonLinkProperties() => this.GetCommonLinkPropertiesAsync().Result;
-        
-        /// <summary>
         /// async Method to get the common link properties
         /// </summary>
         /// <remarks>Internal invokes GetCommonLinkProperties on device</remarks>
@@ -68,13 +61,6 @@ namespace PS.FritzBox.API.WANDevice
         }
 
         /// <summary>
-        /// Method to get the total bytes sent
-        /// </summary>
-        /// <remarks>Internal invokes GetTotalBytesSent on device</remarks>
-        /// <returns>the total bytes sent</returns>
-        public UInt32 GetTotalBytesSent() => this.GetTotalBytesSentAsync().Result;
-
-        /// <summary>
         /// async Method to get the total bytes sent
         /// </summary>
         /// <remarks>Internal invokes GetTotalBytesSent on device</remarks>
@@ -84,13 +70,6 @@ namespace PS.FritzBox.API.WANDevice
             XDocument document = await this.InvokeAsync("GetTotalBytesSent", null);
             return Convert.ToUInt32(document.Descendants("NewTotalBytesSent").First().Value);
         }
-
-        /// <summary>
-        /// Method to get the total bytes received
-        /// </summary>
-        /// <remarks>Internal invokes GetTotalBytesReceived on device</remarks>
-        /// <returns>the total bytes received</returns>
-        public UInt32 GetTotalBytesReceived() => this.GetTotalBytesReceivedAsync().Result;
         
         /// <summary>
         /// async Method to get the total bytes received
@@ -102,13 +81,6 @@ namespace PS.FritzBox.API.WANDevice
             XDocument document = await this.InvokeAsync("GetTotalBytesReceived", null);
             return Convert.ToUInt32(document.Descendants("NewTotalBytesReceived").First().Value);
         }
-
-        /// <summary>
-        /// Method to get the total packets sent
-        /// </summary>
-        /// <remarks>Internal invokes GetTotalPacketsSent on device</remarks>
-        /// <returns>the total packets sent</returns>
-        public UInt32 GetTotalPacketsSent() => this.GetTotalPacketsSentAsync().Result;
         
         /// <summary>
         /// async Method to get the total packets sent
@@ -121,13 +93,6 @@ namespace PS.FritzBox.API.WANDevice
             return Convert.ToUInt32(document.Descendants("NewTotalPacketsSent").First().Value);
         }
 
-        /// <summary>
-        /// Method to get the total packets received
-        /// </summary>
-        /// <remarks>Internal invokes GetTotalPacketsReceived on device</remarks>
-        /// <returns>the total packets received</returns>
-        public UInt32 GetTotalPacketsReceived() => this.GetTotalPacketsSentAsync().Result;
-       
         /// <summary>
         /// async Method to get the total packets received
         /// </summary>
@@ -144,26 +109,11 @@ namespace PS.FritzBox.API.WANDevice
         /// </summary>
         /// <remarks>Internal invokes X_AVM-DE_SetWANAccessType on device</remarks>
         /// <param name="accessType">the new wan access type</param>
-        public void SetWANAccessType(string accessType) => this.SetWANAccessTypeAsync(accessType).Wait();
-
-        /// <summary>
-        /// async Method to set the wan access type
-        /// </summary>
-        /// <remarks>Internal invokes X_AVM-DE_SetWANAccessType on device</remarks>
-        /// <param name="accessType">the new wan access type</param>
         public async Task SetWANAccessTypeAsync(string accessType)
         {
             XDocument document = await this.InvokeAsync("X_AVM-DE_SetWANAccessType", new SoapRequestParameter("NewAccessType", accessType));
         }
 
-        /// <summary>
-        /// Method to get the online monitor
-        /// </summary>
-        /// <remarks>Internal invokes X_AVM-DE_GetOnlineMonitor on device</remarks>
-        /// <param name="groupIndex">the group index to request the online monitor for</param>
-        /// <returns>the online monitor info</returns>
-        public OnlineMonitorInfo GetOnlineMonitor(UInt32 groupIndex) => this.GetOnlineMonitorAsync(groupIndex).Result;
-        
         /// <summary>
         /// Method to get the online monitor
         /// </summary>

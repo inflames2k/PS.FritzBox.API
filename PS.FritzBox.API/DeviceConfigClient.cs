@@ -56,24 +56,12 @@ namespace PS.FritzBox.API
         }
 
         /// <summary>
-        /// Method to infoke a reboot
-        /// </summary>
-        public void Reboot() => this.RebootAsync().Wait();
-        
-        /// <summary>
         /// async method to invoke a reboot
         /// </summary>
         public async Task RebootAsync()
         {
             XDocument document = await this.InvokeAsync("Reboot", null);
         }
-
-        /// <summary>
-        /// Method to get the config file
-        /// </summary>
-        /// <param name="password">the password to encrypt the config file</param>
-        /// <returns>the url to the config file</returns>
-        public string GetConfigFile(string password) => this.GetConfigFileAsync(password).Result;
 
         /// <summary>
         /// async method to get the config file
@@ -94,13 +82,6 @@ namespace PS.FritzBox.API
         }
 
         /// <summary>
-        /// Method to download the config file and save it to given path
-        /// </summary>
-        /// <param name="password">the password for the config file</param>
-        /// <param name="path">the path to save the file to</param>
-        public void DownloadConfigFile(string password, string path) => this.DownloadConfigFileAsync(password, path).Wait();
-
-        /// <summary>
         /// async method to download the config file and save it to given path
         /// </summary>
         /// <param name="password">the password for the config file</param>
@@ -114,13 +95,6 @@ namespace PS.FritzBox.API
             File.WriteAllBytes(path, fileContent);
         }
 
-        /// <summary>
-        /// method to set the config file
-        /// </summary>
-        /// <param name="password">the password to decrypt the config file</param>
-        /// <param name="url">the url to the config file</param>
-        public void SetConfigFile(string password, string url) => this.SetConfigFileAsync(password, url).Wait();
-        
         /// <summary>
         /// async method to set the config file
         /// </summary>

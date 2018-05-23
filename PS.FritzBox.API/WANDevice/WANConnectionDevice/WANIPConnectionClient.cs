@@ -35,18 +35,12 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
         /// <summary>
         /// Gets the control url
         /// </summary>
-        protected override string ControlUrl => "/tr064/upnp/control/WANIPConn1";
+        protected override string ControlUrl => "/tr064/upnp/control/wanipconnection1";
 
         /// <summary>
         /// Gets the request namespace
         /// </summary>
-        protected override string RequestNameSpace => "urn:schemas-upnp-org:service:WANIPConnection:1";
-
-        /// <summary>
-        /// Method to get the connection info
-        /// </summary>
-        /// <returns></returns>
-        public WANIPConnectionInfo GetInfo() => this.GetInfoAsync().Result;
+        protected override string RequestNameSpace => "urn:dslforum-org:service:WANIPConnection:1";
 
         /// <summary>
         /// async Method to get the connection info
@@ -84,12 +78,6 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
         /// Method to get the connection type info
         /// </summary>
         /// <returns>the connection type info</returns>
-        public ConnectionTypeInfo GetConnectionTypeInfo() => this.GetConnectionTypeInfoAsync().Result;        
-
-        /// <summary>
-        /// Method to get the connection type info
-        /// </summary>
-        /// <returns>the connection type info</returns>
         public async Task<ConnectionTypeInfo> GetConnectionTypeInfoAsync()
         {
             XDocument document = await this.InvokeAsync("GetConnectionTypeInfo", null);
@@ -98,12 +86,6 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
             info.PossibleConnectionTypes = (PossibleConnectionTypes)Enum.Parse(typeof(PossibleConnectionTypes), document.Descendants("NewPossibleConnectionTypes").First().Value);
             return info;
         }
-
-        /// <summary>
-        /// Method to set the connection type
-        /// </summary>
-        /// <param name="connectionType">the connection type</param>
-        public void SetConnectionType(string connectionType) => this.SetConnectionTypeAsync(connectionType).Wait();        
 
         /// <summary>
         /// Method to set the connection type
@@ -118,12 +100,6 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
         /// <summary>
         /// Method to get the connection state info
         /// </summary>
-        /// <returns></returns>
-        public ConnectionStatusInfo GetStatusInfo() => this.GetStatusInfoAsync().Result;
-        
-        /// <summary>
-        /// Method to get the connection state info
-        /// </summary>
         /// <returns>the state info</returns>
         public async Task<ConnectionStatusInfo> GetStatusInfoAsync()
         {
@@ -135,12 +111,6 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
 
             return info;
         }
-
-        /// <summary>
-        /// Method to get the nat rsip status
-        /// </summary>
-        /// <returns>the nat rsip status</returns>
-        public NATRSIPStatus GetNATRSIPStatus() => this.GetNATRSIPStatusAsync().Result;
 
         /// <summary>
         /// Method to get the nat rsip status
@@ -161,12 +131,6 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
         /// Method to set the connection trigger
         /// </summary>
         /// <param name="trigger">the new connection trigger</param>
-        public void SetConnectionTrigger(string trigger) => this.SetConnectionTriggerAsync(trigger).Wait();
-
-        /// <summary>
-        /// Method to set the connection trigger
-        /// </summary>
-        /// <param name="trigger">the new connection trigger</param>
         public async Task SetConnectionTriggerAsync(string trigger)
         {
             var parameter = new SoapRequestParameter("NewConnectionTrigger", trigger);
@@ -176,20 +140,10 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
         /// <summary>
         /// Method to force termination
         /// </summary>
-        public void ForceTermination() => this.ForceTerminationAsync().Wait();
-
-        /// <summary>
-        /// Method to force termination
-        /// </summary>
         public async Task ForceTerminationAsync()
         {
             await this.InvokeAsync("ForceTermination", null);
         }
-
-        /// <summary>
-        /// Method to request a connection
-        /// </summary>
-        public void RequestConnection() => this.RequestConnectionAsync().Wait();
 
         /// <summary>
         /// Method to request a connection
@@ -203,23 +157,11 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
         /// Method to get the dns servers
         /// </summary>
         /// <returns>the dns servers</returns>
-        public string GetDNSServers() => this.GetDNSServersAsync().Result;
-
-        /// <summary>
-        /// Method to get the dns servers
-        /// </summary>
-        /// <returns>the dns servers</returns>
         public async Task<string> GetDNSServersAsync()
         {
             XDocument document = await this.InvokeAsync("X_GetDNSServers", null);
             return document.Descendants("NewDNSServers").First().Value;
         }
-
-        /// <summary>
-        /// Method ot set the dns servers
-        /// </summary>
-        /// <param name="dnsServers">the dns servers</param>
-        public void SetDNSServers(string dnsServers) => this.SetDNSServersAsync(dnsServers).Wait();
 
         /// <summary>
         /// Method to set the dns servers
@@ -235,23 +177,11 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
         /// Method to get the number of port mappings
         /// </summary>
         /// <returns></returns>
-        public UInt16 GetPortMappingNumberOfEntries() => this.GetPortMappingNumberOfEntriesAsync().Result;
-
-        /// <summary>
-        /// Method to get the number of port mappings
-        /// </summary>
-        /// <returns></returns>
         public async Task<UInt16> GetPortMappingNumberOfEntriesAsync()
         {
             XDocument document = await this.InvokeAsync("GetPortMappingNumberOfEntries", null);
             return Convert.ToUInt16(document.Descendants("NewPortMappingNumberOfEntries").First().Value);
         }
-
-        /// <summary>
-        /// Method to get the external ip address
-        /// </summary>
-        /// <returns>the external ip address</returns>
-        public string GetExternalIPAddress() => this.GetExternalIPAddressAsync().Result;
 
         /// <summary>
         /// Method to get the external ip address
@@ -267,23 +197,11 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
         /// Method to set the route protocol
         /// </summary>
         /// <param name="routeProtocol">the new route protocol</param>
-        public void SetRouteProtocolRx(string routeProtocol) => this.SetRouteProtocolRxAsync(routeProtocol).Wait();
-
-        /// <summary>
-        /// Method to set the route protocol
-        /// </summary>
-        /// <param name="routeProtocol">the new route protocol</param>
         public async Task SetRouteProtocolRxAsync(string routeProtocol)
         {
             SoapRequestParameter parameter = new SoapRequestParameter("NewRouteProtocolRX", routeProtocol);
             await this.InvokeAsync("SetRouteProtocolRx", parameter);
         }
-
-        /// <summary>
-        /// Method to set the idle disconnect time
-        /// </summary>
-        /// <param name="idleDisconnectTime">the idle disconnect time</param>
-        public void SetIdleDisconnectTime(UInt32 idleDisconnectTime) => this.SetIdleDisconnectTimeAsync(idleDisconnectTime).Wait();
 
         /// <summary>
         /// Method to set the idle disconnect time

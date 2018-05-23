@@ -47,12 +47,6 @@ namespace PS.FritzBox.API
         protected override string RequestNameSpace => "urn:dslforum-org:service:DeviceInfo:1";  
 
         /// <summary>
-        /// Method to get the device info
-        /// </summary>
-        /// <returns>the device info</returns>
-        public DeviceInfo GetDeviceInfo() => this.GetDeviceInfoAsync().Result;        
-
-        /// <summary>
         /// async Method to get the device info
         /// </summary>
         /// <returns>the device info</returns>
@@ -76,12 +70,6 @@ namespace PS.FritzBox.API
 
             return info;
         }
-
-        /// <summary>
-        /// Method to get the device log
-        /// </summary>
-        /// <returns>the device log</returns>
-        public IEnumerable<string> GetDeviceLog() => this.GetDeviceLogAsync().Result;
         
         /// <summary>
         /// async Method to get the device log 
@@ -93,12 +81,6 @@ namespace PS.FritzBox.API
             return document.Descendants("NewDeviceLog").First().Value.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).AsEnumerable();
         }
 
-        /// <summary>
-        /// Method to get the security port
-        /// </summary>
-        /// <returns>the security port</returns>
-        public UInt16 GetSecurityPort() => this.GetSecurityPortAsync().Result;
-        
         /// <summary>
         /// async Method to get the security port of the device
         /// </summary>

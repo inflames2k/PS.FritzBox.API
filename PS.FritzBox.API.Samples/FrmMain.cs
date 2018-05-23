@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PS.FritzBox.API.WANDevice.WANConnectionDevice;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,6 +22,7 @@ namespace PS.FritzBox.API.Samples
             this.BindData(this.txtUserName, "Text", this.ConnectionSettings, "UserName");
 
             this.deviceInfoControl1.Settings = this.ConnectionSettings;
+
         }
 
         public FritzSettings ConnectionSettings { get; set; } = new FritzSettings();
@@ -29,6 +31,26 @@ namespace PS.FritzBox.API.Samples
         {
             target.DataBindings.Clear();
             target.DataBindings.Add(property, source, dataMember);
+        }
+
+        protected override async void OnShown(EventArgs e)
+        {
+            try
+            {
+                LANConfigSecurityClient client = new LANConfigSecurityClient("https://fritz.box", 10000, "inflames2k", "ps1988@rie");
+                var info = await client.GetCurrentUserAsync();
+                string rights = string.Empty;
+                foreach(var right in info.Rights)
+                {
+                    rights += $"{right.Path}: {right.Access}{Environment.NewLine}";
+                }
+                MessageBox.Show($"Rights: {info.Rights.Count}{Environment.NewLine}{rights}");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            base.OnShown(e);
         }
     }
 }
