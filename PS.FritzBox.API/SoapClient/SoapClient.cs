@@ -31,19 +31,21 @@ namespace PS.FritzBox.API.SOAP
         /// <returns></returns>
         private string CreateEnvelope(SoapRequestParameters parameters)
         {
-            string envelope = @"<?xml version='1.0' encoding='UTF-8'?> 
-                                <soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-                                xmlns:xsd='http://www.w3.org/2001/XMLSchema'
-                                xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/'>
-                                <soap:Body>";
 
-            envelope += $" <{parameters.Action} xmlns='{parameters.RequestNameSpace}'>";
+            StringBuilder sb = new StringBuilder();
+            sb.Append(@"<?xml version='1.0' encoding='UTF-8'?> 
+                      <soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                      xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+                      xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/'>
+                      <soap:Body>");
+
+            sb.Append($"<{parameters.Action} xmlns='{parameters.RequestNameSpace}'>";
             foreach (SoapRequestParameter parameter in parameters.Parameters)
-                envelope += $"<{parameter.ParameterName}>{parameter.ParameterValue}</{parameter.ParameterName}>";
-            envelope += $"</{parameters.Action}>";
-            envelope += @"</soap:Body></soap:Envelope>";
+                sb.Append($"<{parameter.ParameterName}>{parameter.ParameterValue}</{parameter.ParameterName}>");
+            sb.Append($"</{parameters.Action}>");
+            sb.Append(@"</soap:Body></soap:Envelope>");
 
-            return envelope;
+            return sb.ToString();
         }
 
 
