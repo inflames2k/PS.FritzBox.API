@@ -21,39 +21,19 @@ namespace PS.FritzBox.API.LANDevice
         public bool DHCPRelay { get; internal set; }
 
         /// <summary>
-        /// Gets the min address
+        /// Gets the address range
         /// </summary>
-        public IPAddress MinAddress { get; internal set; }
-
-        /// <summary>
-        /// Gets the max address
-        /// </summary>
-        public IPAddress MaxAddress { get; internal set; }
+        public LANHostConfigAddressRange AddressRange { get; internal set; } = new LANHostConfigAddressRange();
 
         /// <summary>
         /// Gets the reserved addresses
         /// </summary>
-        public IEnumerable<IPAddress> ReservedAddresses { get; internal set; }
+        public List<IPAddress> ReservedAddresses { get; internal set; } = new List<IPAddress>();
 
         /// <summary>
         /// Gets if the dhcp server is enabled
         /// </summary>
         public bool DHCPServerEnable { get; internal set; }
-
-        /// <summary>
-        /// Gets if the interface is enabled
-        /// </summary>
-        public bool Enable { get; internal set; }
-
-        /// <summary>
-        /// Gets the interfaceip address
-        /// </summary>
-        public IPAddress IPAddress { get; internal set; }
-
-        /// <summary>
-        /// Gets the ip addressing type
-        /// </summary>
-        public string IPAddressingType { get; internal set; }
 
         /// <summary>
         /// Gets or sets the subnet mask
@@ -63,7 +43,7 @@ namespace PS.FritzBox.API.LANDevice
         /// <summary>
         /// Gets the dns servers
         /// </summary>
-        public string DNSServers { get; internal set; }
+        public List<IPAddress> DNSServers { get; internal set; } = new List<IPAddress>();
 
         /// <summary>
         /// Gets the domain name
@@ -73,11 +53,6 @@ namespace PS.FritzBox.API.LANDevice
         /// <summary>
         /// Gets the ip routers
         /// </summary>
-        public string IPRouters { get; internal set; }
-
-        /// <summary>
-        /// Gets the number of ip interfaces
-        /// </summary>
-        public UInt16 IPInterfaceNumberOfEntries { get; internal set; }
+        public List<IPAddress> IPRouters { get; internal set; } = new List<IPAddress>();
     }
 }
