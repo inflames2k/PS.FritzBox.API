@@ -4,6 +4,8 @@ using System.Xml.Linq;
 using System.Threading.Tasks;
 using PS.FritzBox.API.Base;
 using PS.FritzBox.API.SOAP;
+using System.Net;
+using System.Collections.Generic;
 
 namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
 {
@@ -67,7 +69,7 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
             info.NATRSIPStatus.RSIPAvailable = document.Descendants("NewRSIPAvailable").First().Value == "1";
             info.NATRSIPStatus.NATEnabled = document.Descendants("NewNATEnabled").First().Value == "1";
 
-            info.ExternalIPAddress = document.Descendants("NewExternalIPAddress").First().Value;
+            info.ExternalIPAddress = IPAddress.TryParse(document.Descendants("NewExternalIPAddress").First().Value, out IPAddress external) ? external : IPAddress.None;
             info.IdleDisconnectTime = Convert.ToUInt32(document.Descendants("NewIdleDisconnectTime").First().Value);
             info.Name = document.Descendants("NewName").First().Value;
             info.TransportType = document.Descendants("NewTransportType").First().Value;
@@ -75,7 +77,7 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
 
             info.PPPoEACName = document.Descendants("NewPPPoEACName").First().Value;
             info.PPPoEServiceName = document.Descendants("NewPPPoEServiceName").First().Value;
-            info.RemoteIPAddress = document.Descendants("NewRemoteIPAddress").First().Value;
+            info.RemoteIPAddress = IPAddress.TryParse(document.Descendants("NewRemoteIPAddress").First().Value, out IPAddress remote) ? remote : IPAddress.None;
             info.RouteProtocolRx = document.Descendants("NewRouteProtocolRx").First().Value;
 
             return info;
@@ -226,6 +228,164 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
             bitRates.DownstreamMaxBitRate = Convert.ToUInt32(document.Descendants("NewDownstreamMaxBitRate").First().Value);
             bitRates.UpstreamMaxBitRate = Convert.ToUInt32(document.Descendants("NewUpstreamMaxBitRate").First().Value);
             return bitRates;
+        }
+
+        /// <summary>
+        /// Method to get the number of port mappings
+        /// </summary>
+        /// <returns></returns>
+        public async Task<UInt16> GetPortMappingNumberOfEntriesAsync()
+        {
+            XDocument document = await this.InvokeAsync("GetPortMappingNumberOfEntries", null);
+            return Convert.ToUInt16(document.Descendants("NewPortMappingNumberOfEntries").First().Value);
+        }
+
+        /// <summary>
+        /// Method to set the connection trigger
+        /// </summary>
+        /// <param name="trigger">the new connection trigger</param>
+        public async Task SetConnectionTriggerAsync(string trigger)
+        {
+            var parameter = new SoapRequestParameter("NewConnectionTrigger", trigger);
+            await this.InvokeAsync("SetConnectionTrigger", parameter);
+        }
+
+        /// <summary>
+        /// Method to get a generic port mapping entry
+        /// </summary>
+        /// <param name="mappingIndex">the mapping index</param>
+        /// <returns>the generic port mapping entry</returns>
+        public async Task<PortMappingEntry> GetGenericPortMappingEntryAsync(int mappingIndex)
+        {
+            XDocument document = await this.InvokeAsync("GetGenericPortMappingEntry", new SoapRequestParameter("NewPortMappingIndex", mappingIndex));
+
+            PortMappingEntry entry = new PortMappingEntry();
+            entry.Description = document.Descendants("NewPortMappingDescription").First().Value;
+            entry.Enabled = document.Descendants("NewENabled").First().Value == "1";
+            entry.InternalHost = IPAddress.TryParse(document.Descendants("NewInternalClient").First().Value, out IPAddress internalHost) ? internalHost : IPAddress.None;
+            entry.InternalPort = Convert.ToUInt16(document.Descendants("NewInternalPort").First().Value);
+            entry.LeaseDuration = Convert.ToUInt32(document.Descendants("NewLeaseDuration").First().Value);
+            entry.PortMappingProtocol = (PortMappingProtocol)Enum.Parse(typeof(PortMappingProtocol), document.Descendants("NewProtocol").First().Value);
+            entry.RemoteHost = IPAddress.TryParse(document.Descendants("NewRemoteHost").First().Value, out IPAddress remoteHost) ? remoteHost : IPAddress.None;
+            entry.ExternalPort = Convert.ToUInt16(document.Descendants("NewExternalPort").First().Value);
+
+            return entry;
+        }
+
+        /// <summary>
+        /// Method to get a specific port mapping entry
+        /// </summary>
+        /// <param name="remoteHost">the remote host</param>
+        /// <param name="externalPort">the remote port</param>
+        /// <param name="protocol">the protocol</param>
+        /// <returns>the specific port mapping entry</returns>
+        public async Task<PortMappingEntry> GetSpecificPortMappingEntryAsync(IPAddress remoteHost, UInt16 externalPort, PortMappingProtocol protocol)
+        {
+            List<SoapRequestParameter> parameters = new List<SoapRequestParameter>()
+            {
+                new SoapRequestParameter("NewRemoteHost", remoteHost.ToString()),
+                new SoapRequestParameter("NewExternalPort", externalPort),
+                new SoapRequestParameter("NewProtocol", protocol.ToString())
+            };
+
+            XDocument document = await this.InvokeAsync("GetSpecificPortMappingEntry", parameters.ToArray());
+
+            PortMappingEntry entry = new PortMappingEntry()
+            {
+                RemoteHost = remoteHost,
+                ExternalPort = externalPort,
+                PortMappingProtocol = protocol
+            };
+
+            entry.Description = document.Descendants("NewPortMappingDescription").First().Value;
+            entry.Enabled = document.Descendants("NewENabled").First().Value == "1";
+            entry.InternalHost = IPAddress.TryParse(document.Descendants("NewInternalClient").First().Value, out IPAddress internalHost) ? internalHost : IPAddress.None;
+            entry.InternalPort = Convert.ToUInt16(document.Descendants("NewInternalPort").First().Value);
+            entry.LeaseDuration = Convert.ToUInt32(document.Descendants("NewLeaseDuration").First().Value);
+
+            return entry;
+        }
+
+        /// <summary>
+        /// Method to add a port mapping
+        /// </summary>
+        /// <param name="entry">the port mapping entry</param>
+        /// <returns></returns>
+        public async Task AddPortMappingAsync(PortMappingEntry entry)
+        {
+            List<SoapRequestParameter> parameters = new List<SoapRequestParameter>()
+            {
+                new SoapRequestParameter("NewRemoteHost", entry.RemoteHost.ToString()),
+                new SoapRequestParameter("NewExternalPort", entry.ExternalPort),
+                new SoapRequestParameter("NewProtocol", entry.PortMappingProtocol.ToString()),
+                new SoapRequestParameter("NewInternalPort", entry.InternalPort),
+                new SoapRequestParameter("NewInternalClient", entry.InternalHost),
+                new SoapRequestParameter("NewEnabled", entry.Enabled ? 1 : 0),
+                new SoapRequestParameter("NewPortMappingDescription", entry.Description),
+                new SoapRequestParameter("NewLeaseDuration", entry.LeaseDuration)
+            };
+
+            await this.InvokeAsync("AddPortMapping", parameters.ToArray());
+        }
+
+        /// <summary>
+        /// Method to delete a port mapping
+        /// </summary>
+        /// <param name="remoteHost">the remote host</param>
+        /// <param name="externalPort">the external port</param>
+        /// <param name="protocol">the protocol</param>
+        /// <returns></returns>
+        public async Task DeletePortMappingAsync(IPAddress remoteHost, UInt16 externalPort, PortMappingProtocol protocol)
+        {
+            List<SoapRequestParameter> parameters = new List<SoapRequestParameter>()
+            {
+                new SoapRequestParameter("NewRemoteHost", remoteHost.ToString()),
+                new SoapRequestParameter("NewExternalPort", externalPort),
+                new SoapRequestParameter("NewProtocol", protocol.ToString())
+            };
+
+            await this.InvokeAsync("DeletePortMapping", parameters.ToArray());
+        }
+
+
+        /// <summary>
+        /// Method to set the idle disconnect time
+        /// </summary>
+        /// <param name="idleDisconnectTime">the disconnect time</param>
+        public async Task SetIdleDisconnectTimeAsync(UInt32 idleDisconnectTime)
+        {
+            SoapRequestParameter parameter = new SoapRequestParameter("NewIdleDisconnectTime", idleDisconnectTime);
+            await this.InvokeAsync("SetIdleDisconnectTime", parameter);
+        }
+
+        /// <summary>
+        /// Method to get the auto disconnect prevention settings
+        /// </summary>
+        /// <returns>the auto disconnect prevention settings</returns>
+        public async Task<AutoDisconnectTimeSpan> GetAutoDisconnectTimeSpanAsync()
+        {
+            XDocument document = await this.InvokeAsync("X_AVM_DE_GetAutoDisconnectTimeSpan", null);
+            AutoDisconnectTimeSpan span = new AutoDisconnectTimeSpan();
+            span.PreventionEnable = document.Descendants("NewX_AVM-DE_DisconnectPreventionEnable").First().Value == "1";
+            span.PreventionHour = Convert.ToUInt16(document.Descendants("NewX_AVM-DE_DisconnectPreventionHour").First().Value);
+
+            return span;
+        }
+
+        /// <summary>
+        /// Method to set the auto disconnect prevention settings
+        /// </summary>
+        /// <param name="settings">the prevention settings</param>
+        /// <returns></returns>
+        public async Task SetAutoDisconnectTimeSpanAsync(AutoDisconnectTimeSpan settings)
+        {
+            List<SoapRequestParameter> parameters = new List<SoapRequestParameter>()
+            {
+                new SoapRequestParameter("NewX_AVM-DE_DisconnectPreventionEnable", settings.PreventionEnable ? 1 : 0),
+                new SoapRequestParameter("NewX_AVM-DE_DisconnectPreventionHour", settings.PreventionHour)
+            };
+
+            await this.InvokeAsync("X_AVM_DE_SetAutoDisconnectTimeSpan", parameters.ToArray());
         }
     }
 }

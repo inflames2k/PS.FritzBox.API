@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
 {
@@ -47,11 +48,11 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
         /// <summary>
         /// Gets the remote ip address
         /// </summary>
-        public string RemoteIPAddress { get; internal set; }
+        public IPAddress RemoteIPAddress { get; internal set; }
         /// <summary>
         /// Gets the external ip address
         /// </summary>
-        public string ExternalIPAddress { get; internal set; }
+        public IPAddress ExternalIPAddress { get; internal set; }
         /// <summary>
         /// Gets the PPPoEACName
         /// </summary>
