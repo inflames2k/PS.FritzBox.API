@@ -1,7 +1,9 @@
 ﻿using PS.FritzBox.API.Base;
 using PS.FritzBox.API.SOAP;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -213,10 +215,101 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
             await this.InvokeAsync("SetIdleDisconnectTime", parameter);
         }
 
-        // GetGenericPortMappingEntry
-        // GetSpecificPortMappingEntry
-        // AddPortMapping
-        // DeletePortMapping
+        /// <summary>
+        /// Method to get a generic port mapping entry
+        /// </summary>
+        /// <param name="mappingIndex">the mapping index</param>
+        /// <returns>the generic port mapping entry</returns>
+        public async Task<PortMappingEntry> GetGenericPortMappingEntryAsync(int mappingIndex)
+        {
+            XDocument document = await this.InvokeAsync("GetGenericPortMappingEntry", new SoapRequestParameter("NewPortMappingIndex", mappingIndex));
 
+            PortMappingEntry entry = new PortMappingEntry();
+            entry.Description = document.Descendants("NewPortMappingDescription").First().Value;
+            entry.Enabled = document.Descendants("NewENabled").First().Value == "1";
+            entry.InternalHost = IPAddress.TryParse(document.Descendants("NewInternalClient").First().Value, out IPAddress internalHost) ? internalHost : IPAddress.None;
+            entry.InternalPort = Convert.ToUInt16(document.Descendants("NewInternalPort").First().Value);
+            entry.LeaseDuration = Convert.ToUInt32(document.Descendants("NewLeaseDuration").First().Value);
+            entry.PortMappingProtocol = (PortMappingProtocol)Enum.Parse(typeof(PortMappingProtocol), document.Descendants("NewProtocol").First().Value);
+            entry.RemoteHost = IPAddress.TryParse(document.Descendants("NewRemoteHost").First().Value, out IPAddress remoteHost) ? remoteHost : IPAddress.None;
+            entry.ExternalPort = Convert.ToUInt16(document.Descendants("NewExternalPort").First().Value);
+
+            return entry;
+        }
+
+        /// <summary>
+        /// Method to get a specific port mapping entry
+        /// </summary>
+        /// <param name="remoteHost">the remote host</param>
+        /// <param name="externalPort">the remote port</param>
+        /// <param name="protocol">the protocol</param>
+        /// <returns>the specific port mapping entry</returns>
+        public async Task<PortMappingEntry> GetSpecificPortMappingEntryAsync(IPAddress remoteHost, UInt16 externalPort, PortMappingProtocol protocol)
+        {
+            List<SoapRequestParameter> parameters = new List<SoapRequestParameter>()
+            {
+                new SoapRequestParameter("NewRemoteHost", remoteHost.ToString()),
+                new SoapRequestParameter("NewExternalPort", externalPort),
+                new SoapRequestParameter("NewProtocol", protocol.ToString())
+            };
+
+            XDocument document = await this.InvokeAsync("GetSpecificPortMappingEntry", parameters.ToArray());
+
+            PortMappingEntry entry = new PortMappingEntry()
+            {
+                RemoteHost = remoteHost,
+                ExternalPort = externalPort,
+                PortMappingProtocol = protocol
+            };
+
+            entry.Description = document.Descendants("NewPortMappingDescription").First().Value;
+            entry.Enabled = document.Descendants("NewENabled").First().Value == "1";
+            entry.InternalHost = IPAddress.TryParse(document.Descendants("NewInternalClient").First().Value, out IPAddress internalHost) ? internalHost : IPAddress.None;
+            entry.InternalPort = Convert.ToUInt16(document.Descendants("NewInternalPort").First().Value);
+            entry.LeaseDuration = Convert.ToUInt32(document.Descendants("NewLeaseDuration").First().Value);
+
+            return entry;
+        }
+
+        /// <summary>
+        /// Method to add a port mapping
+        /// </summary>
+        /// <param name="entry">the port mapping entry</param>
+        /// <returns></returns>
+        public async Task AddPortMappingAsync(PortMappingEntry entry)
+        {
+            List<SoapRequestParameter> parameters = new List<SoapRequestParameter>()
+            {
+                new SoapRequestParameter("NewRemoteHost", entry.RemoteHost.ToString()),
+                new SoapRequestParameter("NewExternalPort", entry.ExternalPort),
+                new SoapRequestParameter("NewProtocol", entry.PortMappingProtocol.ToString()),
+                new SoapRequestParameter("NewInternalPort", entry.InternalPort),
+                new SoapRequestParameter("NewInternalClient", entry.InternalHost),
+                new SoapRequestParameter("NewEnabled", entry.Enabled ? 1 : 0),
+                new SoapRequestParameter("NewPortMappingDescription", entry.Description),
+                new SoapRequestParameter("NewLeaseDuration", entry.LeaseDuration)
+            };
+
+            await this.InvokeAsync("AddPortMapping", parameters.ToArray());
+        }
+
+        /// <summary>
+        /// Method to delete a port mapping
+        /// </summary>
+        /// <param name="remoteHost">the remote host</param>
+        /// <param name="externalPort">the external port</param>
+        /// <param name="protocol">the protocol</param>
+        /// <returns></returns>
+        public async Task DeletePortMappingAsync(IPAddress remoteHost, UInt16 externalPort, PortMappingProtocol protocol)
+        {
+            List<SoapRequestParameter> parameters = new List<SoapRequestParameter>()
+            {
+                new SoapRequestParameter("NewRemoteHost", remoteHost.ToString()),
+                new SoapRequestParameter("NewExternalPort", externalPort),
+                new SoapRequestParameter("NewProtocol", protocol.ToString())
+            };
+
+            await this.InvokeAsync("DeletePortMapping", parameters.ToArray());
+        }
     }
 }
