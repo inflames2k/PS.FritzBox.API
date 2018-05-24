@@ -39,7 +39,7 @@ namespace PS.FritzBox.API.SOAP
                       xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/'>
                       <soap:Body>");
 
-            sb.Append($"<{parameters.Action} xmlns='{parameters.RequestNameSpace}'>";
+            sb.Append($"<{parameters.Action} xmlns='{parameters.RequestNameSpace}'>");
             foreach (SoapRequestParameter parameter in parameters.Parameters)
                 sb.Append($"<{parameter.ParameterName}>{parameter.ParameterValue}</{parameter.ParameterName}>");
             sb.Append($"</{parameters.Action}>");
