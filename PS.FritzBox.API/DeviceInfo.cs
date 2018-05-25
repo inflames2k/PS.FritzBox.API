@@ -55,6 +55,6 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Gets the device log
         /// </summary>
-        public IEnumerable<string> DeviceLog { get; internal set; }
+        public List<string> DeviceLog { get; internal set; }
     }
 }

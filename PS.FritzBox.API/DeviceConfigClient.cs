@@ -41,12 +41,7 @@ namespace PS.FritzBox.API
         /// Gets the request namespace
         /// </summary>
         protected override string RequestNameSpace => "urn:dslforum-org:service:DeviceConfig:1";
-               
-        /// <summary>
-        /// Method to infoke a factory reset
-        /// </summary>
-        public void FactoryReset() => this.FactoryResetAsync().Wait();
-        
+                      
         /// <summary>
         /// async method to invoke a factory reset
         /// </summary>

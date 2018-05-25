@@ -128,27 +128,27 @@ namespace PS.FritzBox.API.WANDevice
             info.SyncGroupMode = document.Descendants("NewSyncGroupMode").First().Value;
             info.SyncGroupName = document.Descendants("NewSyncGroupName").First().Value;
             info.TotalNumberSyncGroups = Convert.ToUInt32(document.Descendants("NewTotalNumberSyncGroups").First().Value);
-            info.DownStream = this.UpDownValuesToEnumerable(document.Descendants("Newds_current_bps").First().Value);
-            info.DownStream_Media = this.UpDownValuesToEnumerable(document.Descendants("Newmc_current_bps").First().Value);
+            info.DownStream = this.UpDownValuesToList(document.Descendants("Newds_current_bps").First().Value);
+            info.DownStream_Media = this.UpDownValuesToList(document.Descendants("Newmc_current_bps").First().Value);
             info.MaxUpStream = Convert.ToUInt32(document.Descendants("Newmax_us").First().Value);
             info.MaxDownStream = Convert.ToUInt32(document.Descendants("Newmax_ds").First().Value);
-            info.UpStream = this.UpDownValuesToEnumerable(document.Descendants("Newus_current_bps").First().Value);
-            info.UpstreamDefaultPrio = this.UpDownValuesToEnumerable(document.Descendants("Newprio_default_bps").First().Value);
-            info.UpstreamHighPrio = this.UpDownValuesToEnumerable(document.Descendants("Newprio_high_bps").First().Value);
-            info.UpstreamLowPrio = this.UpDownValuesToEnumerable(document.Descendants("Newprio_low_bps").First().Value);
-            info.UpstreamRealtimePrio = this.UpDownValuesToEnumerable(document.Descendants("Newprio_realtime_bps").First().Value);
+            info.UpStream = this.UpDownValuesToList(document.Descendants("Newus_current_bps").First().Value);
+            info.UpstreamDefaultPrio = this.UpDownValuesToList(document.Descendants("Newprio_default_bps").First().Value);
+            info.UpstreamHighPrio = this.UpDownValuesToList(document.Descendants("Newprio_high_bps").First().Value);
+            info.UpstreamLowPrio = this.UpDownValuesToList(document.Descendants("Newprio_low_bps").First().Value);
+            info.UpstreamRealtimePrio = this.UpDownValuesToList(document.Descendants("Newprio_realtime_bps").First().Value);
 
             return info;
         }        
 
         /// <summary>
-        /// Method to get values from string as IEnumerable<UInt32>
+        /// Method to get values from string as List<UInt32>
         /// </summary>
         /// <param name="values"></param>
         /// <returns></returns>
-        private IEnumerable<UInt32> UpDownValuesToEnumerable(string values)
+        private List<UInt32> UpDownValuesToList(string values)
         {
-            return values.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select((entry) => UInt32.Parse(entry.Trim())).AsEnumerable();
+            return values.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select((entry) => UInt32.Parse(entry.Trim())).ToList();
         }
     }
 }

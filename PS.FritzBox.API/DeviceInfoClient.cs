@@ -66,7 +66,7 @@ namespace PS.FritzBox.API
             info.SoftwareVersion = document.Descendants("NewSoftwareVersion").First().Value;
             info.SpecVersion = document.Descendants("NewSpecVersion").First().Value;
             info.UpTime = Convert.ToUInt32(document.Descendants("NewUpTime").First().Value);
-            info.DeviceLog = document.Descendants("NewDeviceLog").First().Value.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).AsEnumerable();
+            info.DeviceLog = document.Descendants("NewDeviceLog").First().Value.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             return info;
         }
@@ -75,10 +75,10 @@ namespace PS.FritzBox.API
         /// async Method to get the device log 
         /// </summary>
         /// <returns>the device log</returns>
-        public async Task<IEnumerable<string>> GetDeviceLogAsync()
+        public async Task<List<string>> GetDeviceLogAsync()
         {
             XDocument document = await this.InvokeAsync("GetDeviceLog", null);            
-            return document.Descendants("NewDeviceLog").First().Value.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).AsEnumerable();
+            return document.Descendants("NewDeviceLog").First().Value.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
         /// <summary>

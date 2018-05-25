@@ -20,15 +20,15 @@ namespace PS.FritzBox.API.WANDevice
         /// <summary>
         /// Gets or sets the current downstream in bits per second
         /// </summary>
-        public IEnumerable<UInt32> DownStream { get; internal set; }
+        public List<UInt32> DownStream { get; internal set; }
         /// <summary>
         /// Gets the current media downstream in bits per seconds
         /// </summary>
-        public IEnumerable<UInt32> DownStream_Media { get; internal set; }
+        public List<UInt32> DownStream_Media { get; internal set; }
         /// <summary>
         /// Gets the current upstream in bits per second
         /// </summary>
-        public IEnumerable<UInt32> UpStream { get; internal set; }
+        public List<UInt32> UpStream { get; internal set; }
         /// <summary>
         /// Gets the max downstream in bits per second
         /// </summary>
@@ -40,18 +40,18 @@ namespace PS.FritzBox.API.WANDevice
         /// <summary>
         /// gets the last measures of upstream on default prio
         /// </summary>
-        public IEnumerable<UInt32> UpstreamDefaultPrio { get; internal set; }
+        public List<UInt32> UpstreamDefaultPrio { get; internal set; }
         /// <summary>
         /// gets the last measures of upstream on high prio
         /// </summary>
-        public IEnumerable<UInt32> UpstreamHighPrio { get; internal set; }
+        public List<UInt32> UpstreamHighPrio { get; internal set; }
         /// <summary>
         /// Gets the last measures of upstream on low prio
         /// </summary>
-        public IEnumerable<UInt32> UpstreamLowPrio { get; internal set; }
+        public List<UInt32> UpstreamLowPrio { get; internal set; }
         /// <summary>
         /// Gets the last measures of downstream prio
         /// </summary>
-        public IEnumerable<UInt32> UpstreamRealtimePrio { get; internal set; }
+        public List<UInt32> UpstreamRealtimePrio { get; internal set; }
     }
 }

@@ -85,7 +85,7 @@ namespace PS.FritzBox.API.LANDevice
         /// <returns></returns>
         public async Task SetDHCPServerEnableAsync(bool enabled)
         {
-            await this.InvokeAsync("SetDHCPServerEnable", null);
+            await this.InvokeAsync("SetDHCPServerEnable", new SOAP.SoapRequestParameter("NewDHCPServerEnable", enabled ? 1 : 0));
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace PS.FritzBox.API.LANDevice
         public async Task<List<IPAddress>> GetDNSServerAsync()
         {
             List<IPAddress> servers = new List<IPAddress>();
-            XDocument document = await this.InvokeAsync("GetDNSServer", null);          
+            XDocument document = await this.InvokeAsync("GetDNSServers", null);          
 
             var dnsServers = document.Descendants("NewDNSServers").First().Value.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).AsEnumerable();
             foreach (var dnsServer in dnsServers)
