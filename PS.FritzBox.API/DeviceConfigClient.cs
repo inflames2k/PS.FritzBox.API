@@ -31,7 +31,7 @@ namespace PS.FritzBox.API
         {
         }
         #endregion
-         
+
         /// <summary>
         /// Gets the control url
         /// </summary>
