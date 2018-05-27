@@ -83,6 +83,12 @@ namespace PS.FritzBox.API.SOAP
                 var sr = new StreamReader(stream);
                 var soapResponse = XDocument.Load(sr);
 
+                if(!response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode != System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(response.ReasonPhrase);
+                }
+
                 return soapResponse;
             }
         }
