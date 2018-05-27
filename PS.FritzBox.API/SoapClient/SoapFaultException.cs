@@ -6,7 +6,7 @@ namespace PS.FritzBox.API.SOAP
 {
     public class SoapFaultException : Exception
     {
-        public SoapFaultException(string faultCode, string faultString) : base(String.Format("{0}; {1}", faultCode, faultString))
+        public SoapFaultException(string faultCode, string faultString, string upnpError) : base($"{faultCode}; {faultString} {Environment.NewLine}{upnpError}")
         {
             this.FaultCode = faultCode;
             this.FaultString = faultString;
@@ -21,5 +21,10 @@ namespace PS.FritzBox.API.SOAP
         /// gets or sets the fault string
         /// </summary>
         public string FaultString { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the error details
+        /// </summary>
+        public string Detail { get; set; }
     }
 }

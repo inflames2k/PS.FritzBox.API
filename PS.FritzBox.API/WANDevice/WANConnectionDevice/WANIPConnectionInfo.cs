@@ -1,4 +1,7 @@
-﻿namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
+﻿using System.Collections.Generic;
+using System.Net;
+
+namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
 {
     /// <summary>
     /// class representing wan ip connection info
@@ -36,9 +39,9 @@
         public string ExternalIPAddress { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the dns servers
+        /// Gets the dns servers
         /// </summary>
-        public string DNSServers { get; internal set; }
+        public List<IPAddress> DNSServers { get; set; } = new List<IPAddress>();
 
         /// <summary>
         /// Gets or sets the mac address

@@ -75,7 +75,7 @@ namespace PS.FritzBox.API.CMD
                     this.PrintObject(oValue);
                 }
                 else
-                    this.PrintOutputAction($"{property.Name}: {oValue.ToString()}");
+                    this.PrintOutputAction($"{property?.Name}: {oValue?.ToString()}");
             }
         }
 

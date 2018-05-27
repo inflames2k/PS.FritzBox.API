@@ -200,10 +200,15 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
         /// Method to get the dns servers
         /// </summary>
         /// <returns>the dns servers</returns>
-        public async Task<string> GetDNSServersAsync()
+        public async Task<List<IPAddress>> GetDNSServersAsync()
         {
+            List<IPAddress> addresses = new List<IPAddress>();
             XDocument document = await this.InvokeAsync("X_GetDNSServers", null);
-            return document.Descendants("NewDNSServers").First().Value;
+            var dnsservers = document.Descendants("NewDNSServers").First().Value.Split(new char[] { '\r', '\n', ',' }, StringSplitOptions.RemoveEmptyEntries).AsEnumerable();
+            foreach (var dnsServer in dnsservers)
+                addresses.Add(IPAddress.TryParse(dnsServer, out IPAddress server) ? server : IPAddress.None);
+
+            return addresses;
         }
 
         /// <summary>
@@ -261,7 +266,7 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
 
             PortMappingEntry entry = new PortMappingEntry();
             entry.Description = document.Descendants("NewPortMappingDescription").First().Value;
-            entry.Enabled = document.Descendants("NewENabled").First().Value == "1";
+            entry.Enabled = document.Descendants("NewEnabled").First().Value == "1";
             entry.InternalHost = IPAddress.TryParse(document.Descendants("NewInternalClient").First().Value, out IPAddress internalHost) ? internalHost : IPAddress.None;
             entry.InternalPort = Convert.ToUInt16(document.Descendants("NewInternalPort").First().Value);
             entry.LeaseDuration = Convert.ToUInt32(document.Descendants("NewLeaseDuration").First().Value);
@@ -270,6 +275,21 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
             entry.ExternalPort = Convert.ToUInt16(document.Descendants("NewExternalPort").First().Value);
 
             return entry;
+        }
+
+        /// <summary>
+        /// Method to get all port mappings
+        /// </summary>
+        /// <returns>the port mappings</returns>
+        public async Task<List<PortMappingEntry>> GetPortMappingEntriesAsync()
+        {
+            List<PortMappingEntry> portMappings = new List<PortMappingEntry>();
+            int count = await this.GetPortMappingNumberOfEntriesAsync();
+
+            for (int i = 0; i < count; i++)
+                portMappings.Add(await this.GetGenericPortMappingEntryAsync(i));
+
+            return portMappings;
         }
 
         /// <summary>
@@ -283,7 +303,7 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
         {
             List<SoapRequestParameter> parameters = new List<SoapRequestParameter>()
             {
-                new SoapRequestParameter("NewRemoteHost", remoteHost.ToString()),
+                new SoapRequestParameter("NewRemoteHost", remoteHost?.ToString()),
                 new SoapRequestParameter("NewExternalPort", externalPort),
                 new SoapRequestParameter("NewProtocol", protocol.ToString())
             };
@@ -297,11 +317,11 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
                 PortMappingProtocol = protocol
             };
 
-            entry.Description = document.Descendants("NewPortMappingDescription").First().Value;
-            entry.Enabled = document.Descendants("NewENabled").First().Value == "1";
+            entry.Enabled = document.Descendants("NewEnabled").First().Value == "1";
             entry.InternalHost = IPAddress.TryParse(document.Descendants("NewInternalClient").First().Value, out IPAddress internalHost) ? internalHost : IPAddress.None;
             entry.InternalPort = Convert.ToUInt16(document.Descendants("NewInternalPort").First().Value);
             entry.LeaseDuration = Convert.ToUInt32(document.Descendants("NewLeaseDuration").First().Value);
+            entry.Description = document.Descendants("NewPortMappingDescription").First().Value;
 
             return entry;
         }
@@ -315,7 +335,7 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
         {
             List<SoapRequestParameter> parameters = new List<SoapRequestParameter>()
             {
-                new SoapRequestParameter("NewRemoteHost", entry.RemoteHost.ToString()),
+                new SoapRequestParameter("NewRemoteHost", entry.RemoteHost?.ToString()),
                 new SoapRequestParameter("NewExternalPort", entry.ExternalPort),
                 new SoapRequestParameter("NewProtocol", entry.PortMappingProtocol.ToString()),
                 new SoapRequestParameter("NewInternalPort", entry.InternalPort),
@@ -339,7 +359,7 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
         {
             List<SoapRequestParameter> parameters = new List<SoapRequestParameter>()
             {
-                new SoapRequestParameter("NewRemoteHost", remoteHost.ToString()),
+                new SoapRequestParameter("NewRemoteHost", remoteHost?.ToString()),
                 new SoapRequestParameter("NewExternalPort", externalPort),
                 new SoapRequestParameter("NewProtocol", protocol.ToString())
             };

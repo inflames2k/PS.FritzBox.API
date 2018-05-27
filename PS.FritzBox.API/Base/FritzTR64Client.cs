@@ -1,4 +1,5 @@
 ﻿using PS.FritzBox.API.SOAP;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -106,13 +107,24 @@ namespace PS.FritzBox.API.Base
         /// </summary>
         /// <param name="document">the result of the soap request</param>
         internal void ParseSoapFault(XDocument document)
-        {
-            if(document.Descendants("Fault").Count() > 0)
+        {            
+            if(document.Descendants("faultcode").Count() > 0)
             {
                 string code = document.Descendants("faultcode").First().Value;
                 string text = document.Descendants("faultstring").First().Value;
 
-                throw new SoapFaultException(code, text);
+                string upnpErrorText = string.Empty;
+                if (document.Descendants("detail").Count() > 0)
+                {
+                    XElement detailElement = document.Descendants("detail").First();
+                    XElement upnpError = (XElement)detailElement.FirstNode;
+                   // XElement upnpError = detailElement.Element(new XName("UPnPError").FirstOrDefault();
+                    foreach (XElement element in upnpError != null ? upnpError.Elements() : detailElement.Elements())
+                    {
+                        upnpErrorText += $"{element.Name}: {element.Value}{Environment.NewLine}";
+                    }
+                }
+                throw new SoapFaultException(code, text, upnpErrorText);
             }
         }
     }
