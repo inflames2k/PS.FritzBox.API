@@ -206,8 +206,7 @@ namespace PS.FritzBox.API.CMD
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var portMappings = new WANIPConnectionClient(this._client.ConnectionSettings).GetPortMappingNumberOfEntriesAsync().GetAwaiter().GetResult();
-            //var portMappings = this._client.GetPortMappingNumberOfEntriesAsync().GetAwaiter().GetResult();
+            var portMappings = this._client.GetPortMappingNumberOfEntriesAsync().GetAwaiter().GetResult();
             this.PrintOutputAction($"Portmappings: {portMappings}");
         }
 
