@@ -246,6 +246,21 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
         }
 
         /// <summary>
+        /// Method to get all port mappings
+        /// </summary>
+        /// <returns>the port mappings</returns>
+        public async Task<List<PortMappingEntry>> GetPortMappingEntriesAsync()
+        {
+            List<PortMappingEntry> portMappings = new List<PortMappingEntry>();
+            int count = await this.GetPortMappingNumberOfEntriesAsync();
+
+            for (int i = 0; i < count; i++)
+                portMappings.Add(await this.GetGenericPortMappingEntryAsync(i));
+
+            return portMappings;
+        }
+
+        /// <summary>
         /// Method to get a specific port mapping entry
         /// </summary>
         /// <param name="remoteHost">the remote host</param>
