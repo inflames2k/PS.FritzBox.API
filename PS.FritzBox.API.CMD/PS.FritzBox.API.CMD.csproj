@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSetupClientHandler.cs" />
     <Compile Include="ClientHandler.cs" />
     <Compile Include="DeviceConfigClientHandler.cs" />
     <Compile Include="DeviceInfoClientHandler.cs" />
