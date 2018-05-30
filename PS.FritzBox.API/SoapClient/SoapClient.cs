@@ -81,6 +81,7 @@ namespace PS.FritzBox.API.SOAP
 
                 Stream stream = await response.Content.ReadAsStreamAsync();
                 var sr = new StreamReader(stream);
+
                 var soapResponse = XDocument.Load(sr);
 
                 if(!response.IsSuccessStatusCode)

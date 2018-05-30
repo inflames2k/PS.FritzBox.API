@@ -49,6 +49,7 @@
     <Compile Include="LanConfigSecurityHandler.cs" />
     <Compile Include="LANEthernetInterfaceClientHandler.cs" />
     <Compile Include="LANHostConfigManagementClientHandler.cs" />
+    <Compile Include="Layer3ForwardingClientHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WANCommonInterfaceConfigClientHandler.cs" />

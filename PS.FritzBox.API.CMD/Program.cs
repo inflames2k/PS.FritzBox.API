@@ -28,6 +28,7 @@ namespace PS.FritzBox.API.CMD
                 Console.WriteLine("6 - WANCommonInterfaceConfig");
                 Console.WriteLine("7 - WANPPPConnection");
                 Console.WriteLine("8 - AppSetup");
+                Console.WriteLine("9 - Layer3Forwarding");
 
                 Console.WriteLine("r - Reinitialize");
                 Console.WriteLine("q - Exit");
@@ -86,6 +87,7 @@ namespace PS.FritzBox.API.CMD
             _clientHandlers.Add("6", new WANCommonInterfaceConfigClientHandler(settings, printOutput, getInput, wait, clearOutput));
             _clientHandlers.Add("7", new WANPPPConnectionClientHandler(settings, printOutput, getInput, wait, clearOutput));
             _clientHandlers.Add("8", new AppSetupClientHandler(settings, printOutput, getInput, wait, clearOutput));
+            _clientHandlers.Add("9", new Layer3ForwardingClientHandler(settings, printOutput, getInput, wait, clearOutput));
         }
 
         
