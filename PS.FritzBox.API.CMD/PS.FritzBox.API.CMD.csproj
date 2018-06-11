@@ -52,6 +52,7 @@
     <Compile Include="Layer3ForwardingClientHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserInterfaceClientHandler.cs" />
     <Compile Include="WANCommonInterfaceConfigClientHandler.cs" />
     <Compile Include="WANIPConnectionClientHandler.cs" />
     <Compile Include="WANPPPConnectionClientHandler.cs" />

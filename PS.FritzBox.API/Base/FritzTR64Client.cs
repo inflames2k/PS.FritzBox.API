@@ -118,7 +118,6 @@ namespace PS.FritzBox.API.Base
                 {
                     XElement detailElement = document.Descendants("detail").First();
                     XElement upnpError = (XElement)detailElement.FirstNode;
-                   // XElement upnpError = detailElement.Element(new XName("UPnPError").FirstOrDefault();
                     foreach (XElement element in upnpError != null ? upnpError.Elements() : detailElement.Elements())
                     {
                         upnpErrorText += $"{element.Name}: {element.Value}{Environment.NewLine}";
