@@ -6,7 +6,7 @@
     public class ConnectionSettings
     {
         /// <summary>
-        /// Gets or sets the base url
+        /// base url
         /// </summary>
         public string BaseUrl { get; set; }
 

@@ -37,7 +37,7 @@ namespace PS.FritzBox.API.LANDevice
         /// <summary>
         /// Gets the control url
         /// </summary>
-        protected override string ControlUrl => "/tr064//upnp/control/hosts";
+        protected override string ControlUrl => "/upnp/control/hosts";
 
         /// <summary>
         /// Gets the request namespace
@@ -67,7 +67,7 @@ namespace PS.FritzBox.API.LANDevice
                 MACAddress = macAddress, //IPAddress.TryParse(document.Descendants("NewMACAddress").First().Value, out IPAddress mac) ? mac : IPAddress.None,
                 IPAddress = IPAddress.TryParse(document.Descendants("NewIPAddress").First().Value, out IPAddress ip) ? ip : IPAddress.None,
                 AddressSource = document.Descendants("NewAddressSource").First().Value,
-                LeaseTimeRemaining = UInt32.TryParse(document.Descendants("NewLeaseTimeRemaining").First().Value, out UInt32 leaseTime) ? leaseTime : (UInt32)0),
+                LeaseTimeRemaining = UInt32.TryParse(document.Descendants("NewLeaseTimeRemaining").First().Value, out UInt32 leaseTime) ? leaseTime : (UInt32)0,
                 InterfaceType = document.Descendants("NewInterfaceType").First().Value,
                 Active = document.Descendants("NewActive").First().Value == "1",
                 HostName = document.Descendants("NewHostName").First().Value
@@ -87,7 +87,7 @@ namespace PS.FritzBox.API.LANDevice
                 MACAddress = IPAddress.TryParse(document.Descendants("NewMACAddress").First().Value, out IPAddress mac) ? mac : IPAddress.None,
                 IPAddress = IPAddress.TryParse(document.Descendants("NewIPAddress").First().Value, out IPAddress ip) ? ip : IPAddress.None,
                 AddressSource = document.Descendants("NewAddressSource").First().Value,
-                LeaseTimeRemaining = UInt32.TryParse(document.Descendants("NewLeaseTimeRemaining").First().Value, out UInt32 leaseTime) ? leaseTime : (UInt32)0),
+                LeaseTimeRemaining = UInt32.TryParse(document.Descendants("NewLeaseTimeRemaining").First().Value, out UInt32 leaseTime) ? leaseTime : (UInt32)0,
                 InterfaceType = document.Descendants("NewInterfaceType").First().Value,
                 Active = document.Descendants("NewActive").First().Value == "1",
                 HostName = document.Descendants("NewHostName").First().Value

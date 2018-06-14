@@ -34,7 +34,7 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Gets the control url
         /// </summary>
-        protected override string ControlUrl => "/tr064/upnp/control/x_appsetup";
+        protected override string ControlUrl => "/upnp/control/x_appsetup";
 
         /// <summary>
         /// Gets the request namespace

@@ -14,9 +14,26 @@ namespace PS.FritzBox.API.CMD
 
         static void Main(string[] args)
         {
-            Configure();
-
+            List<FritzDevice> devices = GetDevices().GetAwaiter().GetResult();
             string input = string.Empty;
+            int deviceIndex = -1;
+            do
+            {
+
+                foreach (FritzDevice device in devices)
+                {
+                    Console.WriteLine($"{devices.IndexOf(device)} - {device.ModelName}");
+                }
+
+                input = Console.ReadLine();
+
+            } while (!Int32.TryParse(input, out deviceIndex) && (deviceIndex < 0 || deviceIndex >= devices.Count));
+
+            FritzDevice selected = devices[deviceIndex];
+            Configure(selected);
+
+            Console.ReadLine();
+
             do
             {
                 Console.Clear();
@@ -38,16 +55,22 @@ namespace PS.FritzBox.API.CMD
                 if (_clientHandlers.ContainsKey(input))
                     _clientHandlers[input].Handle();
                 else if (input.ToLower() == "r")
-                    Configure();
+                    Configure(selected);
                 else if (input.ToLower() != "q")
                     Console.WriteLine("invalid choice");
 
             } while (input.ToLower() != "q");
         }
 
-        static void Configure()
+        static async Task<List<FritzDevice>> GetDevices()
+        {
+            return await new DeviceLocator().DiscoverAsync();
+        }
+
+        static void Configure(FritzDevice device)
         {
             ConnectionSettings settings = GetConnectionSettings();
+            device.GetServiceClient<DeviceInfoClient>(settings);
             InitClientHandler(settings);
         }
 
@@ -58,8 +81,6 @@ namespace PS.FritzBox.API.CMD
         static ConnectionSettings GetConnectionSettings()
         {
             ConnectionSettings settings = new ConnectionSettings();
-            Console.Write("Url: ");
-            settings.BaseUrl = Console.ReadLine();
             Console.Write("User: ");
             settings.UserName = Console.ReadLine();
             Console.Write("Password: ");

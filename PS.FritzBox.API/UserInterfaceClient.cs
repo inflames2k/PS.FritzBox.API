@@ -36,7 +36,7 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Gets the control url
         /// </summary>
-        protected override string ControlUrl => "/tr064/upnp/control/userif";
+        protected override string ControlUrl => "/upnp/control/userif";
 
         /// <summary>
         /// Gets the request namespace

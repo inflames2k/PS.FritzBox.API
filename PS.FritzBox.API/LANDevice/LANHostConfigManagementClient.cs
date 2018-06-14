@@ -37,7 +37,7 @@ namespace PS.FritzBox.API.LANDevice
         /// <summary>
         /// Gets the control url
         /// </summary>
-        protected override string ControlUrl => "/tr064/upnp/control/lanhostconfigmgm";
+        protected override string ControlUrl => "/upnp/control/lanhostconfigmgm";
 
         /// <summary>
         /// gets the request namespace

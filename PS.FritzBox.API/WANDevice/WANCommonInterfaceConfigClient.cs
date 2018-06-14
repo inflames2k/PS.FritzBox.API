@@ -35,7 +35,7 @@ namespace PS.FritzBox.API.WANDevice
         /// <summary>
         /// Gets the control url
         /// </summary>
-        protected override string ControlUrl => "/tr064/upnp/control/wancommonifconfig1";
+        protected override string ControlUrl => "/upnp/control/wancommonifconfig1";
 
         /// <summary>
         /// Gets the request namespace

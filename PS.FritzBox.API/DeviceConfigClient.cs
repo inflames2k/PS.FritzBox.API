@@ -35,7 +35,7 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Gets the control url
         /// </summary>
-        protected override string ControlUrl => "/tr064/upnp/control/deviceconfig";
+        protected override string ControlUrl => "/upnp/control/deviceconfig";
 
         /// <summary>
         /// Gets the request namespace

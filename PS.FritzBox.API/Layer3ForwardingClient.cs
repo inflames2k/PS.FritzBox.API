@@ -37,7 +37,7 @@ namespace PS.FritzBox.API
         /// <summary>
         /// Gets the control url
         /// </summary>
-        protected override string ControlUrl => "/tr064/upnp/control/layer3forwarding";
+        protected override string ControlUrl => "/upnp/control/layer3forwarding";
 
         /// <summary>
         /// Gets the request namespace
