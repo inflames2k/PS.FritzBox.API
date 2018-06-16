@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Patrick Schubert</Authors>
     <Company />
     <Product>PS Fritz!Box API</Product>
@@ -12,6 +12,12 @@
     <PackageLicenseUrl>https://github.com/inflames2k/PS.FritzBox.API/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/inflames2k/PS.FritzBox.API</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
+    <AssemblyVersion>1.2.0.0</AssemblyVersion>
+    <Version>1.2.0</Version>
+    <RepositoryUrl>https://github.com/inflames2k/PS.FritzBox.API.git</RepositoryUrl>
+    <FileVersion>1.2.0.0</FileVersion>
+    <PackageTags>AVM, Fritz!Box, Fritz.Box, TR064, UPnP</PackageTags>
+    <PackageReleaseNotes>Restructured class tree, improved service clients, added some missing services and implemented device search.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

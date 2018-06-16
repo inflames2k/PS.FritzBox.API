@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Text;
 
-namespace PS.FritzBox.API
+namespace PS.FritzBox.API.SOAP
 {
     /// <summary>
     /// Gets or sets the soap request parameters
@@ -30,9 +28,20 @@ namespace PS.FritzBox.API
         /// </summary>
         public List<SoapRequestParameter> Parameters { get; set; } = new List<SoapRequestParameter>();
 
+        /// <summary>
+        /// Gets or sets the user name
+        /// </summary>
         public string UserName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the password
+        /// </summary>
         public string Password { get; set; }
+
+        /// <summary>
+        /// Gets or sets the timeout in milliseconds
+        /// </summary>
+        public int Timeout { get; set; }
 
         /// <summary>
         /// Gets or sets the network credentials
