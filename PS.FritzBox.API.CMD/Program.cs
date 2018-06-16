@@ -38,8 +38,6 @@ namespace PS.FritzBox.API.CMD
                 FritzDevice selected = devices.Skip(deviceIndex).First();
 
 
-                test(selected);
-
                 Configure(selected);
 
                 do
@@ -76,17 +74,6 @@ namespace PS.FritzBox.API.CMD
                 Console.WriteLine("No devices found");
                 Console.ReadLine();
             }
-        }
-
-        static async void test(FritzDevice device)
-        {
-            ConnectionSettings settings = new ConnectionSettings();
-            var client = await device.GetServiceClient<DeviceInfoClient>(settings);
-            client.ConnectionSettings.UserName = "inflames2k";
-            client.ConnectionSettings.Password = "ps1988@rie";
-
-            Console.WriteLine(client.GetDeviceInfoAsync().GetAwaiter().GetResult());
-            Console.ReadLine();
         }
 
         static async Task<IEnumerable<FritzDevice>> GetDevices()
