@@ -204,8 +204,8 @@ namespace PS.FritzBox.API
         {
             try
             {
-                Uri.TryCreate($"http://{device.IPAddress}:{device.Port}/tr64desc.xml", UriKind.Absolute, out Uri uri);
-                var httpRequest = WebRequest.CreateHttp(device.Location);
+                Uri.TryCreate($"http://{device.Location.Authority}/tr64desc.xml", UriKind.Absolute, out Uri uri);
+                var httpRequest = WebRequest.CreateHttp(uri);
                 httpRequest.Timeout = 10000;
                               
                 using (var response = (HttpWebResponse)(await httpRequest.GetResponseAsync()))

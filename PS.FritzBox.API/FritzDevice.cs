@@ -173,10 +173,38 @@ namespace PS.FritzBox.API
                 this.UDN = this.GetElementValue(deviceRoot, "UDN");
 
                 // iterate through the services and check for available services
-                IEnumerable<XElement> serviceElements = document.Descendants(document.Root.Name.Namespace + "service");
+                IEnumerable<XElement> serviceElements = this.GetServices(deviceRoot);
                 this.AppendServices(serviceElements);
             }
-        } 
+        }
+
+        /// <summary>
+        /// Method to get the service elements
+        /// </summary>
+        /// <param name="deviceRoot"></param>
+        /// <returns></returns>
+        private IEnumerable<XElement> GetServices(XElement deviceRoot)
+        {
+            List<XElement> services = new List<XElement>();
+            string deviceName = this.GetElementValue(deviceRoot, "friendlyName");
+            XElement deviceList = this.GetElement(deviceRoot, "deviceList");
+            if (deviceList != null)
+            {
+                IEnumerable<XElement> deviceElements = this.GetElements(deviceList, "device");
+                foreach (XElement deviceElement in deviceElements)
+                    services.AddRange(this.GetServices(deviceElement));
+            }
+
+            
+            XElement serviceList = this.GetElement(deviceRoot, "serviceList");
+            IEnumerable<XElement> serviceElements = this.GetElements(serviceList, "service");
+            foreach (XElement serviceElement in serviceElements)
+            {
+                services.Add(serviceElement);
+            }
+
+            return services;
+        }
 
         /// <summary>
         /// Mehtod to get an element
