@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace PS.FritzBox.API
@@ -137,7 +138,7 @@ namespace PS.FritzBox.API
         /// <typeparam name="T">type param</typeparam>
         /// <param name="settings">connection settings</param>
         /// <returns>the service client</returns>
-        public T GetServiceClient<T>(ConnectionSettings settings)
+        public async Task<T> GetServiceClient<T>(ConnectionSettings settings)
         {
             if (!this.ContainsService<T>())
                 throw new ApplicationException("Given service not is not available on the device.");
@@ -146,10 +147,10 @@ namespace PS.FritzBox.API
             {
                 settings.BaseUrl = $"http://{this.IPAddress}:{this.Port}";
                 // get the security port
-                int port = new DeviceInfoClient(settings.BaseUrl, settings.Timeout).GetSecurityPortAsync().GetAwaiter().GetResult();
+                int port = await new DeviceInfoClient(settings.BaseUrl, settings.Timeout).GetSecurityPortAsync();
                 settings.BaseUrl = $"https://{this.IPAddress}:{port}";
             }
-
+            
             return (T)Activator.CreateInstance(typeof(T), settings);
         }
 
