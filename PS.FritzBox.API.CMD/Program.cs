@@ -36,6 +36,8 @@ namespace PS.FritzBox.API.CMD
                 } while (!Int32.TryParse(input, out deviceIndex) && (deviceIndex < 0 || deviceIndex >= devices.Count()));
 
                 FritzDevice selected = devices.Skip(deviceIndex).First();
+
+
                 Configure(selected);
 
                 do
