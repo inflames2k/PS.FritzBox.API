@@ -14,22 +14,23 @@ namespace PS.FritzBox.API.CMD
 
         static void Main(string[] args)
         {
-            List<FritzDevice> devices = GetDevices().GetAwaiter().GetResult();
+            IEnumerable<FritzDevice> devices = GetDevices().GetAwaiter().GetResult();
             string input = string.Empty;
             int deviceIndex = -1;
             do
             {
-
+                int counter = 0;
                 foreach (FritzDevice device in devices)
                 {
-                    Console.WriteLine($"{devices.IndexOf(device)} - {device.ModelName}");
+                    Console.WriteLine($"{counter} - {device.ModelName}");
                 }
+                counter++;
 
                 input = Console.ReadLine();
 
-            } while (!Int32.TryParse(input, out deviceIndex) && (deviceIndex < 0 || deviceIndex >= devices.Count));
+            } while (!Int32.TryParse(input, out deviceIndex) && (deviceIndex < 0 || deviceIndex >= devices.Count()));
 
-            FritzDevice selected = devices[deviceIndex];
+            FritzDevice selected = devices.Skip(deviceIndex).First();
             Configure(selected);
 
             Console.ReadLine();
@@ -62,7 +63,7 @@ namespace PS.FritzBox.API.CMD
             } while (input.ToLower() != "q");
         }
 
-        static async Task<List<FritzDevice>> GetDevices()
+        static async Task<IEnumerable<FritzDevice>> GetDevices()
         {
             return await new DeviceLocator().DiscoverAsync();
         }

@@ -19,8 +19,4 @@
     <DocumentationFile>bin\Debug\netstandard1.6\PS.FritzBox.API.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="SsdpRadar" Version="1.0.32" />
-  </ItemGroup>
-
 </Project>
