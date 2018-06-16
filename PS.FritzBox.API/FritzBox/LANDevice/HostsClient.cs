@@ -15,19 +15,19 @@ namespace PS.FritzBox.API.LANDevice
     public class HostsClient : FritzTR64Client
     {
         #region Construction / Destruction
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public HostsClient(string url, int timeout) : base(url, timeout)
         {
         }
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public HostsClient(string url, int timeout, string username) : base(url, timeout, username)
         {
         }
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public HostsClient(string url, int timeout, string username, string password) : base(url, timeout, username, password)
         {
         }
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public HostsClient(ConnectionSettings connectionSettings) : base(connectionSettings)
         {
         }
@@ -59,12 +59,12 @@ namespace PS.FritzBox.API.LANDevice
         /// </summary>
         /// <param name="macAddress">the mac address of the entry</param>
         /// <returns>the host entry</returns>
-        public async Task<HostEntry> GetSpecificHostEntryAsync(IPAddress macAddress)
+        public async Task<HostEntry> GetSpecificHostEntryAsync(string macAddress)
         {
             XDocument document = await this.InvokeAsync("GetSpecificHostEntry", null);
             return new HostEntry()
             {
-                MACAddress = macAddress, //IPAddress.TryParse(document.Descendants("NewMACAddress").First().Value, out IPAddress mac) ? mac : IPAddress.None,
+                MACAddress = macAddress, 
                 IPAddress = IPAddress.TryParse(document.Descendants("NewIPAddress").First().Value, out IPAddress ip) ? ip : IPAddress.None,
                 AddressSource = document.Descendants("NewAddressSource").First().Value,
                 LeaseTimeRemaining = UInt32.TryParse(document.Descendants("NewLeaseTimeRemaining").First().Value, out UInt32 leaseTime) ? leaseTime : (UInt32)0,
@@ -84,7 +84,7 @@ namespace PS.FritzBox.API.LANDevice
             XDocument document = await this.InvokeAsync("GetGenericHostEntry", new SOAP.SoapRequestParameter("NewIndex", index));
             return new HostEntry()
             {
-                MACAddress = IPAddress.TryParse(document.Descendants("NewMACAddress").First().Value, out IPAddress mac) ? mac : IPAddress.None,
+                MACAddress = document.Descendants("NewMACAddress").First().Value,
                 IPAddress = IPAddress.TryParse(document.Descendants("NewIPAddress").First().Value, out IPAddress ip) ? ip : IPAddress.None,
                 AddressSource = document.Descendants("NewAddressSource").First().Value,
                 LeaseTimeRemaining = UInt32.TryParse(document.Descendants("NewLeaseTimeRemaining").First().Value, out UInt32 leaseTime) ? leaseTime : (UInt32)0,

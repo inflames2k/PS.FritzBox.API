@@ -15,19 +15,19 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
     public class WANIPConnectionClient : FritzTR64Client
     {
         #region Construction / Destruction
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public WANIPConnectionClient(string url, int timeout) : base(url, timeout)
         {
         }
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public WANIPConnectionClient(string url, int timeout, string username) : base(url, timeout, username)
         {
         }
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public WANIPConnectionClient(string url, int timeout, string username, string password) : base(url, timeout, username, password)
         {
         }
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public WANIPConnectionClient(ConnectionSettings connectionSettings) : base(connectionSettings)
         {
         }

@@ -14,19 +14,19 @@ namespace PS.FritzBox.API
     public class AppSetupClient : FritzTR64Client
     {
         #region COnstruction / Destruction
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public AppSetupClient(string url, int timeout) : base(url, timeout)
         {
         }
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public AppSetupClient(string url, int timeout, string username) : base(url, timeout, username)
         {
         }
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public AppSetupClient(string url, int timeout, string username, string password) : base(url, timeout, username, password)
         {
         }
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public AppSetupClient(ConnectionSettings connectionSettings) : base(connectionSettings)
         {
         }
@@ -51,29 +51,29 @@ namespace PS.FritzBox.API
             XDocument document = await this.InvokeAsync("GetInfo", null);
 
             AppSetupInfo info = new AppSetupInfo();
-            info.MinCharsAppId = Convert.ToUInt16(document.Descendants("NewMinCharsAppId").First().Value);
-            info.MaxCharsAppId = Convert.ToUInt16(document.Descendants("NewMaxCharsAppId").First().Value);
-            info.AllowedCharsAppId = document.Descendants("NewAllowedCharsAppId").First().Value;
-            info.MinCharsAppDisplayName = Convert.ToUInt16(document.Descendants("NewMinCharsAppDisplayName").First().Value);
-            info.MaxCharsAppDisplayName = Convert.ToUInt16(document.Descendants("NewMaxCharsAppDisplayName").First().Value);
-            info.MinCharsAppUsername = Convert.ToUInt16(document.Descendants("NewMinCharsAppUsername").First().Value);
-            info.MaxCharsAppUsername = Convert.ToUInt16(document.Descendants("NewMaxCharsAppUsername").First().Value);
-            info.AllowedCharsAppUsername = document.Descendants("NewAllowedCharsAppUsername").First().Value;
-            info.MinCharsAppPassword = Convert.ToUInt16(document.Descendants("NewMinCharsAppPassword").First().Value);
-            info.MaxCharsAppPassword = Convert.ToUInt16(document.Descendants("NewMaxCharsAppPassword").First().Value);
-            info.AllowedCharsAppPassword = document.Descendants("NewAllowedCharsAppPassword").First().Value;
-            info.MinCharsIPSecIdentifier = Convert.ToInt16(document.Descendants("NewMinCharsIPSecIdentifier").First().Value);
-            info.MaxCharsIPSecIdentifier = Convert.ToUInt16(document.Descendants("NewMaxCharsIPSecIdentifier").First().Value);
-            info.AllowedCharsIPSecIdentifier = document.Descendants("NewAllowedCharsIPSecIdentifier").First().Value;
-            info.MinCharsIPSecPreSharedKey = Convert.ToUInt16(document.Descendants("NewMinCharsIPSecPreSharedKey").First().Value);
-            info.MaxCharsIPSecPreSharedKey = Convert.ToUInt16(document.Descendants("NewMaxCharsIPSecPreSharedKey").First().Value);
-            info.AllowedCharsIPSecPreSharedKey = document.Descendants("NewAllowedCharsIPSecPreSharedKey").First().Value;
-            info.MinCharsIPSecXauthUsername = Convert.ToUInt16(document.Descendants("NewMinCharsIPSecXauthUsername").First().Value);
-            info.MaxCharsIPSecXauthUsername = Convert.ToUInt16(document.Descendants("NewMaxCharsIPSecXauthUsername").First().Value);
-            info.AllowedCharsIPSecXauthUsername = document.Descendants("NewAllowedCharsIPSecXauthUsername").First().Value;
-            info.MinCharsIPSecXauthPassword = Convert.ToUInt16(document.Descendants("NewMinCharsIPSecXauthPassword").First().Value);
-            info.MaxCharsIPSecXauthPassword = Convert.ToUInt16(document.Descendants("NewMaxCharsIPSecXauthPassword").First().Value);
-            info.AllowedCharsIPSecXauthPassword = document.Descendants("NewAllowedCharsIPSecXauthPassword").First().Value;
+            info.AppIDValidationInfo.MinChars = Convert.ToUInt16(document.Descendants("NewMinCharsAppId").First().Value);
+            info.AppIDValidationInfo.MaxChars = Convert.ToUInt16(document.Descendants("NewMaxCharsAppId").First().Value);
+            info.AppIDValidationInfo.AllowedChars = document.Descendants("NewAllowedCharsAppId").First().Value;
+            info.AppDisplayNameValidationInfo.MinChars = Convert.ToUInt16(document.Descendants("NewMinCharsAppDisplayName").First().Value);
+            info.AppDisplayNameValidationInfo.MaxChars = Convert.ToUInt16(document.Descendants("NewMaxCharsAppDisplayName").First().Value);
+            info.AppUsernameValidationInfo.MinChars = Convert.ToUInt16(document.Descendants("NewMinCharsAppUsername").First().Value);
+            info.AppUsernameValidationInfo.MaxChars = Convert.ToUInt16(document.Descendants("NewMaxCharsAppUsername").First().Value);
+            info.AppUsernameValidationInfo.AllowedChars = document.Descendants("NewAllowedCharsAppUsername").First().Value;
+            info.AppPasswordValidationInfo.MinChars = Convert.ToUInt16(document.Descendants("NewMinCharsAppPassword").First().Value);
+            info.AppPasswordValidationInfo.MaxChars = Convert.ToUInt16(document.Descendants("NewMaxCharsAppPassword").First().Value);
+            info.AppPasswordValidationInfo.AllowedChars = document.Descendants("NewAllowedCharsAppPassword").First().Value;
+            info.IPSecIdentifierValidationInfo.MinChars = Convert.ToUInt16(document.Descendants("NewMinCharsIPSecIdentifier").First().Value);
+            info.IPSecIdentifierValidationInfo.MaxChars = Convert.ToUInt16(document.Descendants("NewMaxCharsIPSecIdentifier").First().Value);
+            info.IPSecIdentifierValidationInfo.AllowedChars = document.Descendants("NewAllowedCharsIPSecIdentifier").First().Value;
+            info.IPSecPresharedKeyValidationInfo.MinChars = Convert.ToUInt16(document.Descendants("NewMinCharsIPSecPreSharedKey").First().Value);
+            info.IPSecPresharedKeyValidationInfo.MaxChars = Convert.ToUInt16(document.Descendants("NewMaxCharsIPSecPreSharedKey").First().Value);
+            info.IPSecPresharedKeyValidationInfo.AllowedChars = document.Descendants("NewAllowedCharsIPSecPreSharedKey").First().Value;
+            info.IPSecXauthUsernameValidationInfo.MinChars = Convert.ToUInt16(document.Descendants("NewMinCharsIPSecXauthUsername").First().Value);
+            info.IPSecXauthUsernameValidationInfo.MaxChars = Convert.ToUInt16(document.Descendants("NewMaxCharsIPSecXauthUsername").First().Value);
+            info.IPSecXauthUsernameValidationInfo.AllowedChars = document.Descendants("NewAllowedCharsIPSecXauthUsername").First().Value;
+            info.IPSecXauthPasswordValidationInfo.MinChars = Convert.ToUInt16(document.Descendants("NewMinCharsIPSecXauthPassword").First().Value);
+            info.IPSecXauthPasswordValidationInfo.MaxChars = Convert.ToUInt16(document.Descendants("NewMaxCharsIPSecXauthPassword").First().Value);
+            info.IPSecXauthPasswordValidationInfo.AllowedChars = document.Descendants("NewAllowedCharsIPSecXauthPassword").First().Value;            
             info.AllowedCharsCryptAlgos = document.Descendants("NewAllowedCharsCryptAlgos").First().Value;
             info.AllowedCharsAppAVMAddress = document.Descendants("NewAllowedCharsAppAVMAddress").First().Value;
 

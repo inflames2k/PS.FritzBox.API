@@ -10,7 +10,7 @@ namespace PS.FritzBox.API.LANDevice
         /// <summary>
         /// Gets the mac address
         /// </summary>
-        public IPAddress MACAddress { get; internal set; }
+        public string MACAddress { get; internal set; }
         /// <summary>
         /// Gets the ip address
         /// </summary>

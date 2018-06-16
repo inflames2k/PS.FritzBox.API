@@ -14,19 +14,19 @@ namespace PS.FritzBox.API
     public class LANConfigSecurityClient : FritzTR64Client
     {
         #region Construction / Destruction
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public LANConfigSecurityClient(string url, int timeout) : base(url, timeout)
         {
         }
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public LANConfigSecurityClient(string url, int timeout, string username) : base(url, timeout, username)
         {
         }
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public LANConfigSecurityClient(string url, int timeout, string username, string password) : base(url, timeout, username, password)
         {
         }
-        [Obsolete("Use DeviceLocator for finding devices and get the service from the FritzDevice.")]
+        
         public LANConfigSecurityClient(ConnectionSettings connectionSettings) : base(connectionSettings)
         {
         }
@@ -48,10 +48,10 @@ namespace PS.FritzBox.API
         /// Method to get the password info
         /// </summary>
         /// <returns>the password info</returns>
-        public async Task<PasswordInfo> GetInfoAsync()
+        public async Task<DataValidationInfo> GetInfoAsync()
         {
             XDocument document = await this.InvokeAsync("GetInfo", null);
-            PasswordInfo info = new PasswordInfo();
+            DataValidationInfo info = new DataValidationInfo();
 
             info.AllowedChars = document.Descendants("NewAllowedCharsPassword").First().Value;
             info.MinChars = Convert.ToUInt16(document.Descendants("NewMinCharsPassword").First().Value);

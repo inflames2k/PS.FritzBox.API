@@ -52,6 +52,7 @@ namespace PS.FritzBox.API.CMD
                     Console.WriteLine(" 9 - AppSetup");
                     Console.WriteLine("10 - Layer3Forwarding");
                     Console.WriteLine("11 - UserInterface");
+                    Console.WriteLine("12 - WLANConfiguration");
 
                     Console.WriteLine("r - Reinitialize");
                     Console.WriteLine("q - Exit");
@@ -123,6 +124,7 @@ namespace PS.FritzBox.API.CMD
             _clientHandlers.Add("9", new AppSetupClientHandler(settings, printOutput, getInput, wait, clearOutput));
             _clientHandlers.Add("10", new Layer3ForwardingClientHandler(settings, printOutput, getInput, wait, clearOutput));
             _clientHandlers.Add("11", new UserInterfaceClientHandler(settings, printOutput, getInput, wait, clearOutput));
+            _clientHandlers.Add("12", new WLANConfigurationClientHandler(settings, printOutput, getInput, wait, clearOutput));
         }
 
         

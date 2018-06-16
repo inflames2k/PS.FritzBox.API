@@ -7,6 +7,8 @@ namespace PS.FritzBox.API.LANDevice
     /// </summary>
     public class WLANInfo
     {
+        public WLANConfig Config { get; internal set; } = new WLANConfig();
+
         /// <summary>
         /// Gets if wlan is enabled
         /// </summary>
@@ -18,26 +20,6 @@ namespace PS.FritzBox.API.LANDevice
         public string Status { get; internal set; }
 
         /// <summary>
-        /// Gets the channel
-        /// </summary>
-        public UInt16 Channel { get; internal set; }
-
-        /// <summary>
-        /// Gets the ssid
-        /// </summary>
-        public string SSID { get; internal set; }
-
-        /// <summary>
-        /// Gets the beacon type
-        /// </summary>
-        public BeaconType BeaconType { get; internal set; }
-
-        /// <summary>
-        /// Gets if mac adress control is enabled
-        /// </summary>
-        public bool MACAddressControlEnabled { get; internal set; }
-
-        /// <summary>
         /// Gets the wlan standard
         /// </summary>
         public WLANStandard Standard { get; internal set; }
@@ -46,11 +28,6 @@ namespace PS.FritzBox.API.LANDevice
         /// Gets the bssid
         /// </summary>
         public string BSSID { get; internal set; }
-
-        /// <summary>
-        /// Gets the basic encryption modes
-        /// </summary>
-        public BasicEncryptionModes BasicEncryptionModes { get; internal set; }
 
         /// <summary>
         /// Gets the ssid validation info

@@ -1,12 +1,18 @@
 ﻿namespace PS.FritzBox.API.LANDevice
 {
-    internal class NightControlInfo
+    /// <summary>
+    /// class representing night control info
+    /// </summary>
+    public class NightControlInfo
     {
-        public NightControlInfo()
-        {
-        }
+        /// <summary>
+        /// the night control data
+        /// </summary>
+        public string NightControl { get; internal set; }
 
-        public string NightControl { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public bool NightTimeControlNoForcedOff { get; set; }
     }
 }

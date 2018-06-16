@@ -6,120 +6,45 @@
     public class AppSetupInfo
     {
         /// <summary>
-        /// Gets the min chars for app id
+        /// Gets the app id validation info
         /// </summary>
-        public ushort MinCharsAppId { get; internal set; }
+        public DataValidationInfo AppIDValidationInfo { get; internal set; } = new DataValidationInfo();
 
         /// <summary>
-        /// Gets the max chars for the app id
+        /// Gets the app display name validation info
         /// </summary>
-        public ushort MaxCharsAppId { get; internal set; }
+        public DataValidationInfo AppDisplayNameValidationInfo { get; internal set; } = new DataValidationInfo();
 
         /// <summary>
-        /// gets the allowed chars for the app id
+        /// Gets the app user name validation info
         /// </summary>
-        public string AllowedCharsAppId { get; internal set; }
+        public DataValidationInfo AppUsernameValidationInfo { get; internal set; } = new DataValidationInfo();
 
         /// <summary>
-        /// gets the min chars for app display name
+        /// Gets the app password validation info
         /// </summary>
-        public ushort MinCharsAppDisplayName { get; internal set; }
+        public DataValidationInfo AppPasswordValidationInfo { get; internal set; } = new DataValidationInfo();
 
         /// <summary>
-        /// gets the min chars for display name
+        /// Gets the ip sec identifier validation info
         /// </summary>
-        public ushort MaxCharsAppDisplayName { get; internal set; }
+        public DataValidationInfo IPSecIdentifierValidationInfo { get; set; } = new DataValidationInfo();
 
         /// <summary>
-        /// gets the max chars for display name
+        /// Gets the validation info for the ip sec pre shared key
         /// </summary>
-        public ushort MinCharsAppUsername { get; internal set; }
+        public DataValidationInfo IPSecPresharedKeyValidationInfo { get; internal set; } = new DataValidationInfo();
 
         /// <summary>
-        /// gets the max chars for app user name
+        /// Gets the validation info for the ip sec auth username
         /// </summary>
-        public ushort MaxCharsAppUsername { get; internal set; }
+        public DataValidationInfo IPSecXauthUsernameValidationInfo { get; internal set; } = new DataValidationInfo();
 
         /// <summary>
-        /// gets the min chars for app password
+        /// Gets the validation info for the ip sec auth password
         /// </summary>
-        public ushort MinCharsAppPassword { get; internal set; }
-
-        /// <summary>
-        /// gets the allowed chars for user name
-        /// </summary>
-        public string AllowedCharsAppUsername { get; internal set; }
-
-        /// <summary>
-        /// gets the max chars for password
-        /// </summary>
-        public ushort MaxCharsAppPassword { get; internal set; }
-
-        /// <summary>
-        /// gets the allowed chars for app password
-        /// </summary>
-        public string AllowedCharsAppPassword { get; internal set; }
-
-        /// <summary>
-        /// gets the min chars for ip sec identifier
-        /// </summary>
-        public short MinCharsIPSecIdentifier { get; internal set; }
-
-        /// <summary>
-        /// gets the max chars for ip sec identifier
-        /// </summary>
-        public ushort MaxCharsIPSecIdentifier { get; internal set; }
-
-        /// <summary>
-        /// gets the allowed chars for ip sec identifier
-        /// </summary>
-        public string AllowedCharsIPSecIdentifier { get; internal set; }
-
-        /// <summary>
-        /// gets the min chars for ip sec pre shared key
-        /// </summary>
-        public ushort MinCharsIPSecPreSharedKey { get; internal set; }
-
-        /// <summary>
-        /// gets the allowe chars for ip sec pre shared key
-        /// </summary>
-        public string AllowedCharsIPSecPreSharedKey { get; internal set; }
-
-        /// <summary>
-        /// gets the max chars for ip sec pre shared key
-        /// </summary>
-        public ushort MaxCharsIPSecPreSharedKey { get; internal set; }
-
-        /// <summary>
-        /// gets the min chars for ip sec auth username
-        /// </summary>
-        public ushort MinCharsIPSecXauthUsername { get; internal set; }
-
-        /// <summary>
-        /// gets the max chars for ip sec auth username
-        /// </summary>
-        public ushort MaxCharsIPSecXauthUsername { get; internal set; }
-
-        /// <summary>
-        /// gets the allowed chars for ip sec auth username
-        /// </summary>
-        public string AllowedCharsIPSecXauthUsername { get; internal set; }
-
-        /// <summary>
-        /// gets the min chars for ip sec auth password
-        /// </summary>
-        public ushort MinCharsIPSecXauthPassword { get; internal set; }
-
-        /// <summary>
-        /// gets the max chars for ip sec auth password
-        /// </summary>
-        public ushort MaxCharsIPSecXauthPassword { get; internal set; }
-
-        /// <summary>
-        /// gets the allowed chars for ip sec auth password
-        /// </summary>
-        public string AllowedCharsIPSecXauthPassword { get; set; }
-
+        public DataValidationInfo IPSecXauthPasswordValidationInfo { get; internal set; } = new DataValidationInfo();
+        
         /// <summary>
         /// gets the Allowed characters for CryptAlgos
         /// </summary>
