@@ -50,9 +50,6 @@ namespace PS.FritzBox.API.CMD
                         case "2":
                             this.RequestConnection();
                             break;
-                        case "3":
-                            this.GetInfo();
-                            break;
                         case "4":
                             this.GetDNSServers();
                             break;
@@ -121,14 +118,7 @@ namespace PS.FritzBox.API.CMD
             this.PrintOutputAction("connection requested");
         }
 
-        private void GetInfo()
-        {
-            this.ClearOutputAction();
-            this.PrintEntry();
-            var info = this._client.GetInfoAsync().GetAwaiter().GetResult();
-            this.PrintObject(info);
-        }
-
+       
         private void GetDNSServers()
         {
             this.ClearOutputAction();

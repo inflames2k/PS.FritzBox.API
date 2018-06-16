@@ -14,53 +14,63 @@ namespace PS.FritzBox.API.CMD
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Searching for devices...");
             IEnumerable<FritzDevice> devices = GetDevices().GetAwaiter().GetResult();
-            string input = string.Empty;
-            int deviceIndex = -1;
-            do
+
+            if (devices.Count() > 0)
             {
-                int counter = 0;
-                foreach (FritzDevice device in devices)
+                Console.WriteLine($"Found {devices.Count()} devices.");
+                string input = string.Empty;
+                int deviceIndex = -1;
+                do
                 {
-                    Console.WriteLine($"{counter} - {device.ModelName}");
-                }
-                counter++;
+                    int counter = 0;
+                    foreach (FritzDevice device in devices)
+                    {
+                        Console.WriteLine($"{counter} - {device.ModelName}");
+                    }
+                    counter++;
 
-                input = Console.ReadLine();
+                    input = Console.ReadLine();
 
-            } while (!Int32.TryParse(input, out deviceIndex) && (deviceIndex < 0 || deviceIndex >= devices.Count()));
+                } while (!Int32.TryParse(input, out deviceIndex) && (deviceIndex < 0 || deviceIndex >= devices.Count()));
 
-            FritzDevice selected = devices.Skip(deviceIndex).First();
-            Configure(selected);
+                FritzDevice selected = devices.Skip(deviceIndex).First();
+                Configure(selected);
 
-            Console.ReadLine();
+                do
+                {
+                    Console.Clear();
+                    Console.WriteLine(" 1 - DeviceInfo");
+                    Console.WriteLine(" 2 - DeviceConfig");
+                    Console.WriteLine(" 3 - LanConfigSecurity");
+                    Console.WriteLine(" 4 - LANEthernetInterface");
+                    Console.WriteLine(" 5 - LANHostConfigManagement");
+                    Console.WriteLine(" 6 . WANCommonInterfaceConfig");
+                    Console.WriteLine(" 7 - WANIPPConnection");
+                    Console.WriteLine(" 8 - WANPPPConnection");
+                    Console.WriteLine(" 9 - AppSetup");
+                    Console.WriteLine("10 - Layer3Forwarding");
+                    Console.WriteLine("11 - UserInterface");
 
-            do
+                    Console.WriteLine("r - Reinitialize");
+                    Console.WriteLine("q - Exit");
+
+                    input = Console.ReadLine();
+                    if (_clientHandlers.ContainsKey(input))
+                        _clientHandlers[input].Handle();
+                    else if (input.ToLower() == "r")
+                        Configure(selected);
+                    else if (input.ToLower() != "q")
+                        Console.WriteLine("invalid choice");
+
+                } while (input.ToLower() != "q");
+            }
+            else
             {
-                Console.Clear();
-                Console.WriteLine(" 1 - DeviceInfo");
-                Console.WriteLine(" 2 - DeviceConfig");
-                Console.WriteLine(" 3 - LanConfigSecurity");
-                Console.WriteLine(" 4 - LANEthernetInterface");
-                Console.WriteLine(" 5 - LANHostConfigManagement");
-                Console.WriteLine(" 6 - WANCommonInterfaceConfig");
-                Console.WriteLine(" 7 - WANPPPConnection");
-                Console.WriteLine(" 8 - AppSetup");
-                Console.WriteLine(" 9 - Layer3Forwarding");
-                Console.WriteLine("10 - UserInterface");
-
-                Console.WriteLine("r - Reinitialize");
-                Console.WriteLine("q - Exit");
-
-                input = Console.ReadLine();
-                if (_clientHandlers.ContainsKey(input))
-                    _clientHandlers[input].Handle();
-                else if (input.ToLower() == "r")
-                    Configure(selected);
-                else if (input.ToLower() != "q")
-                    Console.WriteLine("invalid choice");
-
-            } while (input.ToLower() != "q");
+                Console.WriteLine("No devices found");
+                Console.ReadLine();
+            }
         }
 
         static async Task<IEnumerable<FritzDevice>> GetDevices()
@@ -108,10 +118,11 @@ namespace PS.FritzBox.API.CMD
             _clientHandlers.Add("4", new LANEthernetInterfaceClientHandler(settings, printOutput, getInput, wait, clearOutput));
             _clientHandlers.Add("5", new LANHostConfigManagementClientHandler(settings, printOutput, getInput, wait, clearOutput));
             _clientHandlers.Add("6", new WANCommonInterfaceConfigClientHandler(settings, printOutput, getInput, wait, clearOutput));
-            _clientHandlers.Add("7", new WANPPPConnectionClientHandler(settings, printOutput, getInput, wait, clearOutput));
-            _clientHandlers.Add("8", new AppSetupClientHandler(settings, printOutput, getInput, wait, clearOutput));
-            _clientHandlers.Add("9", new Layer3ForwardingClientHandler(settings, printOutput, getInput, wait, clearOutput));
-            _clientHandlers.Add("10", new UserInterfaceClientHandler(settings, printOutput, getInput, wait, clearOutput));
+            _clientHandlers.Add("7", new WANIPConnectonClientHandler(settings, printOutput, getInput, wait, clearOutput));
+            _clientHandlers.Add("8", new WANPPPConnectionClientHandler(settings, printOutput, getInput, wait, clearOutput));
+            _clientHandlers.Add("9", new AppSetupClientHandler(settings, printOutput, getInput, wait, clearOutput));
+            _clientHandlers.Add("10", new Layer3ForwardingClientHandler(settings, printOutput, getInput, wait, clearOutput));
+            _clientHandlers.Add("11", new UserInterfaceClientHandler(settings, printOutput, getInput, wait, clearOutput));
         }
 
         

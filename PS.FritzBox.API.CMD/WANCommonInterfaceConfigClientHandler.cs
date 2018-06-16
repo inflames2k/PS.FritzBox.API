@@ -18,7 +18,7 @@ namespace PS.FritzBox.API.CMD
             do
             {
                 this.ClearOutputAction();
-                this.PrintOutputAction($"DeviceInfoClient{Environment.NewLine}########################");
+                this.PrintOutputAction($"WANCommonInterfaceConfig{Environment.NewLine}########################");
                 this.PrintOutputAction("1 - GetOnlineMonitor");
                 this.PrintOutputAction("2 - GetCommonLinkProperties");
                 this.PrintOutputAction("r - Return");

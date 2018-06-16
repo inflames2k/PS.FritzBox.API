@@ -13,7 +13,7 @@
         /// <summary>
         /// Gets or sets the request timeout
         /// </summary>
-        public int Timeout { get; set; }
+        public int Timeout { get; set; } = 10;
 
         /// <summary>
         /// Gets or sets the user name

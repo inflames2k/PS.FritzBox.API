@@ -26,11 +26,10 @@ namespace PS.FritzBox.API
         /// <param name="address"></param>
         /// <param name="response"></param>
         /// <returns></returns>
-        internal static FritzDevice ParseResponse(IPAddress address, int port, string response)
+        internal static FritzDevice ParseResponse(IPAddress address, string response)
         {
             FritzDevice device = new FritzDevice();
             device.IPAddress = address;
-            device.Port = port;
             device.Location = device.ParseResponse(response);
             if (device.Location == null)
                 return null;
@@ -53,7 +52,10 @@ namespace PS.FritzBox.API
             if (values.ContainsKey("location"))
             {
                 string location = values["location"];
-                return Uri.TryCreate(location, UriKind.Absolute, out Uri locationUri) ? locationUri : new UriBuilder() { Scheme = "unknown", Host = location }.Uri;
+                
+                Uri uri = Uri.TryCreate(location, UriKind.Absolute, out Uri locationUri) ? locationUri : new UriBuilder() { Scheme = "unknown", Host = location }.Uri;
+                this.Port = uri.Port;
+                return uri;
             }
             else
                 return null;
