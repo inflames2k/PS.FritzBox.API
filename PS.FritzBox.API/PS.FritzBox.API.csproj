@@ -13,7 +13,7 @@
     <PackageProjectUrl>https://github.com/inflames2k/PS.FritzBox.API</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
     <AssemblyVersion>1.2.0.0</AssemblyVersion>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <RepositoryUrl>https://github.com/inflames2k/PS.FritzBox.API.git</RepositoryUrl>
     <FileVersion>1.2.0.0</FileVersion>
     <PackageTags>AVM, Fritz!Box, Fritz.Box, TR064, UPnP</PackageTags>
