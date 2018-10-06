@@ -65,10 +65,10 @@ namespace PS.FritzBox.API.WANDevice
         /// </summary>
         /// <remarks>Internal invokes GetTotalBytesSent on device</remarks>
         /// <returns>the total bytes sent</returns>
-        public async Task<UInt32> GetTotalBytesSentAsync()
+        public async Task<UInt64> GetTotalBytesSentAsync()
         {
             XDocument document = await this.InvokeAsync("GetTotalBytesSent", null);
-            return Convert.ToUInt32(document.Descendants("NewTotalBytesSent").First().Value);
+            return Convert.ToUInt64(document.Descendants("NewTotalBytesSent").First().Value);
         }
         
         /// <summary>
@@ -76,10 +76,10 @@ namespace PS.FritzBox.API.WANDevice
         /// </summary>
         /// <remarks>Internal invokes GetTotalBytesReceived on device</remarks>
         /// <returns>the total bytes received</returns>
-        public async Task<UInt32> GetTotalBytesReceivedAsync()
+        public async Task<UInt64> GetTotalBytesReceivedAsync()
         {
             XDocument document = await this.InvokeAsync("GetTotalBytesReceived", null);
-            return Convert.ToUInt32(document.Descendants("NewTotalBytesReceived").First().Value);
+            return Convert.ToUInt64(document.Descendants("NewTotalBytesReceived").First().Value);
         }
         
         /// <summary>
@@ -87,10 +87,10 @@ namespace PS.FritzBox.API.WANDevice
         /// </summary>
         /// <remarks>Internal invokes GetTotalPacketsSent on device</remarks>
         /// <returns>the total packets sent</returns>
-        public async Task<UInt32> GetTotalPacketsSentAsync()
+        public async Task<UInt64> GetTotalPacketsSentAsync()
         {
             XDocument document = await this.InvokeAsync("GetTotalPacketsSent", null);
-            return Convert.ToUInt32(document.Descendants("NewTotalPacketsSent").First().Value);
+            return Convert.ToUInt64(document.Descendants("NewTotalPacketsSent").First().Value);
         }
 
         /// <summary>
@@ -98,10 +98,10 @@ namespace PS.FritzBox.API.WANDevice
         /// </summary>
         /// <remarks>Internal invokes GetTotalPacketsReceived on device</remarks>
         /// <returns>the total packets received</returns>
-        public async Task<UInt32> GetTotalPacketsReceivedAsync()
+        public async Task<UInt64> GetTotalPacketsReceivedAsync()
         {
             XDocument document = await this.InvokeAsync("GetTotalPacketsReceived", null);            
-            return Convert.ToUInt32(document.Descendants("NewTotalPacketsReceived").First().Value);
+            return Convert.ToUInt64(document.Descendants("NewTotalPacketsReceived").First().Value);
         }
 
         /// <summary>
