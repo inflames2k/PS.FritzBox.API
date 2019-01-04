@@ -21,6 +21,22 @@ namespace PS.FritzBox.API
         {
         }
 
+        internal FritzDevice(IPAddress address, Uri location)
+        {
+            if(address == null)
+            {
+                throw new ArgumentNullException(nameof(address));
+            }
+
+            if(location == null)
+            {
+                throw new ArgumentNullException(nameof(location));
+            }
+
+            Location = location;
+            IPAddress = address;
+        }
+
         /// <summary>
         /// Method to parse the udp response
         /// </summary>
@@ -145,10 +161,18 @@ namespace PS.FritzBox.API
 
             if (String.IsNullOrEmpty(settings.BaseUrl))
             {
-                settings.BaseUrl = $"http://{this.IPAddress}:{this.Port}";
+                var uriBuilder = new UriBuilder();
+                uriBuilder.Scheme = "http";
+                uriBuilder.Host = this.IPAddress.ToString();
+                uriBuilder.Port = this.Port;
+
+                settings.BaseUrl = uriBuilder.Uri.ToString();
                 // get the security port
                 int port = await new DeviceInfoClient(settings.BaseUrl, settings.Timeout).GetSecurityPortAsync();
-                settings.BaseUrl = $"https://{this.IPAddress}:{port}";
+
+                uriBuilder.Port = port;
+                uriBuilder.Scheme = "https";
+                settings.BaseUrl = uriBuilder.Uri.ToString();
             }
             
             return (T)Activator.CreateInstance(typeof(T), settings);
@@ -158,7 +182,7 @@ namespace PS.FritzBox.API
         /// Method to parse the fritz tr64 description
         /// </summary>
         /// <param name="data">the description data</param>
-        public void ParseTR64Desc(string data)
+        internal void ParseTR64Desc(string data)
         {
             XDocument document = XDocument.Parse(data);
             XElement deviceRoot = this.GetElement(document.Root, "device");
