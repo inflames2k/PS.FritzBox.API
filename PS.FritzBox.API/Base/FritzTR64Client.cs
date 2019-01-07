@@ -95,7 +95,9 @@ namespace PS.FritzBox.API.Base
             if (parameter != null)
                 parameters.Parameters.AddRange(parameter);
 
-            XDocument soapResult = await client.InvokeAsync($"{this.ConnectionSettings.BaseUrl}{this.ControlUrl}", parameters);
+            var urlBuilder = new UriBuilder(this.ConnectionSettings.BaseUrl);
+            urlBuilder.Path = this.ControlUrl;
+            XDocument soapResult = await client.InvokeAsync(urlBuilder.Uri, parameters);
 
             this.ParseSoapFault(soapResult);
 

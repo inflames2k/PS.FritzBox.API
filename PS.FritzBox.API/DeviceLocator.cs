@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -21,7 +22,7 @@ namespace PS.FritzBox.API
         /// Method to start discovery
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<FritzDevice>> DiscoverAsync()
+        public async Task<ICollection<FritzDevice>> DiscoverAsync()
         {
             return await this.FindDevicesAsync();            
         }
@@ -30,7 +31,7 @@ namespace PS.FritzBox.API
         /// Method to find fritz devices
         /// </summary>
         /// <returns>the fritz devices</returns>
-        private async Task<IEnumerable<FritzDevice>> FindDevicesAsync()
+        private async Task<ICollection<FritzDevice>> FindDevicesAsync()
         {
             List<FritzDevice> devices = new List<FritzDevice>();
             Action<FritzDevice> callback = (device) =>
@@ -60,39 +61,60 @@ namespace PS.FritzBox.API
                    && adapter.NetworkInterfaceType != NetworkInterfaceType.Loopback)
                 {
                     IPInterfaceProperties properties = adapter.GetIPProperties();
-                    int index = this.GetIPPropertiesIndex(properties);
                     IPAddress broadcastAddress = this.GetUnicastAddress(properties);
 
                     // skip if invalid address
                     if (broadcastAddress == null || broadcastAddress == IPAddress.None || broadcastAddress.IsIPv6LinkLocal)
                         continue;
 
-                    broadcastTasks.Add(BeginSendReceiveAsync(broadcastAddress, index, callback));     
+                    broadcastTasks.Add(BeginSendReceiveAsync(broadcastAddress, callback));     
                 }
 
                 await Task.WhenAll(broadcastTasks.ToArray());
             }
         }
 
-        private async Task BeginSendReceiveAsync(IPAddress broadcastAddress, int index, Action<FritzDevice> callback)
+        private async Task BeginSendReceiveAsync(IPAddress broadcastAddress, Action<FritzDevice> callback)
         {
             using (UdpClient client = new UdpClient(broadcastAddress.AddressFamily))
             {
                 List<Task> receivebroadcast = new List<Task>();
                 client.MulticastLoopback = false;
                 Socket socket = client.Client;
-                
-                socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastInterface, IPAddress.HostToNetworkOrder(index));
+
+
+                var broadcastViaIpV4 = broadcastAddress.AddressFamily == AddressFamily.InterNetwork;
+
+                if (broadcastViaIpV4)
+                {
+                    socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastInterface, broadcastAddress.GetAddressBytes());
+                }
+                else
+                {
+                    byte[] interfaceArray = BitConverter.GetBytes((int)broadcastAddress.ScopeId);
+
+                    var mcastOption = new IPv6MulticastOption(broadcastAddress, broadcastAddress.ScopeId);
+                    socket.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.MulticastInterface, interfaceArray);
+                }
+
                 socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 socket.ReceiveBufferSize = Int32.MaxValue;
                 client.ExclusiveAddressUse = false;
                 socket.Bind(new IPEndPoint(broadcastAddress, 1901));
 
-                socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(IPAddress.Parse("239.255.255.250"), index));
+                var broadCast = broadcastViaIpV4 ? UpnpBroadcast.CreateIpV4Broadcast() : UpnpBroadcast.CreateIpV6Broadcast();
+                if (broadcastViaIpV4)
+                {
+                    socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(broadCast.IpAdress));
+                }
+                else
+                {
+                    socket.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.AddMembership, new IPv6MulticastOption(broadCast.IpAdress, broadcastAddress.ScopeId));
+                }
 
                 await Task.WhenAll(
                     this.ReceiveAsync(client, callback),
-                    this.BroadcastAsync(client)
+                    this.BroadcastAsync(client, broadCast)
                     );
             }
         }
@@ -109,10 +131,11 @@ namespace PS.FritzBox.API
             // delay for 20 seconds
             Task waitTask = Task.Delay(TimeSpan.FromSeconds(10));
 
-            List<Task> getDeviceInfoTasks = new List<Task>();
+            var getDeviceInfoTasks = new List<Task<Tr64Description>>();
 
             Dictionary<IPAddress, FritzDevice> discovered = new Dictionary<IPAddress, FritzDevice>();
 
+            var tr64DataReader = new Tr64DataReader();
             while (!waitTask.IsCompleted)
             {
                 var receiveTask = SafeReceiveAsync(client);
@@ -136,7 +159,7 @@ namespace PS.FritzBox.API
                             {
                                 // fetch the device info
                                 deviceCallback?.Invoke(device);
-                                getDeviceInfoTasks.Add(this.GetDeviceInfo(device));
+                                getDeviceInfoTasks.Add(tr64DataReader.ReadDeviceInfoAsync(device));
                                 discovered.Add(result.RemoteEndPoint.Address, device);
                             }
                         }
@@ -146,7 +169,18 @@ namespace PS.FritzBox.API
 
             if (getDeviceInfoTasks.Count > 0)
             {
-                await Task.WhenAll(getDeviceInfoTasks);
+               
+                foreach(var task in getDeviceInfoTasks)
+                {
+                    try
+                    {
+                        var description = await task;
+                        description.Device.ParseTR64Desc(description.Data);
+                    } catch(FritzDeviceException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
             }
         }
 
@@ -171,24 +205,14 @@ namespace PS.FritzBox.API
         /// Method to execute the broadcast
         /// </summary>
         /// <param name="client">the udp client</param>
-        /// <returns></returns>
-        private async Task BroadcastAsync(UdpClient client)
+        /// <param name="broadcast">The broadcast to send to the client.</param>
+        private async Task BroadcastAsync(UdpClient client, UpnpBroadcast broadcast)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("M-SEARCH * HTTP/1.1");
-            sb.AppendLine("Host:239.255.255.250:1900");
-            sb.AppendLine("Man:\"ssdp:discover\"");
-            sb.AppendLine("ST:urn:schemas-upnp-org:device:InternetGatewayDevice:1");
-            sb.AppendLine("MX:3");
-
-        
-            byte[] searchBytes = Encoding.ASCII.GetBytes(sb.ToString());
-
             int broadcasts = 0;
-            IPEndPoint endpoint = new IPEndPoint(IPAddress.Parse("239.255.255.250"), 1900);
+          
             do
             {
-                await client.SendAsync(searchBytes, searchBytes.Length, endpoint);
+                await client.SendAsync(broadcast.Content, broadcast.ContentLenght, broadcast.IpEndPoint);
                 broadcasts++;                    
 
                 await Task.Delay(TimeSpan.FromSeconds(2));
@@ -196,64 +220,7 @@ namespace PS.FritzBox.API
             } while (broadcasts < 5);
         }
 
-        /// <summary>
-        /// task for fetching device infos
-        /// </summary>
-        /// <param name="device">the device to find the infos for</param>
-        private async Task GetDeviceInfo(FritzDevice device)
-        {
-            try
-            {
-                Uri.TryCreate($"http://{device.Location.Authority}/tr64desc.xml", UriKind.Absolute, out Uri uri);
-                var httpRequest = WebRequest.CreateHttp(uri);
-                httpRequest.Timeout = 10000;
-                              
-                using (var response = (HttpWebResponse)(await httpRequest.GetResponseAsync()))
-                {
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        using (var responseStream = response.GetResponseStream())
-                        using (var responseReader = new StreamReader(responseStream, Encoding.UTF8))
-                        {
-                            var data = await responseReader.ReadToEndAsync();
-                            device.ParseTR64Desc(data);
-                        }
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
-
-        /// <summary>
-        /// Method to get the ip properties index
-        /// </summary>
-        /// <param name="properties"></param>
-        /// <returns></returns>
-        private Int32 GetIPPropertiesIndex(IPInterfaceProperties properties)
-        {
-            int index = -1;
-            
-            try
-            {
-                index = properties.GetIPv4Properties().Index;
-            }
-            catch
-            {
-                try
-                {
-                    index = properties.GetIPv6Properties().Index;
-                }
-                catch
-                {
-                    // failed to get ipv4 of ipv6 properties..                    
-                }
-            }
-
-            return index;
-        }    
+      
 
         /// <summary>
         /// Method to get the unicast address
@@ -262,11 +229,11 @@ namespace PS.FritzBox.API
         /// <returns></returns>
         private IPAddress GetUnicastAddress(IPInterfaceProperties properties)
         {
-            IPAddress ipAddress = IPAddress.None; 
+            IPAddress ipAddress = IPAddress.None;
 
-            foreach(UnicastIPAddressInformation addressInfo in properties.UnicastAddresses)
+            foreach (UnicastIPAddressInformation addressInfo in properties.UnicastAddresses)
             {
-                if(addressInfo.Address.AddressFamily == AddressFamily.InterNetwork
+                if (addressInfo.Address.AddressFamily == AddressFamily.InterNetwork
                    || (addressInfo.Address.AddressFamily == AddressFamily.InterNetworkV6 && !addressInfo.Address.IsIPv6LinkLocal))
                 {
                     ipAddress = addressInfo.Address;

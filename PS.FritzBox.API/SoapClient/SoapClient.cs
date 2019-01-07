@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace PS.FritzBox.API.SOAP
@@ -18,10 +20,10 @@ namespace PS.FritzBox.API.SOAP
         /// </summary>
         /// <param name="parameters">the request parameters</param>
         /// <returns>the result of the call</returns>
-        public async Task<XDocument> InvokeAsync(string url, SoapRequestParameters parameters)
+        public async Task<XDocument> InvokeAsync(Uri uri, SoapRequestParameters parameters)
         {
-            string envelope = this.CreateEnvelope(parameters);
-            return await this.ExecuteAsync(envelope, url, parameters);           
+            var envelope = this.CreateEnvelope(parameters);
+            return await this.ExecuteAsync(envelope, uri, parameters);           
         }
 
         /// <summary>
@@ -31,7 +33,6 @@ namespace PS.FritzBox.API.SOAP
         /// <returns></returns>
         private string CreateEnvelope(SoapRequestParameters parameters)
         {
-
             StringBuilder sb = new StringBuilder();
             sb.Append(@"<?xml version='1.0' encoding='UTF-8'?> 
                       <soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
@@ -56,18 +57,18 @@ namespace PS.FritzBox.API.SOAP
         /// <param name="url">the soap url</param>
         /// <param name="parameters">the parameters</param>
         /// <returns></returns>
-        private async Task<XDocument> ExecuteAsync(string xmlSOAP, string url, SoapRequestParameters parameters)
+        private async Task<XDocument> ExecuteAsync(string xmlSOAP, Uri url, SoapRequestParameters parameters)
         {
             HttpClientHandler handler = new HttpClientHandler();            
             handler.ServerCertificateCustomValidationCallback = delegate { return true; };
             handler.Credentials = parameters.Credentials;
 
-            using (System.Net.Http.HttpClient client = new HttpClient(handler))
+            using (HttpClient client = new HttpClient(handler))
             {
                // client.Timeout = TimeSpan.FromMilliseconds(parameters.Timeout);
                 var request = new HttpRequestMessage()
                 {
-                    RequestUri = new Uri(url),
+                    RequestUri = url,
                     Method = HttpMethod.Post
                 };
                 
