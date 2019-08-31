@@ -14,8 +14,13 @@ namespace PS.FritzBox.API.CMD
 
         static void Main(string[] args)
         {
+            MainAsync(args).Wait();
+        }
+
+        static async Task MainAsync(string[] args)
+        {
             Console.WriteLine("Searching for devices...");
-            IEnumerable<FritzDevice> devices = GetDevices().GetAwaiter().GetResult();
+            IEnumerable<FritzDevice> devices = await GetDevices();
 
             if (devices.Count() > 0)
             {
@@ -55,13 +60,16 @@ namespace PS.FritzBox.API.CMD
                     Console.WriteLine("10 - Layer3Forwarding");
                     Console.WriteLine("11 - UserInterface");
                     Console.WriteLine("12 - WLANConfiguration");
+                    Console.WriteLine("13 - WLANConfiguration2");
+                    Console.WriteLine("14 - WLANConfiguration3");
+                    Console.WriteLine("15 - WANDSLInterfaceConfig");
 
                     Console.WriteLine("r - Reinitialize");
                     Console.WriteLine("q - Exit");
 
                     input = Console.ReadLine();
                     if (_clientHandlers.ContainsKey(input))
-                        _clientHandlers[input].Handle();
+                        await _clientHandlers[input].Handle();
                     else if (input.ToLower() == "r")
                         Configure(selected);
                     else if (input.ToLower() != "q")
@@ -127,6 +135,9 @@ namespace PS.FritzBox.API.CMD
             _clientHandlers.Add("10", new Layer3ForwardingClientHandler(settings, printOutput, getInput, wait, clearOutput));
             _clientHandlers.Add("11", new UserInterfaceClientHandler(settings, printOutput, getInput, wait, clearOutput));
             _clientHandlers.Add("12", new WLANConfigurationClientHandler(settings, printOutput, getInput, wait, clearOutput));
+            _clientHandlers.Add("13", new WLANConfigurationClientHandler2(settings, printOutput, getInput, wait, clearOutput));
+            _clientHandlers.Add("14", new WLANConfigurationClientHandler3(settings, printOutput, getInput, wait, clearOutput));
+            _clientHandlers.Add("15", new WANDSLInterfaceConfigClientHandler(settings, printOutput, getInput, wait, clearOutput));
         }
 
         

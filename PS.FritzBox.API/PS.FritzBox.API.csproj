@@ -12,10 +12,10 @@
     <PackageLicenseUrl>https://github.com/inflames2k/PS.FritzBox.API/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/inflames2k/PS.FritzBox.API</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
-    <AssemblyVersion>1.2.0.0</AssemblyVersion>
-    <Version>1.2.1</Version>
+    <AssemblyVersion>1.2.1.0</AssemblyVersion>
+    <Version>1.2.2</Version>
     <RepositoryUrl>https://github.com/inflames2k/PS.FritzBox.API.git</RepositoryUrl>
-    <FileVersion>1.2.0.0</FileVersion>
+    <FileVersion>1.2.1.0</FileVersion>
     <PackageTags>AVM, Fritz!Box, Fritz.Box, TR064, UPnP</PackageTags>
     <PackageReleaseNotes>Restructured class tree, improved service clients, added some missing services and implemented device search.</PackageReleaseNotes>
   </PropertyGroup>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace PS.FritzBox.API.CMD
 {
@@ -10,7 +11,7 @@ namespace PS.FritzBox.API.CMD
             this._client = new UserInterfaceClient(settings);
         }
 
-        public override void Handle()
+        public override async Task Handle()
         {
             string input = string.Empty;
 
@@ -29,10 +30,10 @@ namespace PS.FritzBox.API.CMD
                     switch (input)
                     {
                         case "1":
-                            this.GetInfo();
+                            await this.GetInfo();
                             break;
                         case "2":
-                            this.GetUpdateInfo();
+                            await this.GetUpdateInfo();
                             break;
                         case "r":
                             break;
@@ -53,19 +54,19 @@ namespace PS.FritzBox.API.CMD
             } while (input != "r");
         }
 
-        private void GetInfo()
+        private async Task GetInfo()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var info = this._client.GetInfoAsync().GetAwaiter().GetResult();
+            var info = await this._client.GetInfoAsync();
             this.PrintObject(info);
         }
 
-        private void GetUpdateInfo()
+        private async Task GetUpdateInfo()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var info = this._client.GetUpdateInfoAsync().GetAwaiter().GetResult();
+            var info = await this._client.GetUpdateInfoAsync();
 
             this.PrintObject(info);
 

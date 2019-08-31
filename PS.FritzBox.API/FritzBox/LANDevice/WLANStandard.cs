@@ -23,6 +23,10 @@ namespace PS.FritzBox.API.LANDevice
         /// <summary>
         /// WLAN standard n
         /// </summary>
-        n
+        n,
+        /// <summary>
+        /// WLAN standard ac
+        /// </summary>
+        ac
     }
 }

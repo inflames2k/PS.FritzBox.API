@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace PS.FritzBox.API.CMD
 {
@@ -12,7 +13,7 @@ namespace PS.FritzBox.API.CMD
             this._client = new DeviceConfigClient(settings);
         }
 
-        public override void Handle()
+        public override async Task Handle()
         {
             string input = string.Empty;
 
@@ -39,31 +40,31 @@ namespace PS.FritzBox.API.CMD
                     switch (input)
                     {
                         case "1":
-                            this.FactoryReset();
+                            await this.FactoryReset();
                             break;
                         case "2":
-                            this.Reboot();
+                            await this.Reboot();
                             break;
                         case "3":
-                            this.StartConfiguration();
+                            await this.StartConfiguration();
                             break;
                         case "4":
-                            this.FinishConfiguration();
+                            await this.FinishConfiguration();
                             break;
                         case "5":
-                            this.GetConfigFIle();
+                            await this.GetConfigFIle();
                             break;
                         case "6":
-                            this.DownloadConfigFile();
+                            await this.DownloadConfigFile();
                             break;
                         case "7":
-                            this.GenerateUrlSID();
+                            await this.GenerateUrlSID();
                             break;
                         case "8":
-                            this.GetPersistentData();
+                            await this.GetPersistentData();
                             break;
                         case "9":
-                            this.SetPersistentData();
+                            await this.SetPersistentData();
                             break;
                         case "r":
                             break;
@@ -87,7 +88,7 @@ namespace PS.FritzBox.API.CMD
         /// <summary>
         /// Method to do a factory reset
         /// </summary>
-        private void FactoryReset()
+        private async Task FactoryReset()
         {
             this.PrintEntry();
             this.ClearOutputAction();
@@ -95,7 +96,7 @@ namespace PS.FritzBox.API.CMD
             string result = this.GetInputFunc();
 
             if (result == "y")
-                _client.FactoryResetAsync().GetAwaiter().GetResult();
+                await _client.FactoryResetAsync();
             else
                 this.PrintOutputAction("Reset aborted");
         }
@@ -103,7 +104,7 @@ namespace PS.FritzBox.API.CMD
         /// <summary>
         /// Method to reboot the device
         /// </summary>
-        private void Reboot()
+        private async Task Reboot()
         {
 
             this.ClearOutputAction();
@@ -112,7 +113,7 @@ namespace PS.FritzBox.API.CMD
             string result = this.GetInputFunc();
 
             if (result == "y")
-                _client.RebootAsync().GetAwaiter().GetResult();
+               await _client.RebootAsync();
             else
                 this.PrintOutputAction("Reboot aborted");
         }
@@ -120,72 +121,72 @@ namespace PS.FritzBox.API.CMD
         /// <summary>
         /// Method to generate uuid
         /// </summary>
-        private void GenerateUUID()
+        private async Task GenerateUUID()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            this._configSID = _client.GenerateUUIDAsync().GetAwaiter().GetResult();
+            this._configSID = await _client.GenerateUUIDAsync();
             this.PrintOutputAction($"UUID: {this._configSID}");
         }
 
-        private void StartConfiguration()
+        private async Task StartConfiguration()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            this.GenerateUUID();
-            this._client.StartConfigurationAsync(this._configSID).GetAwaiter().GetResult();
+            await this.GenerateUUID();
+            await this._client.StartConfigurationAsync(this._configSID);
         }
 
-        private void FinishConfiguration()
+        private async Task FinishConfiguration()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            string result = this._client.FinishConfigurationAsync().GetAwaiter().GetResult();
+            string result = await this._client.FinishConfigurationAsync();
             this.PrintOutputAction($"Configuration result: {result}");
         }
 
-        private void GetConfigFIle()
+        private async Task GetConfigFIle()
         {
             this.ClearOutputAction();
             this.PrintEntry();
             this.PrintOutputAction("Password: ");          
-            string result = this._client.GetConfigFileAsync(this.GetInputFunc()).GetAwaiter().GetResult();
+            string result = await this._client.GetConfigFileAsync(this.GetInputFunc());
             this.PrintOutputAction($"Configfile: {result}");
         }
 
-        private void DownloadConfigFile()
+        private async Task DownloadConfigFile()
         {
             this.ClearOutputAction();
             this.PrintEntry();
             this.PrintOutputAction("Targetpath: ");
             string target = this.GetInputFunc();
             this.PrintOutputAction("Password: ");
-            this._client.DownloadConfigFileAsync(this.GetInputFunc(), target).GetAwaiter().GetResult();
+            await this._client.DownloadConfigFileAsync(this.GetInputFunc(), target);
             this.PrintOutputAction("Config file downloaded");
         }
 
-        private void GenerateUrlSID()
+        private async Task GenerateUrlSID()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            string urlSID = this._client.GenerateUrlSIDAsync().GetAwaiter().GetResult();
+            string urlSID = await this._client.GenerateUrlSIDAsync();
             this.PrintOutputAction($"UrlSID: {urlSID}");
         }
 
-        private void GetPersistentData()
+        private async Task GetPersistentData()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            string persistentData = this._client.GetPersistentDataAsync().GetAwaiter().GetResult();
+            string persistentData = await this._client.GetPersistentDataAsync();
             this.PrintOutputAction($"Persistent Data: {persistentData}");
         }
 
-        private void SetPersistentData()
+        private async Task SetPersistentData()
         {
             this.ClearOutputAction();
             this.PrintEntry();
             this.PrintOutputAction("New persistent data: ");
-            this._client.SetPersistentDataAsync(this.GetInputFunc()).GetAwaiter().GetResult();
+            await this._client.SetPersistentDataAsync(this.GetInputFunc());
             this.PrintOutputAction("Persistent data written.");
         }
     }

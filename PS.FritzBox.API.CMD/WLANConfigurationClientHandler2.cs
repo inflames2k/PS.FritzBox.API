@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace PS.FritzBox.API.CMD
 {
-    internal class WLANConfigurationClientHandler : ClientHandler
+    internal class WLANConfigurationClientHandler2 : ClientHandler
     {
-        WLANConfigurationClient _client;
-        public WLANConfigurationClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
+        WLANConfigurationClient2 _client;
+        public WLANConfigurationClientHandler2(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
         {
-            this._client = new WLANConfigurationClient(settings);
+            this._client = new WLANConfigurationClient2(settings);
         }
 
         public override async Task Handle()

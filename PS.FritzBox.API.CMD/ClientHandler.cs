@@ -40,7 +40,7 @@ namespace PS.FritzBox.API.CMD
             this.ClearOutputAction = clearOutput;
         }
 
-        public abstract void Handle();
+        public abstract Task Handle();
 
         /// <summary>
         /// Method to print an object

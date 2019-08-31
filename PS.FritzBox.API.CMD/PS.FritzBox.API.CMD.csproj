@@ -54,8 +54,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserInterfaceClientHandler.cs" />
     <Compile Include="WANCommonInterfaceConfigClientHandler.cs" />
+    <Compile Include="WANDSLInterfaceConfigClientHandler.cs" />
     <Compile Include="WANIPConnectionClientHandler.cs" />
     <Compile Include="WANPPPConnectionClientHandler.cs" />
+    <Compile Include="WLANConfigurationClientHandler3.cs" />
+    <Compile Include="WLANConfigurationClientHandler2.cs" />
     <Compile Include="WLANConfigurationClientHandler.cs" />
   </ItemGroup>
   <ItemGroup>

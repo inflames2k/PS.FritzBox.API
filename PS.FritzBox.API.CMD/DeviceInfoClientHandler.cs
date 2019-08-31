@@ -19,7 +19,7 @@ namespace PS.FritzBox.API.CMD
         /// <summary>
         /// Method to handle
         /// </summary>
-        public override void Handle()
+        public override async Task Handle()
         {
             string input = string.Empty;
             
@@ -39,13 +39,13 @@ namespace PS.FritzBox.API.CMD
                     switch (input)
                     {
                         case "1":
-                            this.GetDeviceInfo();
+                            await this.GetDeviceInfo();
                             break;
                         case "2":
-                            this.GetLog();
+                            await this.GetLog();
                             break;
                         case "3":
-                            this.GetSecurityPort();
+                            await this.GetSecurityPort();
                             break;
                         case "r":
                             break;
@@ -69,24 +69,24 @@ namespace PS.FritzBox.API.CMD
         /// <summary>
         /// Method to get and print device info
         /// </summary>
-        private void GetDeviceInfo()
+        private async Task GetDeviceInfo()
         {
             
             this.ClearOutputAction();
             base.PrintEntry();
-            DeviceInfo info = this._client.GetDeviceInfoAsync().GetAwaiter().GetResult();
+            DeviceInfo info = await this._client.GetDeviceInfoAsync();
             base.PrintObject(info);
         }
 
         /// <summary>
         /// Method to get the device log
         /// </summary>
-        private void GetLog()
+        private async Task GetLog()
         {
             this.ClearOutputAction();
             base.PrintEntry();
 
-            var log = this._client.GetDeviceLogAsync().GetAwaiter().GetResult();
+            var log = await this._client.GetDeviceLogAsync();
             foreach (var entry in log)
                 this.PrintOutputAction(entry);
         }
@@ -94,11 +94,11 @@ namespace PS.FritzBox.API.CMD
         /// <summary>
         /// Method to get the security port
         /// </summary>
-        private void GetSecurityPort()
+        private async Task GetSecurityPort()
         {
             this.ClearOutputAction();            
             base.PrintEntry();
-            UInt16 secPort = this._client.GetSecurityPortAsync().GetAwaiter().GetResult();
+            UInt16 secPort = await this._client.GetSecurityPortAsync();
             this.PrintOutputAction($"SecurityPort: {secPort}");
         }
     }

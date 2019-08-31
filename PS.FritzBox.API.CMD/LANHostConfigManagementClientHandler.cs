@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace PS.FritzBox.API.CMD
 {
@@ -12,7 +13,7 @@ namespace PS.FritzBox.API.CMD
             this._client = new LANDevice.LANHostConfigManagementClient(settings);
         }
 
-        public override void Handle()
+        public override async Task Handle()
         {
             string input = string.Empty;
 
@@ -38,31 +39,31 @@ namespace PS.FritzBox.API.CMD
                     switch (input)
                     {
                         case "1":
-                            this.GetInfo();
+                            await this.GetInfo();
                             break;
                         case "2":
-                            this.GetSubnetMask();
+                            await this.GetSubnetMask();
                             break;
                         case "3":
-                            this.GetIPInterfaceNumberOfEntries();
+                            await this.GetIPInterfaceNumberOfEntries();
                             break;
                         case "4":
-                            this.GetAddressRange();
+                            await this.GetAddressRange();
                             break;
                         case "5":
-                            this.GetDNSServers();
+                            await this.GetDNSServers();
                             break;
                         case "6":
-                            this.GetIPRouters();
+                            await this.GetIPRouters();
                             break;
                         case "7":
-                            this.SetSubnetMask();
+                            await this.SetSubnetMask();
                             break;
                         case "8":
-                            this.SetAddressRange();
+                            await this.SetAddressRange();
                             break;
                         case "9":
-                            this.SetDHCPServerEnable();
+                            await this.SetDHCPServerEnable();
                             break;
                         case "r":
                             break;
@@ -83,57 +84,57 @@ namespace PS.FritzBox.API.CMD
             } while (input != "r");
         }
 
-        private void GetInfo()
+        private async Task GetInfo()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var info = this._client.GetInfoAsync().GetAwaiter().GetResult();
+            var info = await this._client.GetInfoAsync();
             this.PrintObject(info);
         }
 
-        private void GetSubnetMask()
+        private async Task GetSubnetMask()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var subnetMask = this._client.GetSubnetMaskAsync().GetAwaiter().GetResult();
+            var subnetMask = await this._client.GetSubnetMaskAsync();
             this.PrintOutputAction($"Subnetmask: {subnetMask}");
         }
 
-        private void GetIPInterfaceNumberOfEntries()
+        private async Task GetIPInterfaceNumberOfEntries()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var count = this._client.GetIPInterfaceNumberOfEntriesAsync().GetAwaiter().GetResult();
+            var count = await this._client.GetIPInterfaceNumberOfEntriesAsync();
             this.PrintOutputAction($"Interface count: {count}");
         }
 
-        private void GetAddressRange()
+        private async Task GetAddressRange()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var range = this._client.GetAddressRangeAsync().GetAwaiter().GetResult();
+            var range = await this._client.GetAddressRangeAsync();
             this.PrintObject(range);
         }
 
-        private void GetDNSServers()
+        private async Task GetDNSServers()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var servers = this._client.GetDNSServerAsync().GetAwaiter().GetResult();
+            var servers = await this._client.GetDNSServerAsync();
             foreach (var server in servers)
                 this.PrintOutputAction(server.ToString());
         }
 
-        private void GetIPRouters()
+        private async Task GetIPRouters()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var servers = this._client.GetIPRoutersListAsync().GetAwaiter().GetResult();
+            var servers = await this._client.GetIPRoutersListAsync();
             foreach (var server in servers)
                 this.PrintOutputAction(server.ToString());
         }
 
-        private void SetSubnetMask()
+        private async Task SetSubnetMask()
         {
             this.ClearOutputAction();
             this.PrintEntry();
@@ -146,12 +147,12 @@ namespace PS.FritzBox.API.CMD
             }
             else
             {
-                this._client.SetSubnetMaskAsync(address).GetAwaiter().GetResult();
+                await this._client.SetSubnetMaskAsync(address);
                 this.PrintOutputAction("subnet mask set");
             }
         }
 
-        private void SetAddressRange()
+        private async Task SetAddressRange()
         {
             this.ClearOutputAction();
             this.PrintEntry();
@@ -166,19 +167,19 @@ namespace PS.FritzBox.API.CMD
             }
             else
             {
-                this._client.SetAddressRangeAsync(min, max).GetAwaiter().GetResult();
+                await this._client.SetAddressRangeAsync(min, max);
                 this.PrintOutputAction("IP range set");
             }
         }
 
-        private void SetDHCPServerEnable()
+        private async Task SetDHCPServerEnable()
         {
             this.ClearOutputAction();
             this.PrintEntry();
             this.PrintOutputAction("enable state? (1/0)");
             var enable = this.GetInputFunc() == "1";
 
-            this._client.SetDHCPServerEnableAsync(enable).GetAwaiter().GetResult();
+            await this._client.SetDHCPServerEnableAsync(enable);
             this.PrintOutputAction("enabled state changed");
         }
     }

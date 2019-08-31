@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace PS.FritzBox.API.CMD
 {
@@ -11,7 +12,7 @@ namespace PS.FritzBox.API.CMD
             this._client = new WANDevice.WANCommonInterfaceConfigClient(settings);
         }
 
-        public override void Handle()
+        public override async Task Handle()
         {
             string input = string.Empty;
 
@@ -30,10 +31,10 @@ namespace PS.FritzBox.API.CMD
                     switch (input)
                     {
                         case "1":
-                            this.GetOnlineMonitor();
+                            await this.GetOnlineMonitor();
                             break;
                         case "2":
-                            this.GetCommonLinkProperties();
+                            await this.GetCommonLinkProperties();
                             break;
                         case "r":
                             break;
@@ -54,7 +55,7 @@ namespace PS.FritzBox.API.CMD
             } while (input != "r");
         }
 
-        private void GetOnlineMonitor()
+        private async Task GetOnlineMonitor()
         {
             this.ClearOutputAction();
             this.PrintEntry();
@@ -63,17 +64,17 @@ namespace PS.FritzBox.API.CMD
                 this.PrintOutputAction("Invalid group index");
             else
             {
-                var monitor = _client.GetOnlineMonitorAsync(groupIndex).GetAwaiter().GetResult();
+                var monitor = await _client.GetOnlineMonitorAsync(groupIndex);
                 this.PrintObject(monitor);
             }
         }
 
-        private void GetCommonLinkProperties()
+        private async Task GetCommonLinkProperties()
         {
             this.ClearOutputAction();
             this.PrintEntry();
 
-            var props = this._client.GetCommonLinkPropertiesAsync().GetAwaiter().GetResult();
+            var props = await this._client.GetCommonLinkPropertiesAsync();
             this.PrintObject(props);
         }
     }

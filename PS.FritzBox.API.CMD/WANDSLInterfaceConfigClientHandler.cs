@@ -1,26 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using PS.FritzBox.API;
 
 namespace PS.FritzBox.API.CMD
 {
-    public class AppSetupClientHandler : ClientHandler
+    public class WANDSLInterfaceConfigClientHandler : ClientHandler
     {
-        AppSetupClient _client;
+        WANDevice.WANDSLInterfaceConfigClient _client;
 
-        public AppSetupClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
+        public WANDSLInterfaceConfigClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
         {
-            _client = new AppSetupClient(settings);
+            this._client = new WANDevice.WANDSLInterfaceConfigClient(settings);
+            
         }
 
         public override async Task Handle()
         {
             string input = string.Empty;
+
             do
             {
                 this.ClearOutputAction();
-                this.PrintOutputAction($"AppSetupClient{Environment.NewLine}########################");
+                this.PrintOutputAction($"WANDSLInterfaceConfigClient{Environment.NewLine}########################");
                 this.PrintOutputAction("1 - GetInfo");
-                this.PrintOutputAction("2 - GetConfig");
+                this.PrintOutputAction("2 - GetStatisticsTotal");
+                this.PrintOutputAction("3 - GetDSLDiagnoseInfo");
                 this.PrintOutputAction("r - Return");
 
                 input = this.GetInputFunc();
@@ -33,7 +40,10 @@ namespace PS.FritzBox.API.CMD
                             await this.GetInfo();
                             break;
                         case "2":
-                            await this.GetConfig();
+                           await this.GetStatisticsTotal();
+                            break;
+                        case "3":
+                            await this.GetDSLDiagnoseInfo();
                             break;
                         case "r":
                             break;
@@ -62,12 +72,20 @@ namespace PS.FritzBox.API.CMD
             this.PrintObject(info);
         }
 
-        private async Task GetConfig()
+        private async Task GetStatisticsTotal()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var config = await this._client.GetConfigAsync();
-            this.PrintObject(config);
+            var info = await this._client.GetStatisticsTotalAsync();
+            this.PrintObject(info);
+        }
+
+        private async Task GetDSLDiagnoseInfo()
+        {
+            this.ClearOutputAction();
+            this.PrintEntry();
+            var info = await this._client.GetDSLDiagnoseInfoAsync();
+            this.PrintObject(info);
         }
     }
 }

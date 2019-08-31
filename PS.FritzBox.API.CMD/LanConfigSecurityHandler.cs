@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace PS.FritzBox.API.CMD
 {
@@ -11,7 +12,7 @@ namespace PS.FritzBox.API.CMD
             this._client = new LANConfigSecurityClient(settings);
         }
 
-        public override void Handle()
+        public override async Task Handle()
         {
             string input = string.Empty;
 
@@ -32,16 +33,16 @@ namespace PS.FritzBox.API.CMD
                     switch (input)
                     {
                         case "1":
-                            this.GetAnonymousLogin();
+                            await this.GetAnonymousLogin();
                             break;
                         case "2":
-                            this.GetCurrentUser();
+                            await this.GetCurrentUser();
                             break;
                         case "3":
-                            this.GetInfo();
+                            await this.GetInfo();
                             break;
                         case "4":
-                            this.SetConfigPassword();
+                            await this.SetConfigPassword();
                             break;
                         case "r":
                             break;
@@ -62,36 +63,36 @@ namespace PS.FritzBox.API.CMD
             } while (input != "r");
         }
 
-        private void GetAnonymousLogin()
+        private async Task GetAnonymousLogin()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var anonymousLogin = this._client.GetAnonymousLoginAsync().GetAwaiter().GetResult();
+            var anonymousLogin = await this._client.GetAnonymousLoginAsync();
             this.PrintOutputAction($"AnonymousLogin: {anonymousLogin}");
         }
 
-        private void GetCurrentUser()
+        private async Task GetCurrentUser()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var currentUser = this._client.GetCurrentUserAsync().GetAwaiter().GetResult();
+            var currentUser = await this._client.GetCurrentUserAsync();
             this.PrintObject(currentUser);
         }
 
-        private void GetInfo()
+        private async Task GetInfo()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var info = this._client.GetInfoAsync().GetAwaiter().GetResult();
+            var info = await this._client.GetInfoAsync();
             this.PrintObject(info);
         }
 
-        private void SetConfigPassword()
+        private async Task SetConfigPassword()
         {
             this.ClearOutputAction();
             this.PrintEntry();
             this.PrintOutputAction("New password:");
-            this._client.SetConfigPasswordAsync(this.GetInputFunc()).GetAwaiter().GetResult();
+            await this._client.SetConfigPasswordAsync(this.GetInputFunc());
             this.PrintOutputAction("Password changed.");
         }
     }

@@ -1,4 +1,5 @@
 ﻿using PS.FritzBox.API.Base;
+using PS.FritzBox.API.FritzBox.LANDevice;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -397,6 +398,49 @@ namespace PS.FritzBox.API.LANDevice
                 Mode = (WPSMode)Enum.Parse(typeof(WPSMode), document.Descendants("NewX_AVM-DE_WPSMode").First().Value),
                 Status = (WPSStatus)Enum.Parse(typeof(WPSStatus), document.Descendants("NewX_AVM-DE_WPSStatus").First().Value)
             };
+        }
+
+        /// <summary>
+        /// Method to get paket statistics
+        /// </summary>
+        /// <returns>the packet statistics</returns>
+        public async Task<WLanStatistics> GetStatisticsAsync()
+        {
+            XDocument document = await this.InvokeAsync("GetStatistics", null);
+            return this.FillWLanStatistics(document);
+        }
+
+        /// <summary>
+        /// Method to get paket statistics
+        /// </summary>
+        /// <returns>the packet statistics</returns>
+        public async Task<WLanStatistics> GetPacketStatisticsAsync()
+        {
+            XDocument document = await this.InvokeAsync("GetPacketStatistics", null);
+            return this.FillWLanStatistics(document);
+        }
+
+        /// <summary>
+        /// Method to fill packet statistics
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
+        private WLanStatistics FillWLanStatistics(XDocument document)
+        {
+            return new WLanStatistics()
+            {
+                TotalPacketsSent = Convert.ToUInt64(document.Descendants("NewTotalPacketsSent").First().Value),
+                TotalPacketsReceived = Convert.ToUInt64(document.Descendants("NewTotalPacketsReceived").First().Value)
+            };
+        }
+
+        /// <summary>
+        /// Method to enable or disable the 5GHz WLAN
+        /// </summary>
+        /// <returns></returns>
+        public async Task SetHighFrequencyBandAsync(bool enableHighFrequency)
+        {
+            XDocument document = await this.InvokeAsync("X_SetHighFrequencyBand", new SOAP.SoapRequestParameter("NewEnableHighFrequency", enableHighFrequency ? 1 : 0));
         }
     }
 }

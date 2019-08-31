@@ -24,6 +24,10 @@
         /// <summary>
         /// WPA and 11 i
         /// </summary>
-        WPAand11i
+        WPAand11i,
+        /// <summary>
+        /// 11iandWPA3
+        /// </summary>
+        _11iandWPA3
     }
 }

@@ -11,7 +11,7 @@ using System.Xml.Linq;
 namespace PS.FritzBox.API.LANDevice
 {
     /// <summary>
-    /// client for wlan configuration service for the 5GHz network
+    /// client for wlan configuration service for the Guest network
     /// </summary>
     public class WLANConfigurationClient3 : WLANConfigurationClient
     {

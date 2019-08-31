@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace PS.FritzBox.API.CMD
 {
@@ -11,7 +12,7 @@ namespace PS.FritzBox.API.CMD
             this._client = new LANDevice.LANEthernetInterfaceClient(settings);   
         }
 
-        public override void Handle()
+        public override async Task Handle()
         {
             string input = string.Empty;
 
@@ -31,13 +32,13 @@ namespace PS.FritzBox.API.CMD
                     switch (input)
                     {
                         case "1":
-                            this.GetInfo();
+                            await this.GetInfo();
                             break;
                         case "2":
-                            this.GetStatistics();
+                            await this.GetStatistics();
                             break;
                         case "3":
-                            this.SetEnable();
+                            await this.SetEnable();
                             break;
                         case "r":
                             break;
@@ -58,29 +59,29 @@ namespace PS.FritzBox.API.CMD
             } while (input != "r");
         }
 
-        private void GetInfo()
+        private async Task GetInfo()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var info = this._client.GetInfoAsync().GetAwaiter().GetResult();
+            var info =await  this._client.GetInfoAsync();
             this.PrintObject(info);
         }
 
-        private void GetStatistics()
+        private async Task GetStatistics()
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var statistics = this._client.GetStatisticsAsync().GetAwaiter().GetResult();
+            var statistics = await this._client.GetStatisticsAsync();
             this.PrintObject(statistics);
         }
 
-        private void SetEnable()
+        private async Task SetEnable()
         {
             this.ClearOutputAction();
             this.PrintEntry();
             this.PrintOutputAction("Enable? (1/0)");
             var enable = this.GetInputFunc() == "1";
-            this._client.SetEnableAsync(enable).GetAwaiter().GetResult();
+            await this._client.SetEnableAsync(enable);
             this.PrintOutputAction("Changed setting for enabled state");
         }
     }
