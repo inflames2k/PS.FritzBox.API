@@ -17,7 +17,10 @@
     <RepositoryUrl>https://github.com/inflames2k/PS.FritzBox.API.git</RepositoryUrl>
     <FileVersion>1.2.1.0</FileVersion>
     <PackageTags>AVM, Fritz!Box, Fritz.Box, TR064, UPnP</PackageTags>
-    <PackageReleaseNotes>Restructured class tree, improved service clients, added some missing services and implemented device search.</PackageReleaseNotes>
+    <PackageReleaseNotes>Bugfixes
+New interface WANDSLInterfaceConfigClient
+New interface WLANConfigurationClient2 for configuring 5 GHz WLAN
+New interface WLANConfigurationClient3 for configuring guest WLAN</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
