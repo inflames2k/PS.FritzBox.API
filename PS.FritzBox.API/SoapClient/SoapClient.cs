@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -83,15 +84,33 @@ namespace PS.FritzBox.API.SOAP
                 Stream stream = await response.Content.ReadAsStreamAsync();
                 var sr = new StreamReader(stream);
 
-                var soapResponse = XDocument.Load(sr);
+                XDocument soapResponse = XDocument.Load(sr); 
 
                 if(!response.IsSuccessStatusCode)
                 {
                     if (response.StatusCode != System.Net.HttpStatusCode.InternalServerError)
                         throw new Exception(response.ReasonPhrase);
+                    else
+                        this.ValidateSoapResponse(soapResponse);
                 }
 
                 return soapResponse;
+            }
+        }
+
+        /// <summary>
+        /// Method to validate soap result if its an soap fault
+        /// </summary>
+        /// <param name="document">the response text</param>
+        private void ValidateSoapResponse(XDocument document)
+        {
+            var faultNode = document.Descendants("Fault").FirstOrDefault();
+            if(faultNode != null)
+            {
+                string faultCode = faultNode.Descendants("faultcode").First().Value;
+                string faultString = faultNode.Descendants("faultstring").First().Value;
+
+                throw new SoapFaultException(faultCode, faultString, string.Empty);
             }
         }
     }
