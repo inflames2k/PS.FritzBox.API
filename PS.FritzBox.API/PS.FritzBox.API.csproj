@@ -12,15 +12,15 @@
     <PackageLicenseUrl>https://github.com/inflames2k/PS.FritzBox.API/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/inflames2k/PS.FritzBox.API</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
-    <AssemblyVersion>1.2.1.0</AssemblyVersion>
-    <Version>1.2.2</Version>
+    <AssemblyVersion>1.2.3.0</AssemblyVersion>
+    <Version>1.2.3</Version>
     <RepositoryUrl>https://github.com/inflames2k/PS.FritzBox.API.git</RepositoryUrl>
-    <FileVersion>1.2.1.0</FileVersion>
+    <FileVersion>1.2.3.0</FileVersion>
     <PackageTags>AVM, Fritz!Box, Fritz.Box, TR064, UPnP</PackageTags>
-    <PackageReleaseNotes>Bugfixes
-New interface WANDSLInterfaceConfigClient
-New interface WLANConfigurationClient2 for configuring 5 GHz WLAN
-New interface WLANConfigurationClient3 for configuring guest WLAN</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed Typo in WANDSLInterfaceStatistics
+Fixed reading WANDSLInterfaceInfo</PackageReleaseNotes>
+	<IncludeSymbols>true</IncludeSymbols>
+  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

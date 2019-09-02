@@ -23,7 +23,7 @@
         /// <summary>
         /// Gets or sets the link retain
         /// </summary>
-        public uint LinkRetreain { get; set; }
+        public uint LinkRetrain { get; set; }
 
         /// <summary>
         /// Gets or sets the init errors
