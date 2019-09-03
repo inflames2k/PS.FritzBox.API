@@ -153,6 +153,10 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
             return document.Descendants("NewAutoConfig").First().Value == "1";
         }
 
+        /// <summary>
+        /// Method to get the wan dsl link statistic
+        /// </summary>
+        /// <returns>the wan dsllink statistic</returns>
         public async Task<WANDSLLinkStatistic> GetStatisticsAsync()
         {
             XDocument document = await this.InvokeAsync("GetStatistics", null);
