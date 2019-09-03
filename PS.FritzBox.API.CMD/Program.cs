@@ -64,6 +64,7 @@ namespace PS.FritzBox.API.CMD
                     Console.WriteLine("14 - WLANConfiguration3");
                     Console.WriteLine("15 - WANDSLInterfaceConfig");
                     Console.WriteLine("16 - WANEthernetLinkConfig");
+                    Console.WriteLine("17 - WANDSLLinkConfig");
 
                     Console.WriteLine("r - Reinitialize");
                     Console.WriteLine("q - Exit");
@@ -140,6 +141,7 @@ namespace PS.FritzBox.API.CMD
             _clientHandlers.Add("14", new WLANConfigurationClientHandler3(settings, printOutput, getInput, wait, clearOutput));
             _clientHandlers.Add("15", new WANDSLInterfaceConfigClientHandler(settings, printOutput, getInput, wait, clearOutput));
             _clientHandlers.Add("16", new WANEthernetLinkConfigClientHandler(settings, printOutput, getInput, wait, clearOutput));
+            _clientHandlers.Add("17", new WANDSLLinkConfigClientHandler(settings, printOutput, getInput, wait, clearOutput));
         }
 
         

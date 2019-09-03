@@ -57,7 +57,7 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
                 ATMPeakCellRate = Convert.ToUInt32(document.Descendants("NewATMPeakCellRate").First().Value),
                 ATMQoS = document.Descendants("NewATMQoS").First().Value,
                 ATMSustainableCellRate = Convert.ToUInt32(document.Descendants("NewATMSustainableCellRate").First().Value),
-                AutoConfig = document.Descendants("AutoConfig").First().Value == "1",
+                AutoConfig = document.Descendants("NewAutoConfig").First().Value == "1",
                 DestinationAddress = document.Descendants("NewDestinationAddress").First().Value,
                 Enabled = document.Descendants("NewEnable").First().Value == "1",
                 LinkInfo = new DSLLinkInfo
@@ -162,7 +162,7 @@ namespace PS.FritzBox.API.WANDevice.WANConnectionDevice
                 ATMTransmittedBlocks = Convert.ToUInt32(document.Descendants("NewATMTransmittedBlocks").First().Value),
                 ATMReceivedBlocks = Convert.ToUInt32(document.Descendants("NewATMReceivedBlocks").First().Value),
                 AAL5CRCErrors = Convert.ToUInt32(document.Descendants("NewAAL5CRCErrors").First().Value),
-                ATMCRCErrors = Convert.ToUInt32(document.Descendants("ATMCRCErrors").First().Value)
+                ATMCRCErrors = Convert.ToUInt32(document.Descendants("NewATMCRCErrors").First().Value)
             };
         }
     }

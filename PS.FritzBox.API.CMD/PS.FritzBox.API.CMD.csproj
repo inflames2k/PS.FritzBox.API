@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="AppSetupClientHandler.cs" />
     <Compile Include="ClientHandler.cs" />
+    <Compile Include="WANDSLLinkConfigClientHandler.cs" />
     <Compile Include="WANEthernetLinkConfigClientHandler.cs" />
     <Compile Include="DeviceConfigClientHandler.cs" />
     <Compile Include="DeviceInfoClientHandler.cs" />
