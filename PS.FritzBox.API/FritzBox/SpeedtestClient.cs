@@ -1,4 +1,5 @@
 ﻿using PS.FritzBox.API.Base;
+using PS.FritzBox.API.SOAP;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,15 +51,37 @@ namespace PS.FritzBox.API
 
             return new SpeedtestInfo
             {
-                EnableTcp = document.Descendants("NewEnableTcp").First().Value == "1",
-                EnableUdp = document.Descendants("NewEnableUdp").First().Value == "1",
-                EnableUdpBidirect = document.Descendants("NewEnableUdpBidirect").First().Value == "1",
-                WANEnableTcp = document.Descendants("NewWANEnableTcp").First().Value == "1",
-                WANEnableUdp = document.Descendants("NewWANEnableUdp").First().Value == "1",
+                Config = new SpeedtestConfig
+                {
+                    EnableTcp = document.Descendants("NewEnableTcp").First().Value == "1",
+                    EnableUdp = document.Descendants("NewEnableUdp").First().Value == "1",
+                    EnableUdpBidirect = document.Descendants("NewEnableUdpBidirect").First().Value == "1",
+                    WANEnableTcp = document.Descendants("NewWANEnableTcp").First().Value == "1",
+                    WANEnableUdp = document.Descendants("NewWANEnableUdp").First().Value == "1"
+                },
                 PortTcp =  Convert.ToUInt32(document.Descendants("NewPortTcp").First().Value),
                 PortUdp = Convert.ToUInt32(document.Descendants("NewPortUdp").First().Value),
                 PortUdpBidirect = Convert.ToUInt32(document.Descendants("NewPortUdpBidirect").First().Value)
             };
+        }
+
+        /// <summary>
+        /// Method to set the speed test config
+        /// </summary>
+        /// <param name="config">the speed test config</param>
+        /// <returns></returns>
+        public async Task SetConfigAsync(SpeedtestConfig config)
+        {
+            List<SoapRequestParameter> parameters = new List<SoapRequestParameter>()
+            {
+                new SoapRequestParameter("NewEnableTcp", config.EnableTcp),
+                new SoapRequestParameter("NewEnableUdp", config.EnableUdp),
+                new SoapRequestParameter("NewEnableUdpBidirect", config.EnableUdpBidirect),
+                new SoapRequestParameter("NewWANEnableTcp", config.WANEnableTcp),
+                new SoapRequestParameter("NewWANEnableUdp", config.WANEnableUdp)
+            };            
+
+            XDocument document = await this.InvokeAsync("SetConfig", parameters.ToArray());
         }
     }
 }
