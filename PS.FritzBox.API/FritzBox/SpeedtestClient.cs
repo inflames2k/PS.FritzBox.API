@@ -9,6 +9,9 @@ using System.Xml.Linq;
 
 namespace PS.FritzBox.API
 {
+    /// <summary>
+    /// client for speedtest service
+    /// </summary>
     public class SpeedtestClient : FritzTR64Client
     {
         #region Construction / Destruction
