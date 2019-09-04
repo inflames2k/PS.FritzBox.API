@@ -7,9 +7,9 @@ namespace PS.FritzBox.API.CMD
     {
         LANDevice.LANEthernetInterfaceClient _client;
 
-        public LANEthernetInterfaceClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
+        public LANEthernetInterfaceClientHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(device, printOutput, getInput, wait, clearOutput)
         {
-            this._client = new LANDevice.LANEthernetInterfaceClient(settings);   
+            this._client = device.GetServiceClient<LANDevice.LANEthernetInterfaceClient>();
         }
 
         public override async Task Handle()

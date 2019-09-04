@@ -8,9 +8,9 @@ namespace PS.FritzBox.API.CMD
         WANDevice.WANConnectionDevice.WANDSLLinkConfigClient _client;
         private string _configSID;
 
-        public WANDSLLinkConfigClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
+        public WANDSLLinkConfigClientHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(device, printOutput, getInput, wait, clearOutput)
         {
-            this._client = new WANDevice.WANConnectionDevice.WANDSLLinkConfigClient(settings);
+            this._client = device.GetServiceClient<WANDevice.WANConnectionDevice.WANDSLLinkConfigClient>();
         }
 
         public override async Task Handle()

@@ -9,9 +9,9 @@ namespace PS.FritzBox.API.CMD
     {
         WANPPPConnectionClient _client;
 
-        public WANPPPConnectionClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
+        public WANPPPConnectionClientHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(device, printOutput, getInput, wait, clearOutput)
         {
-            _client = new WANPPPConnectionClient(settings);
+            _client = device.GetServiceClient<WANPPPConnectionClient>();
         }
 
         public override async Task Handle()

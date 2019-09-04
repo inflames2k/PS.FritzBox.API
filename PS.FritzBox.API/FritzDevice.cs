@@ -43,11 +43,21 @@ namespace PS.FritzBox.API
         /// <param name="address"></param>
         /// <param name="response"></param>
         /// <returns></returns>
-        internal static FritzDevice ParseResponse(IPAddress address, string response)
+        internal static async Task<FritzDevice> ParseResponseAsync(IPAddress address, string response)
         {
             FritzDevice device = new FritzDevice();
             device.IPAddress = address;
-            device.Location = device.ParseResponse(response);
+            device.Location = device.ParseResponseAsync(response);
+
+            var uriBuilder = new UriBuilder();
+            uriBuilder.Scheme = "http";
+            uriBuilder.Host = address.ToString();
+            uriBuilder.Port = device.Location.Port;
+
+            uriBuilder.Port = await new DeviceInfoClient(uriBuilder.Uri.ToString(), 10000).GetSecurityPortAsync();
+            uriBuilder.Scheme = "https";
+            device.BaseUrl = uriBuilder.ToString();
+
             if (device.Location == null)
                 return null;
             else
@@ -58,7 +68,7 @@ namespace PS.FritzBox.API
         /// Method to parse the response
         /// </summary>
         /// <param name="response">the response</param>
-        private Uri ParseResponse(string response)
+        private Uri ParseResponseAsync(string response)
         {
             Dictionary<string, string> values = response.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
                                                  .Skip(1)
@@ -72,6 +82,7 @@ namespace PS.FritzBox.API
                 
                 Uri uri = Uri.TryCreate(location, UriKind.Absolute, out Uri locationUri) ? locationUri : new UriBuilder() { Scheme = "unknown", Host = location }.Uri;
                 this.Port = uri.Port;
+
                 return uri;
             }
             else
@@ -134,19 +145,19 @@ namespace PS.FritzBox.API
         public string UDN { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the username
+        /// Gets or sets the credentials
         /// </summary>
-        public string UserName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the password
-        /// </summary>
-        public string Password { get; set; }
+        public NetworkCredential Credentials { get; set; }
 
         /// <summary>
         /// timeout for service requests
         /// </summary>
         public int RequestTimeout { get; set; } = 10000;
+
+        /// <summary>
+        /// Gets the base url
+        /// </summary>
+        public string BaseUrl { get; private set; }
 
         /// <summary>
         /// Method to get service client
@@ -181,22 +192,14 @@ namespace PS.FritzBox.API
         /// </summary>
         /// <typeparam name="T">the type param</typeparam>
         /// <returns>the instance of the service client</returns>
-        public async Task<T> GetServiceClient<T>()
-        {   
-            var uriBuilder = new UriBuilder();
-            uriBuilder.Scheme = "http";
-            uriBuilder.Host = this.IPAddress.ToString();
-            uriBuilder.Port = this.Port;
-
-            uriBuilder.Port = await new DeviceInfoClient(uriBuilder.Uri.ToString(), this.RequestTimeout).GetSecurityPortAsync();
-            uriBuilder.Scheme = "https";
-            
+        public  T GetServiceClient<T>()
+        {               
             ConnectionSettings settings = new ConnectionSettings()
             {
-                UserName = this.UserName,
-                Password = this.Password,
+                UserName = this.Credentials?.UserName,
+                Password = this.Credentials?.Password,
                 Timeout = this.RequestTimeout,
-                BaseUrl = uriBuilder.Uri.ToString()
+                BaseUrl = this.BaseUrl
             };
 
             return (T)Activator.CreateInstance(typeof(T), settings);
@@ -256,6 +259,15 @@ namespace PS.FritzBox.API
         private IEnumerable<XElement> GetElements(XElement parent, string key)
         {
             return parent.Elements(parent.Document.Root.Name.Namespace + key);
+        }
+
+        /// <summary>
+        /// Method to locate devices
+        /// </summary>
+        /// <returns>a collection of all found devices</returns>
+        public static async Task<ICollection<FritzDevice>> LocateDevicesAsync()
+        {
+            return await new DeviceLocator().DiscoverAsync();
         }
     }
 }

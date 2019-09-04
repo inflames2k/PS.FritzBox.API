@@ -8,9 +8,9 @@ namespace PS.FritzBox.API.CMD
     {
         LANDevice.LANHostConfigManagementClient _client;
 
-        public LANHostConfigManagementClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
+        public LANHostConfigManagementClientHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(device, printOutput, getInput, wait, clearOutput)
         {
-            this._client = new LANDevice.LANHostConfigManagementClient(settings);
+            this._client = device.GetServiceClient<LANDevice.LANHostConfigManagementClient>();
         }
 
         public override async Task Handle()

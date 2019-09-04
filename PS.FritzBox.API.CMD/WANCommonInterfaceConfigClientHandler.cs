@@ -7,9 +7,9 @@ namespace PS.FritzBox.API.CMD
     {
         WANDevice.WANCommonInterfaceConfigClient _client;
 
-        public WANCommonInterfaceConfigClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
+        public WANCommonInterfaceConfigClientHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(device, printOutput, getInput, wait, clearOutput)
         {
-            this._client = new WANDevice.WANCommonInterfaceConfigClient(settings);
+            this._client = device.GetServiceClient<WANDevice.WANCommonInterfaceConfigClient>();
         }
 
         public override async Task Handle()

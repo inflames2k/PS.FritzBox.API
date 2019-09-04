@@ -14,6 +14,7 @@ namespace PS.FritzBox.API
     /// <summary>
     /// class for locating upnp devices
     /// </summary>
+    [Obsolete("Use FritzDevice.LocateDevicesAsync() - Will be made internal in Version 2.0")]
     public class DeviceLocator 
     {
         #region Methods
@@ -22,6 +23,7 @@ namespace PS.FritzBox.API
         /// Method to start discovery
         /// </summary>
         /// <returns></returns>
+        [Obsolete("Use FritzDevice.LocateDevicesAsync()")]
         public async Task<ICollection<FritzDevice>> DiscoverAsync()
         {
             return await this.FindDevicesAsync();            
@@ -152,7 +154,7 @@ namespace PS.FritzBox.API
                         string response = Encoding.ASCII.GetString(result.Buffer, 0, result.Buffer.Length);
 
                         // create device by endpoint data
-                        FritzDevice device = FritzDevice.ParseResponse(result.RemoteEndPoint.Address, response);
+                        FritzDevice device = await FritzDevice.ParseResponseAsync(result.RemoteEndPoint.Address, response);
                         if (!discovered.ContainsKey(result.RemoteEndPoint.Address))
                         {
                             if (device != null && device.Location != null && device.Location.Scheme != "unknown")

@@ -6,9 +6,9 @@ namespace PS.FritzBox.API.CMD
     internal class UserInterfaceClientHandler : ClientHandler
     {
         UserInterfaceClient _client;
-        public UserInterfaceClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
+        public UserInterfaceClientHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(device, printOutput, getInput, wait, clearOutput)
         {
-            this._client = new UserInterfaceClient(settings);
+            this._client = device.GetServiceClient<UserInterfaceClient>();
         }
 
         public override async Task Handle()
