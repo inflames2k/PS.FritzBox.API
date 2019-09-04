@@ -41,10 +41,6 @@ namespace PS.FritzBox.API.CMD
                 } while (!Int32.TryParse(input, out deviceIndex) && (deviceIndex < 0 || deviceIndex >= devices.Count()));
 
                 FritzDevice selected = devices.Skip(deviceIndex).First();
-                selected.Credentials = new System.Net.NetworkCredential("inflames2k", "ps1988@rie");
-
-                await selected.GetServiceClient<RemoteAccessClient>().GetDDNSProvidersAsync();
-
                 Configure(selected);
 
                 do
