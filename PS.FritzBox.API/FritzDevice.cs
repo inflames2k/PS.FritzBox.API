@@ -134,19 +134,19 @@ namespace PS.FritzBox.API
         public string UDN { get; internal set; }
 
         /// <summary>
-        /// the list of valid services
+        /// Gets or sets the username
         /// </summary>
-        private List<Type> _validServices = new List<Type>();
+        public string UserName { get; set; }
 
         /// <summary>
-        /// Method to check if the device contains a given service
+        /// Gets or sets the password
         /// </summary>
-        /// <typeparam name="T">the service type parameter</typeparam>
-        /// <returns>true if the device containes the given service</returns>
-        public bool ContainsService<T>()
-        {
-            return this._validServices.Contains(typeof(T));
-        }
+        public string Password { get; set; }
+
+        /// <summary>
+        /// timeout for service requests
+        /// </summary>
+        public int RequestTimeout { get; set; } = 10000;
 
         /// <summary>
         /// Method to get service client
@@ -154,6 +154,7 @@ namespace PS.FritzBox.API
         /// <typeparam name="T">type param</typeparam>
         /// <param name="settings">connection settings</param>
         /// <returns>the service client</returns>
+        [Obsolete("Creating service using connection settings is obsolete. Use GetServiceClient<T> without parameters. Username and password are used from FritzDevice")]
         public async Task<T> GetServiceClient<T>(ConnectionSettings settings)
         {
             if (String.IsNullOrEmpty(settings.BaseUrl))
@@ -172,6 +173,32 @@ namespace PS.FritzBox.API
                 settings.BaseUrl = uriBuilder.Uri.ToString();
             }
             
+            return (T)Activator.CreateInstance(typeof(T), settings);
+        }
+
+        /// <summary>
+        /// Method the get instance of service client
+        /// </summary>
+        /// <typeparam name="T">the type param</typeparam>
+        /// <returns>the instance of the service client</returns>
+        public async Task<T> GetServiceClient<T>()
+        {   
+            var uriBuilder = new UriBuilder();
+            uriBuilder.Scheme = "http";
+            uriBuilder.Host = this.IPAddress.ToString();
+            uriBuilder.Port = this.Port;
+
+            uriBuilder.Port = await new DeviceInfoClient(uriBuilder.Uri.ToString(), this.RequestTimeout).GetSecurityPortAsync();
+            uriBuilder.Scheme = "https";
+            
+            ConnectionSettings settings = new ConnectionSettings()
+            {
+                UserName = this.UserName,
+                Password = this.Password,
+                Timeout = this.RequestTimeout,
+                BaseUrl = uriBuilder.Uri.ToString()
+            };
+
             return (T)Activator.CreateInstance(typeof(T), settings);
         }
 
