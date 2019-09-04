@@ -65,6 +65,7 @@ namespace PS.FritzBox.API.CMD
                     Console.WriteLine("15 - WANDSLInterfaceConfig");
                     Console.WriteLine("16 - WANEthernetLinkConfig");
                     Console.WriteLine("17 - WANDSLLinkConfig");
+                    Console.WriteLine("18 - Speedtest");
 
                     Console.WriteLine("r - Reinitialize");
                     Console.WriteLine("q - Exit");
@@ -138,6 +139,7 @@ namespace PS.FritzBox.API.CMD
             _clientHandlers.Add("15", new WANDSLInterfaceConfigClientHandler(device, printOutput, getInput, wait, clearOutput));
             _clientHandlers.Add("16", new WANEthernetLinkConfigClientHandler(device, printOutput, getInput, wait, clearOutput));
             _clientHandlers.Add("17", new WANDSLLinkConfigClientHandler(device, printOutput, getInput, wait, clearOutput));
+            _clientHandlers.Add("18", new SpeedtestClientHandler(device, printOutput, getInput, wait, clearOutput));
         }
 
         
