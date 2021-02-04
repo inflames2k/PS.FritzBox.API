@@ -7,9 +7,9 @@ namespace PS.FritzBox.API.CMD
     {
         AppSetupClient _client;
 
-        public AppSetupClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
+        public AppSetupClientHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(device, printOutput, getInput, wait, clearOutput)
         {
-            _client = new AppSetupClient(settings);
+            _client = device.GetServiceClient<AppSetupClient>();
         }
 
         public override async Task Handle()

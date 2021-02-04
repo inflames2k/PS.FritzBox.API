@@ -7,9 +7,9 @@ namespace PS.FritzBox.API.CMD
     {
         LANConfigSecurityClient _client;
 
-        public LanConfigSecurityHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
+        public LanConfigSecurityHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(device, printOutput, getInput, wait, clearOutput)
         {
-            this._client = new LANConfigSecurityClient(settings);
+            this._client = device.GetServiceClient<LANConfigSecurityClient>();
         }
 
         public override async Task Handle()

@@ -3,12 +3,14 @@ using System.Threading.Tasks;
 
 namespace PS.FritzBox.API.CMD
 {
-    internal class UserInterfaceClientHandler : ClientHandler
+    public class SpeedtestClientHandler : ClientHandler
     {
-        UserInterfaceClient _client;
-        public UserInterfaceClientHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(device, printOutput, getInput, wait, clearOutput)
+        SpeedtestClient _client;
+        private string _configSID;
+
+        public SpeedtestClientHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(device, printOutput, getInput, wait, clearOutput)
         {
-            this._client = device.GetServiceClient<UserInterfaceClient>();
+            this._client = device.GetServiceClient<SpeedtestClient>();
         }
 
         public override async Task Handle()
@@ -18,9 +20,10 @@ namespace PS.FritzBox.API.CMD
             do
             {
                 this.ClearOutputAction();
-                this.PrintOutputAction($"UserInterfaceClient{Environment.NewLine}########################");
+                this.PrintOutputAction($"SpeedtestClient{Environment.NewLine}########################");
                 this.PrintOutputAction("1 - GetInfo");
-                this.PrintOutputAction("2 - GetUpdateInfo");
+                this.PrintOutputAction("2 - SetConfig");
+
                 this.PrintOutputAction("r - Return");
 
                 input = this.GetInputFunc();
@@ -33,8 +36,9 @@ namespace PS.FritzBox.API.CMD
                             await this.GetInfo();
                             break;
                         case "2":
-                            await this.GetUpdateInfo();
+                            this.PrintOutputAction("Not supported yet");
                             break;
+                       
                         case "r":
                             break;
                         default:
@@ -42,7 +46,7 @@ namespace PS.FritzBox.API.CMD
                             break;
                     }
 
-                    if (input != "r")
+                    if(input != "r")
                         this.WaitAction();
                 }
                 catch (Exception ex)
@@ -56,20 +60,11 @@ namespace PS.FritzBox.API.CMD
 
         private async Task GetInfo()
         {
-            this.ClearOutputAction();
             this.PrintEntry();
-            var info = await this._client.GetInfoAsync();
-            this.PrintObject(info);
-        }
-
-        private async Task GetUpdateInfo()
-        {
             this.ClearOutputAction();
-            this.PrintEntry();
-            var info = await this._client.GetUpdateInfoAsync();
 
-            this.PrintObject(info);
-
+            this.PrintObject(await this._client.GetInfoAsync());
         }
     }
+
 }

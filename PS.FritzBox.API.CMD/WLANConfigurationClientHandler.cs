@@ -8,9 +8,9 @@ namespace PS.FritzBox.API.CMD
     internal class WLANConfigurationClientHandler : ClientHandler
     {
         WLANConfigurationClient _client;
-        public WLANConfigurationClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
+        public WLANConfigurationClientHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(device, printOutput, getInput, wait, clearOutput)
         {
-            this._client = new WLANConfigurationClient(settings);
+            this._client = device.GetServiceClient<WLANConfigurationClient>();
         }
 
         public override async Task Handle()

@@ -61,7 +61,7 @@ namespace PS.FritzBox.API.LANDevice
         /// <returns>the host entry</returns>
         public async Task<HostEntry> GetSpecificHostEntryAsync(string macAddress)
         {
-            XDocument document = await this.InvokeAsync("GetSpecificHostEntry", null);
+            XDocument document = await this.InvokeAsync("GetSpecificHostEntry", new SOAP.SoapRequestParameter("NewMACAddress", macAddress));
             return new HostEntry()
             {
                 MACAddress = macAddress, 

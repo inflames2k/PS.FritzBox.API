@@ -32,7 +32,7 @@ namespace PS.FritzBox.API.CMD
         /// </summary>
         protected Action ClearOutputAction;
 
-        public ClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput)
+        public ClientHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput)
         {
             this.PrintOutputAction = printOutput;
             this.GetInputFunc = getInput;

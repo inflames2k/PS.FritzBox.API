@@ -8,9 +8,9 @@ namespace PS.FritzBox.API.CMD
         DeviceConfigClient _client;
         private string _configSID;
 
-        public DeviceConfigClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
+        public DeviceConfigClientHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(device, printOutput, getInput, wait, clearOutput)
         {
-            this._client = new DeviceConfigClient(settings);
+            this._client = device.GetServiceClient<DeviceConfigClient>();
         }
 
         public override async Task Handle()

@@ -11,9 +11,9 @@ namespace PS.FritzBox.API.CMD
     {
         DeviceInfoClient _client;
 
-        public DeviceInfoClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
+        public DeviceInfoClientHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(device, printOutput, getInput, wait, clearOutput)
         {
-            this._client = new DeviceInfoClient(settings);
+            this._client = device.GetServiceClient<DeviceInfoClient>(); // new DeviceInfoClient(settings);
         }
 
         /// <summary>

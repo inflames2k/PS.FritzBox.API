@@ -10,9 +10,9 @@ namespace PS.FritzBox.API.CMD
     {
 
         Layer3ForwardingClient _client;
-        public Layer3ForwardingClientHandler(ConnectionSettings settings, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(settings, printOutput, getInput, wait, clearOutput)
+        public Layer3ForwardingClientHandler(FritzDevice device, Action<string> printOutput, Func<string> getInput, Action wait, Action clearOutput) : base(device, printOutput, getInput, wait, clearOutput)
         {
-            _client = new Layer3ForwardingClient(settings);
+            _client = device.GetServiceClient<Layer3ForwardingClient>();
         }
 
         public override async Task Handle()
