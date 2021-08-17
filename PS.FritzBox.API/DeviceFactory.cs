@@ -13,20 +13,12 @@ namespace PS.FritzBox.API
         /// Creates a single <see cref="FritzDevice"/>.
         /// </summary>
         /// <param name="address">The address the device can be found under.</param>
+        /// <param name="defaultPort">The Default pot for accessing the device.</param>
         /// <returns>The ready-to-use device.</returns>
         /// <exception cref="FritzDeviceException">Thrown if a device can not be created or if the data is incomplete.</exception>
-        public async Task<FritzDevice> CreateDeviceAsync(IPAddress address)
+        public async Task<FritzDevice> CreateDeviceAsync(IPAddress address, int defaultPort)
         {
-            var locationBuilder = new UriBuilder("http", address.ToString(), _dataQueryPort);
-            var device = new FritzDevice(address, locationBuilder.Uri);
-            var tr64Reader = new Tr64DataReader();
-
-            var tr64Data = await tr64Reader.ReadDeviceInfoAsync(device);
-
-            device.ParseTR64Desc(tr64Data.Data);
-            return device;
+            return await FritzDevice.CreateDeviceAsync(address, defaultPort);
         }
-
-        private const int _dataQueryPort = 49000;
     }
 }
