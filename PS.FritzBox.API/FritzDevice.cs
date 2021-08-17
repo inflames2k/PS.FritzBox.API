@@ -65,6 +65,32 @@ namespace PS.FritzBox.API
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="defaultPort"></param>
+        /// <returns></returns>
+        internal static async Task<FritzDevice> CreateDeviceAsync(IPAddress address, int defaultPort)
+        {
+            FritzDevice device = new FritzDevice();
+            device.IPAddress = address;
+
+            var uriBuilder = new UriBuilder();
+            uriBuilder.Scheme = "http";
+            uriBuilder.Host = address.ToString();
+            uriBuilder.Port = defaultPort;
+
+            uriBuilder.Port = await new DeviceInfoClient(uriBuilder.Uri.ToString(), 10000).GetSecurityPortAsync();
+            uriBuilder.Scheme = "https";
+            device.BaseUrl = uriBuilder.ToString();
+
+            if (device.Location == null)
+                return null;
+            else
+                return device;
+        }
+
+        /// <summary>
         /// Method to parse the response
         /// </summary>
         /// <param name="response">the response</param>
