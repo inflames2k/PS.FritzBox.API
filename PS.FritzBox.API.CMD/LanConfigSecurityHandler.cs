@@ -87,8 +87,8 @@ namespace PS.FritzBox.API.CMD
         {
             this.ClearOutputAction();
             this.PrintEntry();
-            var currentUser = await this._client.GetUserListAsync();
-            this.PrintObject(currentUser);
+            var userList = await this._client.GetUserListAsync();
+            this.PrintObject(userList);
         }
 
         private async Task GetInfo()
