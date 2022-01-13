@@ -1,4 +1,8 @@
-﻿namespace PS.FritzBox.API
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace PS.FritzBox.API
 {
     /// <summary>
     /// class representing a userlist
