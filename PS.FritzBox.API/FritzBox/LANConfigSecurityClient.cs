@@ -98,9 +98,9 @@ namespace PS.FritzBox.API
         }
 
         /// <summary>
-        /// Method to get the current user
+        /// Method to get the user list
         /// </summary>
-        /// <returns>the current user</returns>
+        /// <returns>the current userlist</returns>
         public async Task<LANConfigSecurityUserList> GetUserListAsync()
         {
             XDocument document = await this.InvokeAsync("X_AVM-DE_GetUserList", null);
