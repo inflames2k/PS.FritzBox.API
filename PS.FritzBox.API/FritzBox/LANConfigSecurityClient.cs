@@ -97,7 +97,19 @@ namespace PS.FritzBox.API
             return user;
         }
 
-        
+        /// <summary>
+        /// Method to get the current user
+        /// </summary>
+        /// <returns>the current user</returns>
+        public async Task<LANConfigSecurityUserList> GetUserListAsync()
+        {
+            XDocument document = await this.InvokeAsync("X_AVM-DE_GetUserList", null);
+            LANConfigSecurityUserList userList = new LANConfigSecurityUserList();
+            
+            userList.UserList = document.Descendants("NewX_AVM-DE_UserList").First().Value;
+            
+            return userList;
+        }
 
         /// <summary>
         /// Method to set the password for the current user
