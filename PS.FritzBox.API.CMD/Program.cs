@@ -42,7 +42,6 @@ namespace PS.FritzBox.API.CMD
 
                 FritzDevice selected = devices.Skip(deviceIndex).First();
                 Configure(selected);
-
                 do
                 {
                     Console.Clear();
