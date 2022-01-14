@@ -22,8 +22,9 @@ namespace PS.FritzBox.API.CMD
                 this.PrintOutputAction($"LanConfigSecurityHandler{Environment.NewLine}########################");
                 this.PrintOutputAction("1 - GetAnonymousLogin");
                 this.PrintOutputAction("2 - GetCurrentUser");
-                this.PrintOutputAction("3 - GetInfo");
-                this.PrintOutputAction("4 - SetConfigPassword");
+                this.PrintOutputAction("3 - GetUserList");
+                this.PrintOutputAction("4 - GetInfo");
+                this.PrintOutputAction("5 - SetConfigPassword");
                 this.PrintOutputAction("r - Return");
 
                 input = this.GetInputFunc();
@@ -39,9 +40,12 @@ namespace PS.FritzBox.API.CMD
                             await this.GetCurrentUser();
                             break;
                         case "3":
-                            await this.GetInfo();
+                            await this.GetUserList();
                             break;
                         case "4":
+                            await this.GetInfo();
+                            break;
+                        case "5":
                             await this.SetConfigPassword();
                             break;
                         case "r":
@@ -77,6 +81,14 @@ namespace PS.FritzBox.API.CMD
             this.PrintEntry();
             var currentUser = await this._client.GetCurrentUserAsync();
             this.PrintObject(currentUser);
+        }
+
+        private async Task GetUserList()
+        {
+            this.ClearOutputAction();
+            this.PrintEntry();
+            var userList = await this._client.GetUserListAsync();
+            this.PrintObject(userList);
         }
 
         private async Task GetInfo()
